@@ -1,0 +1,40 @@
+:root { --bege-botao: #D1BE9C; --texto-suave: #666; --preto: #222; }
+body { font-family: 'Montserrat', sans-serif; margin: 0; padding-top: 250px; background-color: #fff; color: var(--preto); }
+
+header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 1000; border-bottom: 1px solid #f2f2f2; text-align: center; }
+.logo { max-width: 180px; margin-top: 20px; }
+
+nav ul { list-style: none; display: flex; justify-content: center; gap: 15px; padding: 15px 0; margin: 0; }
+nav a { text-decoration: none; color: var(--preto); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+
+.carrinho-topo { position: absolute; right: 5%; top: 40px; text-decoration: none; color: var(--preto); display: flex; align-items: center; gap: 8px; }
+
+.titulo-categoria-fixed { text-align: center; margin-bottom: 50px; }
+.brilho-icon { color: var(--bege-botao); font-size: 24px; margin-bottom: 5px; }
+#nome-categoria-atual { letter-spacing: 6px; text-transform: uppercase; font-weight: 300; font-size: 24px; }
+.subtitulo-marca { font-size: 9px; letter-spacing: 4px; color: var(--texto-suave); margin-top: 10px; }
+
+.grade-produtos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 20px; padding: 0 8%; max-width: 1100px; margin: 0 auto; }
+.card { text-align: center; cursor: pointer; transition: 0.3s; }
+.card img { width: 100%; height: 280px; object-fit: contain; margin-bottom: 15px; }
+.nome-produto { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; height: 30px; }
+.preco-produto { font-weight: 700; color: var(--bege-botao); }
+
+.btn-carrinho { background: var(--bege-botao); color: white; border: none; padding: 15px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 11px; margin-top: 15px; }
+
+/* MODAL */
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+.modal-conteudo { background: white; margin: 5% auto; padding: 40px; width: 90%; max-width: 800px; position: relative; border-radius: 4px; }
+.modal-flex { display: flex; gap: 30px; align-items: flex-start; }
+.img-modal-container { flex: 1; max-width: 50%; }
+#imgModal { width: 100%; max-height: 450px; object-fit: contain; }
+.info-produto-modal { flex: 1; }
+.fechar { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #ccc; }
+.mini-thumb { width: 60px; height: 60px; object-fit: cover; cursor: pointer; border: 1px solid #eee; margin-top: 10px; margin-right: 5px; }
+
+@media (max-width: 768px) {
+    body { padding-top: 200px; }
+    .grade-produtos { grid-template-columns: repeat(2, 1fr); }
+    .modal-flex { flex-direction: column; }
+    .img-modal-container { max-width: 100%; }
+}

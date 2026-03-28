@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Megusta Semijóias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.5">
+</head>
+<body>
+    <div id="user-bar" style="background:#f9f9f9; padding:10px 5%; font-size:10px; text-align:right; border-bottom:1px solid #eee; letter-spacing:1px; font-family:'Montserrat';">
+        <span id="user-info">CARREGANDO...</span>
+        <button id="btn-logout" style="display:none; background:none; border:none; color:red; cursor:pointer; margin-left:10px; font-weight:700; font-size:9px;">[ SAIR ]</button>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <img src="Logo.png" alt="Megusta" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('brincos')">BRINCOS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('colares')">COLARES</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('pulseiras')">PULSEIRAS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('aneis')">ANÉIS</a></li>
+            </ul>
+        </nav>
+        <a href="carrinho.html" class="carrinho-topo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span id="contagem-carrinho">0</span>
+        </a>
+    </header>
+
+    <main class="vitrine">
+        <div class="titulo-categoria-fixed">
+            <div class="brilho-icon">✦</div>
+            <h1 id="nome-categoria-atual">TODOS OS PRODUTOS</h1>
+            <p class="subtitulo-marca">MEGUSTA SEMIJÓIAS</p>
+        </div>
+        <div class="grade-produtos" id="lista-produtos"></div>
+    </main>
+
+    <div id="meuModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="window.fecharModal()">&times;</span>
+            <div class="modal-flex">
+                <div class="img-modal-container"></div>
+                <div class="info-produto-modal">
+                    <h2 id="tituloModal"></h2>
+                    <p id="precoModal" style="font-weight:700; color:#D1BE9C; font-size: 20px;"></p>
+                    <p id="descModal" style="color:#666; margin-bottom: 25px; line-height: 1.6; font-size:14px;"></p>
+                    <button class="btn-carrinho" id="btnAdicionarAoCarrinho">ADICIONAR AO CARRINHO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
