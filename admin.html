@@ -14,208 +14,153 @@
         input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s; }
         textarea { resize: none; height: 80px; }
         input:focus, textarea:focus { border-color: #A39684; }
-        
         .fotos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .foto-preview { width: 100%; height: 80px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; background: #fafafa; }
-
         .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 18px; border-radius: 60px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
         .btn-cadastrar:hover:not(:disabled) { background: #A39684; }
-        .btn-cadastrar:disabled { background: #ccc; cursor: not-allowed; }
-
         .lista-container { max-width: 600px; margin: 0 auto; }
         .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         .produto-info { display: flex; align-items: center; gap: 12px; }
         .produto-info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        .produto-text h4 { margin: 0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
-        .produto-text p { margin: 3px 0 0; font-size: 10px; color: #A39684; }
-        .btn-deletar { background: #ff4d4d; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
+        .produto-text h4 { margin: 0; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .acoes { display: flex; gap: 8px; }
+        .btn-acao { border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        .edit { background: #f0f0f0; color: #333; }
+        .del { background: #ffebeb; color: #ff4d4d; }
     </style>
 </head>
 <body>
 
 <div class="admin-card">
-    <h2>Novo Cadastro</h2>
+    <h2 id="titulo-form">Novo Cadastro</h2>
     <form id="form-produto">
-        <div class="field-group">
-            <label>Nomenclatura da Joia</label>
-            <input type="text" id="nome" required placeholder="EX: BRINCO ESMERALDA">
-        </div>
-
-        <div class="field-group">
-            <label>Descrição Detalhada</label>
-            <textarea id="descricao" required placeholder="Detalhes do banho, pedras e brilho..."></textarea>
-        </div>
-
+        <input type="hidden" id="edit-id">
+        <div class="field-group"><label>Nomenclatura</label><input type="text" id="nome" required></div>
+        <div class="field-group"><label>Descrição</label><textarea id="descricao" required></textarea></div>
         <div style="display: flex; gap: 15px;">
             <div class="field-group" style="flex: 2;">
                 <label>Categoria</label>
                 <select id="categoria">
-                    <option value="brincos">BRINCOS</option>
-                    <option value="colares">COLARES</option>
-                    <option value="pulseiras">PULSEIRAS</option>
-                    <option value="aneis">ANÉIS</option>
+                    <option value="brincos">BRINCOS</option><option value="colares">COLARES</option>
+                    <option value="pulseiras">PULSEIRAS</option><option value="aneis">ANÉIS</option>
                     <option value="nova">+ NOVA CATEGORIA</option>
                 </select>
                 <input type="text" id="nova-cat-input" style="display:none; margin-top:10px;" placeholder="Nome da categoria">
             </div>
-            <div class="field-group" style="flex: 1;">
-                <label>Estoque</label>
-                <input type="number" id="estoque" required min="0" placeholder="0">
-            </div>
+            <div class="field-group" style="flex: 1;"><label>Estoque</label><input type="number" id="estoque" required></div>
         </div>
-
+        <div class="field-group"><label>Valor de Venda</label><input type="text" id="preco" required></div>
         <div class="field-group">
-            <label>Valor de Venda</label>
-            <input type="text" id="preco" required>
-        </div>
-
-        <div class="field-group">
-            <label>Links das Fotos (Postimages - Link Direto)</label>
-            <input type="text" id="url-img-1" required placeholder="Link da foto 1" style="margin-bottom: 8px;">
-            <input type="text" id="url-img-2" placeholder="Link da foto 2 (Opcional)" style="margin-bottom: 8px;">
-            <input type="text" id="url-img-3" placeholder="Link da foto 3 (Opcional)">
-            
+            <label>Fotos (Link Direto)</label>
+            <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom: 8px;">
+            <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom: 8px;">
+            <input type="text" id="url-img-3" placeholder="Link 3">
             <div class="fotos-grid">
-                <img id="prev-1" class="foto-preview">
-                <img id="prev-2" class="foto-preview">
-                <img id="prev-3" class="foto-preview">
+                <img id="prev-1" class="foto-preview"><img id="prev-2" class="foto-preview"><img id="prev-3" class="foto-preview">
             </div>
         </div>
-
         <button type="submit" id="btn-submit" class="btn-cadastrar">CADASTRAR PRODUTO</button>
+        <button type="button" id="btn-cancelar" style="display:none; width:100%; background:none; border:none; font-size:9px; margin-top:10px; cursor:pointer; color:#999; text-transform:uppercase; letter-spacing:2px;">Cancelar Edição</button>
     </form>
 </div>
 
-<div class="lista-container">
-    <h3 style="text-align: center; letter-spacing: 4px; font-weight: 300; font-size: 13px; margin-bottom: 20px; color: #A39684;">ESTOQUE ATUAL</h3>
-    <div id="lista-estoque"></div>
-</div>
+<div class="lista-container" id="lista-estoque"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME",
-        authDomain: "megusta-semijoias.firebaseapp.com",
-        projectId: "megusta-semijoias",
-        storageBucket: "megusta-semijoias.appspot.com",
-        messagingSenderId: "998632232244",
-        appId: "1:998632232244:web:45473970818b8374e20161"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 1. MÁSCARA DE VALOR R$ 0,00
     const inputPreco = document.getElementById('preco');
     inputPreco.value = "R$ 0,00";
     inputPreco.addEventListener('input', (e) => {
         let v = e.target.value.replace(/\D/g, '');
-        if (v.length === 0) v = "0";
-        v = (parseInt(v) / 100).toLocaleString('pt-br', {
-            style: 'currency',
-            currency: 'BRL'
-        });
+        v = (parseInt(v || 0) / 100).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
         e.target.value = v;
     });
 
-    // 2. PREVIEW DAS FOTOS
-    [1, 2, 3].forEach(num => {
-        document.getElementById(`url-img-${num}`).addEventListener('input', (e) => {
-            const img = document.getElementById(`prev-${num}`);
-            if (e.target.value.includes('http')) {
-                img.src = e.target.value;
-                img.style.display = 'block';
-            } else {
-                img.style.display = 'none';
-            }
+    [1,2,3].forEach(n => {
+        document.getElementById(`url-img-${n}`).addEventListener('input', (e) => {
+            const img = document.getElementById(`prev-${n}`);
+            img.src = e.target.value; img.style.display = e.target.value.includes('http') ? 'block' : 'none';
         });
     });
 
-    // 3. CARREGAR ESTOQUE (GOVERNANÇA)
     async function carregarEstoque() {
         const container = document.getElementById('lista-estoque');
-        container.innerHTML = '<p style="text-align:center; font-size:10px;">Sincronizando...</p>';
-        
-        try {
-            const q = query(collection(db, "produtos"), orderBy("dataCriacao", "desc"));
-            const snapshot = await getDocs(q);
-            container.innerHTML = '';
-            
-            snapshot.forEach((res) => {
-                const p = res.data();
-                const div = document.createElement('div');
-                div.className = 'produto-item';
-                div.innerHTML = `
-                    <div class="produto-info">
-                        <img src="${p.imagens[0]}" onerror="this.src='https://via.placeholder.com/50'">
-                        <div class="produto-text">
-                            <h4>${p.nome}</h4>
-                            <p>${p.preco} | Estoque: ${p.estoque} | Cat: ${p.categoria}</p>
-                        </div>
-                    </div>
-                    <button class="btn-deletar" data-id="${res.id}">Excluir</button>
-                `;
-                container.appendChild(div);
-            });
+        const q = query(collection(db, "produtos"), orderBy("dataCriacao", "desc"));
+        const snap = await getDocs(q);
+        container.innerHTML = '';
+        snap.forEach(res => {
+            const p = res.data();
+            const div = document.createElement('div');
+            div.className = 'produto-item';
+            div.innerHTML = `
+                <div class="produto-info">
+                    <img src="${p.imagens[0]}">
+                    <div class="produto-text"><h4>${p.nome}</h4><p>${p.preco} | Cat: ${p.categoria}</p></div>
+                </div>
+                <div class="acoes">
+                    <button class="btn-acao edit" data-id="${res.id}">Editar</button>
+                    <button class="btn-acao del" data-id="${res.id}">Excluir</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
 
-            document.querySelectorAll('.btn-deletar').forEach(btn => {
-                btn.onclick = async () => {
-                    if (confirm("Deseja realmente excluir este item?")) {
-                        await deleteDoc(doc(db, "produtos", btn.getAttribute('data-id')));
-                        carregarEstoque();
-                    }
-                };
-            });
-        } catch (e) {
-            container.innerHTML = '<p style="color:red; font-size:10px;">Erro ao carregar banco.</p>';
-        }
+        document.querySelectorAll('.edit').forEach(btn => btn.onclick = () => prepararEdicao(btn.dataset.id));
+        document.querySelectorAll('.del').forEach(btn => btn.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", btn.dataset.id)); carregarEstoque(); }});
     }
 
-    // 4. SALVAR PRODUTO
+    async function prepararEdicao(id) {
+        const snap = await getDocs(collection(db, "produtos"));
+        const p = snap.docs.find(d => d.id === id).data();
+        document.getElementById('edit-id').value = id;
+        document.getElementById('nome').value = p.nome;
+        document.getElementById('descricao').value = p.descricao;
+        document.getElementById('categoria').value = p.categoria;
+        document.getElementById('estoque').value = p.estoque;
+        document.getElementById('preco').value = p.preco;
+        p.imagens.forEach((url, i) => { 
+            document.getElementById(`url-img-${i+1}`).value = url;
+            document.getElementById(`prev-${i+1}`).src = url;
+            document.getElementById(`prev-${i+1}`).style.display = 'block';
+        });
+        document.getElementById('titulo-form').innerText = "Editar Produto";
+        document.getElementById('btn-submit').innerText = "ATUALIZAR PRODUTO";
+        document.getElementById('btn-cancelar').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('btn-cancelar').onclick = () => location.reload();
+
     document.getElementById('form-produto').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btn-submit');
+        const editId = document.getElementById('edit-id').value;
         btn.disabled = true;
-        btn.innerText = "SALVANDO...";
 
-        const fotos = [
-            document.getElementById('url-img-1').value,
-            document.getElementById('url-img-2').value,
-            document.getElementById('url-img-3').value
-        ].filter(url => url.trim() !== "");
+        const fotos = [1,2,3].map(n => document.getElementById(`url-img-${n}`).value).filter(u => u !== "");
+        const cat = document.getElementById('categoria').value;
+        const pData = {
+            nome: document.getElementById('nome').value.toUpperCase(),
+            descricao: document.getElementById('descricao').value,
+            categoria: cat === 'nova' ? document.getElementById('nova-cat-input').value.toLowerCase() : cat.toLowerCase(),
+            preco: inputPreco.value,
+            estoque: parseInt(document.getElementById('estoque').value),
+            imagens: fotos,
+            dataCriacao: serverTimestamp()
+        };
 
-        const selectCat = document.getElementById('categoria');
-        const categoriaFinal = (selectCat.value === 'nova') 
-            ? document.getElementById('nova-cat-input').value.toLowerCase() 
-            : selectCat.value.toLowerCase();
-
-        try {
-            await addDoc(collection(db, "produtos"), {
-                nome: document.getElementById('nome').value.toUpperCase(),
-                descricao: document.getElementById('descricao').value,
-                categoria: categoriaFinal,
-                preco: inputPreco.value,
-                estoque: parseInt(document.getElementById('estoque').value),
-                imagens: fotos,
-                dataCriacao: serverTimestamp()
-            });
-            alert("SUCESSO! PRODUTO CADASTRADO.");
-            location.reload();
-        } catch (err) {
-            alert("ERRO AO SALVAR.");
-            btn.disabled = false;
-            btn.innerText = "CADASTRAR PRODUTO";
-        }
-    });
-
-    document.getElementById('categoria').addEventListener('change', (e) => {
-        document.getElementById('nova-cat-input').style.display = (e.target.value === 'nova') ? 'block' : 'none';
+        if(editId) { await updateDoc(doc(db, "produtos", editId), pData); }
+        else { await addDoc(collection(db, "produtos"), pData); }
+        location.reload();
     });
 
     carregarEstoque();
 </script>
-
 </body>
 </html>

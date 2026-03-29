@@ -3,100 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Megusta Semijóias</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.2">
-    
+    <title>MeGusta Semijoias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Estrutura para fixar o rodapé no final */
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        main.vitrine {
-            flex: 1 0 auto;
-        }
-        footer {
-            flex-shrink: 0;
-        }
-        /* Estilo para os links em Fendi */
-        .link-fendi {
-            color: #A39684; /* Tom Fendi Clássico */
-            text-decoration: none;
-            font-size: 10px;
-            letter-spacing: 2px;
-            font-weight: 400;
-            text-transform: uppercase;
-        }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: #fff; color: #1a1a1a; overflow-x: hidden; }
+        header { padding: 60px 20px; text-align: center; }
+        .logo { font-weight: 200; letter-spacing: 15px; font-size: 32px; text-transform: uppercase; margin-bottom: 30px; }
+        
+        .nav-filtros { display: flex; justify-content: center; gap: 30px; margin-bottom: 50px; }
+        .btn-filtro { background: none; border: none; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; color: #bbb; transition: 0.3s; padding-bottom: 8px; }
+        .btn-filtro.active { color: #000; border-bottom: 1px solid #000; }
+
+        .vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 0 40px 100px; max-width: 1300px; margin: 0 auto; }
+        .produto-card { text-align: center; cursor: pointer; }
+        .img-container { width: 100%; aspect-ratio: 1/1; background: #fdfdfd; margin-bottom: 20px; border-radius: 2px; overflow: hidden; }
+        .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .produto-card:hover img { transform: scale(1.03); }
+        
+        /* Ajuste: Nome em uma linha só */
+        .produto-card h3 { font-size: 11px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin: 15px 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Ajuste: Valor Profissional */
+        .preco-luxo { font-size: 14px; font-weight: 300; letter-spacing: 1px; color: #000; }
+
+        /* MODAL / POP-UP LUXO */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); display: none; z-index: 1000; overflow-y: auto; }
+        .modal-content { max-width: 900px; margin: 50px auto; padding: 40px; display: flex; gap: 50px; align-items: center; flex-wrap: wrap; }
+        .modal-img { flex: 1; min-width: 300px; }
+        .modal-img img { width: 100%; border-radius: 4px; }
+        .modal-info { flex: 1; min-width: 300px; }
+        .modal-info h2 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 20px; }
+        .modal-info .desc { font-size: 13px; line-height: 1.8; color: #666; margin-bottom: 30px; font-weight: 300; }
+        .modal-info .price { font-size: 24px; font-weight: 200; margin-bottom: 40px; display: block; }
+        
+        /* Ajuste: Botão Carrinho Luxo */
+        .btn-add-carrinho { width: 100%; background: #000; color: #fff; border: none; padding: 22px; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; transition: 0.4s; }
+        .btn-add-carrinho:hover { background: #A39684; }
+        .close-modal { position: absolute; top: 30px; right: 40px; font-size: 30px; cursor: pointer; font-weight: 200; }
+
+        footer { background: #000; color: #fff; padding: 80px 20px; text-align: center; }
+        .footer-logo { font-weight: 200; letter-spacing: 10px; font-size: 20px; margin-bottom: 30px; }
     </style>
 </head>
 <body>
-    <header>
-        <div style="position: absolute; top: 10px; left: 20px; font-size: 9px; letter-spacing: 1px; color: #999;">
-            <span id="user-info">CARREGANDO...</span>
-            <button id="btn-logout" style="display:none; background:none; border:none; color:#D1BE9C; cursor:pointer; font-weight:700; margin-left:5px;">[ SAIR ]</button>
-        </div>
 
-        <div class="logo-container">
-            <img src="Logo.png" alt="Megusta" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('brincos')">BRINCOS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('colares')">COLARES</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('pulseiras')">PULSEIRAS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('aneis')">ANÉIS</a></li>
-            </ul>
-        </nav>
-        <a href="carrinho.html" class="carrinho-topo">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            <span id="contagem-carrinho">0</span>
-        </a>
-    </header>
-
-    <main class="vitrine">
-        <div id="container-titulo-categoria" class="titulo-categoria-fixed">
-            <div class="brilho-icon">✦</div>
-            <h1 id="nome-categoria-atual">TODOS OS PRODUTOS</h1>
-            <p class="subtitulo-marca">MEGUSTA SEMIJÓIAS</p>
-        </div>
-        <div class="grade-produtos" id="lista-produtos"></div>
-    </main>
-
-    <footer>
-        <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px;">
-                <a href="#" class="link-fendi">Sobre a Empresa</a>
-                <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
-                <a href="https://www.instagram.com/megustasemijoias/" target="_blank" class="link-fendi">Instagram</a>
-            </div>
-        </div>
-
-        <div style="background-color: #000; padding: 15px 10px; text-align: center;">
-            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase; font-weight: 300;">
-                © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR <strong style="font-weight: 700; color: #FFFFFF;">VOLCOF.UNLIMITED</strong>
-            </p>
-        </div>
-    </footer>
-
-    <div id="meuModal" class="modal">
-        <div class="modal-conteudo">
-            <span class="fechar" onclick="window.fecharModal()">&times;</span>
-            <div class="modal-flex">
-                <div class="img-modal-container"></div>
-                <div class="info-produto-modal">
-                    <h2 id="tituloModal"></h2>
-                    <p id="precoModal" style="font-weight:700; color:#D1BE9C; font-size: 20px;"></p>
-                    <p id="descModal" style="color:#666; margin-bottom: 25px; line-height: 1.6;"></p>
-                    <button class="btn-carrinho" id="btnAdicionarAoCarrinho">ADICIONAR AO CARRINHO</button>
-                </div>
-            </div>
-        </div>
+<header>
+    <div class="logo">MeGusta</div>
+    <div class="nav-filtros">
+        <button class="btn-filtro active" data-cat="todos">TODOS</button>
+        <button class="btn-filtro" data-cat="brincos">BRINCOS</button>
+        <button class="btn-filtro" data-cat="colares">COLARES</button>
+        <button class="btn-filtro" data-cat="aneis">ANÉIS</button>
     </div>
+</header>
 
-    <script type="module" src="script.js"></script>
+<main class="vitrine" id="vitrine"></main>
+
+<div class="modal" id="modal-produto">
+    <span class="close-modal" id="close-x">&times;</span>
+    <div class="modal-content" id="modal-body"></div>
+</div>
+
+<footer><div class="footer-logo">MeGusta</div></footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let produtos = [];
+
+    async function carregar() {
+        const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+        produtos = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        render();
+    }
+
+    function render(cat = 'todos') {
+        const v = document.getElementById('vitrine');
+        v.innerHTML = '';
+        const f = cat === 'todos' ? produtos : produtos.filter(p => p.categoria === cat);
+        f.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'produto-card';
+            div.innerHTML = `
+                <div class="img-container"><img src="${p.imagens[0]}"></div>
+                <h3>${p.nome}</h3>
+                <div class="preco-luxo">${p.preco}</div>
+            `;
+            div.onclick = () => abrirModal(p);
+            v.appendChild(div);
+        });
+    }
+
+    function abrirModal(p) {
+        const m = document.getElementById('modal-produto');
+        const b = document.getElementById('modal-body');
+        b.innerHTML = `
+            <div class="modal-img"><img src="${p.imagens[0]}"></div>
+            <div class="modal-info">
+                <h2>${p.nome}</h2>
+                <p class="desc">${p.descricao}</p>
+                <span class="price">${p.preco}</span>
+                <button class="btn-add-carrinho" onclick="window.location.href='https://wa.me/5511999999999?text=Gostaria de comprar: ${p.nome}'">Adicionar ao Pedido</button>
+            </div>
+        `;
+        m.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    document.getElementById('close-x').onclick = () => {
+        document.getElementById('modal-produto').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    document.querySelectorAll('.btn-filtro').forEach(btn => btn.onclick = (e) => {
+        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render(e.target.dataset.cat);
+    });
+
+    carregar();
+</script>
 </body>
 </html>
