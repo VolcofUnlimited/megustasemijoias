@@ -3,174 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Sacola - Megusta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Sua Sacola - Megusta Semijóias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    
     <style>
-        :root { --bege-luxo: #D1BE9C; --preto: #222; }
-        body { font-family: 'Montserrat', sans-serif; background: #fff; }
-        .cart-item { display: flex; align-items: center; gap: 20px; padding: 20px; border-bottom: 1px solid #f2f2f2; }
-        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
-        .cart-info h4 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .cart-info p { margin: 5px 0; color: var(--bege-luxo); font-weight: 700; }
-        .btn-remove { color: #ff4d4d; cursor: pointer; border: none; background: none; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        /* Estrutura para manter o rodapé no final */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Montserrat', sans-serif;
+        }
+        main {
+            flex: 1 0 auto;
+            padding: 60px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        footer {
+            flex-shrink: 0;
+        }
 
-        /* MODAL DE SUCESSO LUXO */
-        .modal-sucesso { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
-        .modal-sucesso-content { background: white; padding: 50px 30px; border-radius: 2px; text-align: center; max-width: 450px; width: 90%; border-top: 5px solid var(--bege-luxo); position: relative; }
-        .modal-sucesso-content h2 { color: var(--preto); letter-spacing: 3px; font-weight: 300; margin-bottom: 20px; }
-        .modal-sucesso-content p { color: #666; line-height: 1.8; font-size: 14px; margin-bottom: 30px; }
-        .brilho-final { color: var(--bege-luxo); font-size: 30px; margin-bottom: 15px; }
-        .btn-final-whatsapp { background: var(--preto); color: white; border: none; padding: 15px 30px; font-weight: 700; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
-        .btn-final-whatsapp:hover { background: var(--bege-luxo); }
+        /* Estilo do Botão Luxo Arredondado */
+        .btn-finalizar-luxo {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 18px 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-radius: 50px; /* Bordas arredondadas */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 350px;
+            margin-top: 30px;
+        }
+
+        .btn-finalizar-luxo:hover {
+            background-color: #D1BE9C; /* Tom dourado ao passar o mouse */
+            letter-spacing: 5px;
+        }
+
+        /* Título e Resumo */
+        .titulo-sacola {
+            text-align: center;
+            letter-spacing: 8px;
+            font-weight: 200;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+        }
+
+        #total-carrinho {
+            font-weight: 300;
+            letter-spacing: 3px;
+            font-size: 18px;
+            color: #222;
+        }
+
+        .link-fendi {
+            color: #A39684;
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
-    <header style="text-align:center; padding: 30px 0;">
-        <a href="index.html"><img src="Logo.png" class="logo" style="max-width:110px;"></a>
+
+    <header>
+        <div class="logo-container" style="text-align: center; padding: 30px 0;">
+            <a href="index.html"><img src="Logo.png" alt="Megusta" class="logo" style="max-width: 150px;"></a>
+        </div>
+        <nav style="text-align: center; margin-bottom: 20px;">
+            <a href="index.html" style="text-decoration: none; color: #999; font-size: 10px; letter-spacing: 2px; font-weight: 400;">← VOLTAR PARA A LOJA</a>
+        </nav>
     </header>
-    
-    <div style="max-width: 800px; margin: 0 auto; padding: 20px; min-height: 60vh;">
-        <h2 style="letter-spacing: 5px; text-transform: uppercase; font-weight: 300; text-align: center; margin-bottom: 40px;">Minha Sacola</h2>
-        <div id="itens-carrinho"></div>
+
+    <main>
+        <h1 class="titulo-sacola">SUA SACOLA</h1>
         
-        <div id="cart-vazio" style="display:none; text-align:center; padding: 80px 20px;">
-            <p style="color: #999; letter-spacing: 1px;">Sua sacola está vazia.</p>
-            <a href="index.html" style="color:var(--bege-luxo); font-weight:700; text-decoration:none; font-size: 12px; border-bottom: 1px solid;">VOLTAR À VITRINE</a>
-        </div>
-
-        <div id="total-area" style="margin-top: 40px; display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <span style="letter-spacing: 2px; font-size: 12px; color: #999;">VALOR TOTAL:</span>
-                <h3 id="valor-total" style="letter-spacing: 1px; margin: 0;">R$ 0,00</h3>
+        <div id="itens-carrinho">
             </div>
-            <button class="btn-final-whatsapp" id="btnAbrirConfirmacao">FINALIZAR PEDIDO</button>
+
+        <div id="resumo-carrinho" style="text-align: center; margin-top: 50px; border-top: 1px solid #f2f2f2; padding-top: 40px;">
+            <p style="font-size: 10px; color: #999; letter-spacing: 2px; margin-bottom: 10px;">VALOR TOTAL</p>
+            <h3 id="total-carrinho">R$ 0,00</h3>
+            <button id="btn-finalizar" class="btn-finalizar-luxo">FINALIZAR COMPRA</button>
         </div>
-    </div>
+    </main>
 
-    <div id="modalSucesso" class="modal-sucesso">
-        <div class="modal-sucesso-content">
-            <div class="brilho-final">✦</div>
-            <h2>OBRIGADO!</h2>
-            <p id="msg-sucesso">Muito obrigado por escolher a <strong>Megusta Semijóias</strong>!<br><br>Agora, vamos encaminhar seu pedido para nosso time e você receberá o Link de pagamento do seu pedido.<br><br>Obrigado pelas compras e volte sempre!</p>
-            <button class="btn-final-whatsapp" id="btnConcluirTudo">IR PARA O WHATSAPP</button>
+    <footer>
+        <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
+            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px;">
+                <a href="#" class="link-fendi">Sobre a Empresa</a>
+                <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
+                <a href="https://www.instagram.com/megustasemijoias/" target="_blank" class="link-fendi">Instagram</a>
+            </div>
         </div>
-    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        <div style="background-color: #000; padding: 15px 10px; text-align: center;">
+            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase; font-weight: 300;">
+                © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR <strong style="font-weight: 700; color: #FFFFFF;">VOLCOF.UNLIMITED</strong>
+            </p>
+        </div>
+    </footer>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME",
-            authDomain: "megusta-semijoias.firebaseapp.com",
-            projectId: "megusta-semijoias",
-            storageBucket: "megusta-semijoias.firebasestorage.app",
-            messagingSenderId: "998632232244",
-            appId: "1:998632232244:web:45473970818b8374e20161"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        let carrinho = [];
-        let usuario = null;
-
-        onAuthStateChanged(auth, async (user) => {
-            usuario = user;
-            if (user) {
-                const res = await getDoc(doc(db, "carrinhos", user.uid));
-                if (res.exists()) carrinho = res.data().itens || [];
-            } else {
-                carrinho = JSON.parse(localStorage.getItem('megu-carrinho')) || [];
-            }
-            renderizar();
-        });
-
-        function renderizar() {
-            const container = document.getElementById('itens-carrinho');
-            const totalArea = document.getElementById('total-area');
-            const vazio = document.getElementById('cart-vazio');
-            
-            if (carrinho.length === 0) {
-                container.innerHTML = "";
-                totalArea.style.display = "none";
-                vazio.style.display = "block";
-                return;
-            }
-
-            vazio.style.display = "none";
-            totalArea.style.display = "block";
-            container.innerHTML = "";
-            let total = 0;
-
-            carrinho.forEach((item, index) => {
-                const precoNum = parseFloat(item.preco.replace("R$ ", "").replace(".", "").replace(",", "."));
-                total += precoNum * item.quantidade;
-                container.innerHTML += `
-                    <div class="cart-item">
-                        <img src="${item.imagem}">
-                        <div class="cart-info">
-                            <h4>${item.nome}</h4>
-                            <p>${item.preco} x ${item.quantidade}</p>
-                            <button class="btn-remove" onclick="window.remover(${index})">Remover item</button>
-                        </div>
-                    </div>`;
-            });
-            document.getElementById('valor-total').innerText = "Total: R$ " + total.toLocaleString('pt-br', {minimumFractionDigits: 2});
-        }
-
-        window.remover = async (index) => {
-            carrinho.splice(index, 1);
-            if (usuario) await setDoc(doc(db, "carrinhos", usuario.uid), { itens: carrinho });
-            else localStorage.setItem('megu-carrinho', JSON.stringify(carrinho));
-            renderizar();
-        };
-
-        // --- LÓGICA DE FINALIZAÇÃO ---
-        document.getElementById('btnAbrirConfirmacao').onclick = () => {
-            document.getElementById('modalSucesso').style.display = 'flex';
-        };
-
-        document.getElementById('btnConcluirTudo').onclick = async () => {
-            const btn = document.getElementById('btnConcluirTudo');
-            btn.innerText = "Sincronizando estoque...";
-            btn.disabled = true;
-
-            try {
-                let mensagem = "✦ NOVO PEDIDO - MEGUSTA SEMIJÓIAS ✦\n\n";
-                const produtosRef = collection(db, "produtos");
-
-                for (const item of carrinho) {
-                    mensagem += `• ${item.nome.toUpperCase()} (${item.quantidade}x) - ${item.preco}\n`;
-                    const q = query(produtosRef, where("nome", "==", item.nome));
-                    const querySnapshot = await getDocs(q);
-                    if (!querySnapshot.empty) {
-                        await updateDoc(doc(db, "produtos", querySnapshot.docs[0].id), {
-                            estoque: increment(-item.quantidade)
-                        });
-                    }
-                }
-
-                mensagem += `\nTotal do Pedido: ${document.getElementById('valor-total').innerText}`;
-                mensagem += `\nCliente: ${usuario ? (usuario.displayName || usuario.email) : 'Visitante'}`;
-
-                // Limpa carrinho
-                carrinho = [];
-                if (usuario) await setDoc(doc(db, "carrinhos", usuario.uid), { itens: [] });
-                else localStorage.removeItem('megu-carrinho');
-
-                // Redireciona WhatsApp (Ajuste o número abaixo)
-                const fone = "5511985906325"; // COLOQUE O SEU WHATSAPP AQUI
-                window.open(`https://wa.me/${fone}?text=${encodeURIComponent(mensagem)}`, '_blank');
-                window.location.href = "index.html";
-
-            } catch (err) {
-                alert("Erro: " + err.message);
-                btn.disabled = false;
-            }
-        };
-    </script>
+    <script type="module" src="carrinho.js"></script>
 </body>
 </html>
