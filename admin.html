@@ -14,22 +14,18 @@
         input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s; }
         textarea { resize: none; height: 80px; }
         input:focus, textarea:focus { border-color: #A39684; }
-        
-        /* Grid de Fotos */
-        .fotos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
-        .foto-preview { width: 100%; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; }
-
+        .fotos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .foto-preview { width: 100%; height: 80px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; background: #fafafa; }
         .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 18px; border-radius: 60px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
         .btn-cadastrar:hover:not(:disabled) { background: #A39684; }
-
-        /* Lista de Produtos (Governança) */
+        .btn-cadastrar:disabled { background: #ccc; cursor: not-allowed; }
         .lista-container { max-width: 600px; margin: 0 auto; }
-        .produto-item { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .produto-info { display: flex; align-items: center; gap: 15px; }
+        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .produto-info { display: flex; align-items: center; gap: 12px; }
         .produto-info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        .produto-text h4 { margin: 0; font-size: 12px; letter-spacing: 1px; }
-        .produto-text p { margin: 5px 0 0; font-size: 10px; color: #A39684; }
-        .btn-deletar { background: #ff4d4d; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-size: 9px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .produto-text h4 { margin: 0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+        .produto-text p { margin: 3px 0 0; font-size: 10px; color: #A39684; }
+        .btn-deletar { background: #ff4d4d; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -39,12 +35,12 @@
     <form id="form-produto">
         <div class="field-group">
             <label>Nomenclatura da Joia</label>
-            <input type="text" id="nome" required placeholder="EX: ANEL SOLITÁRIO">
+            <input type="text" id="nome" required placeholder="EX: BRINCO ESMERALDA">
         </div>
 
         <div class="field-group">
             <label>Descrição Detalhada</label>
-            <textarea id="descricao" required placeholder="Fale sobre o banho, as pedras e o brilho..."></textarea>
+            <textarea id="descricao" required placeholder="Detalhes do banho e pedraria..."></textarea>
         </div>
 
         <div style="display: flex; gap: 15px;">
@@ -57,7 +53,7 @@
                     <option value="aneis">ANÉIS</option>
                     <option value="nova">+ NOVA CATEGORIA</option>
                 </select>
-                <input type="text" id="nova-cat-input" style="display:none; margin-top:10px;" placeholder="Qual a nova categoria?">
+                <input type="text" id="nova-cat-input" style="display:none; margin-top:10px;" placeholder="Nome da categoria">
             </div>
             <div class="field-group" style="flex: 1;">
                 <label>Estoque</label>
@@ -88,9 +84,8 @@
 </div>
 
 <div class="lista-container">
-    <h3 style="text-align: center; letter-spacing: 4px; font-weight: 300; font-size: 14px; margin-bottom: 20px;">ESTOQUE ATUAL</h3>
-    <div id="lista-estoque">
-        </div>
+    <h3 style="text-align: center; letter-spacing: 4px; font-weight: 300; font-size: 13px; margin-bottom: 20px; color: #A39684;">ESTOQUE ATUAL</h3>
+    <div id="lista-estoque"></div>
 </div>
 
 <script type="module">
@@ -113,3 +108,102 @@
     const inputPreco = document.getElementById('preco');
     inputPreco.addEventListener('input', (e) => {
         let v = e.target.value.replace(/\D/g, '');
+        v = (v / 100).toFixed(2).replace(".", ",");
+        v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        e.target.value = "R$ " + v;
+    });
+
+    // 2. PREVIEW MÚLTIPLO
+    [1, 2, 3].forEach(num => {
+        document.getElementById(`url-img-${num}`).addEventListener('input', (e) => {
+            const img = document.getElementById(`prev-${num}`);
+            if (e.target.value.includes('http')) {
+                img.src = e.target.value;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        });
+    });
+
+    // 3. CARREGAR ESTOQUE
+    async function carregarEstoque() {
+        const container = document.getElementById('lista-estoque');
+        container.innerHTML = '<p style="text-align:center; font-size:10px;">Carregando...</p>';
+        
+        try {
+            const q = query(collection(db, "produtos"), orderBy("dataCriacao", "desc"));
+            const snapshot = await getDocs(q);
+            container.innerHTML = '';
+            
+            snapshot.forEach((res) => {
+                const p = res.data();
+                const div = document.createElement('div');
+                div.className = 'produto-item';
+                div.innerHTML = `
+                    <div class="produto-info">
+                        <img src="${p.imagens[0]}" onerror="this.src='https://via.placeholder.com/50'">
+                        <div class="produto-text">
+                            <h4>${p.nome}</h4>
+                            <p>${p.preco} | Estoque: ${p.estoque}</p>
+                        </div>
+                    </div>
+                    <button class="btn-deletar" data-id="${res.id}">Excluir</button>
+                `;
+                container.appendChild(div);
+            });
+
+            document.querySelectorAll('.btn-deletar').forEach(btn => {
+                btn.onclick = async () => {
+                    if (confirm("Excluir esta peça permanentemente?")) {
+                        await deleteDoc(doc(db, "produtos", btn.getAttribute('data-id')));
+                        carregarEstoque();
+                    }
+                };
+            });
+        } catch (e) {
+            container.innerHTML = '<p style="color:red; font-size:10px;">Erro ao carregar banco.</p>';
+        }
+    }
+
+    // 4. SALVAR PRODUTO
+    document.getElementById('form-produto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = true;
+        btn.innerText = "SALVANDO...";
+
+        const fotos = [
+            document.getElementById('url-img-1').value,
+            document.getElementById('url-img-2').value,
+            document.getElementById('url-img-3').value
+        ].filter(url => url !== "");
+
+        const cat = document.getElementById('categoria').value;
+        const categoriaFinal = (cat === 'nova') ? document.getElementById('nova-cat-input').value.toLowerCase() : cat;
+
+        try {
+            await addDoc(collection(db, "produtos"), {
+                nome: document.getElementById('nome').value,
+                descricao: document.getElementById('descricao').value,
+                categoria: categoriaFinal,
+                preco: document.getElementById('preco').value,
+                estoque: parseInt(document.getElementById('estoque').value),
+                imagens: fotos,
+                dataCriacao: serverTimestamp()
+            });
+            alert("SUCESSO!");
+            location.reload();
+        } catch (err) {
+            alert("ERRO!");
+            console.error(err);
+            btn.disabled = false;
+            btn.innerText = "CADASTRAR PRODUTO";
+        }
+    });
+
+    carregarEstoque();
+</script>
+
+</body>
+</html>
