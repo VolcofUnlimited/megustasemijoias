@@ -3,127 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeGusta Semijoias</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <title>Megusta Semijóias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    
     <style>
-        body { font-family: 'Montserrat', sans-serif; margin: 0; background-color: #fff; color: #333; }
-        header { padding: 40px 20px; text-align: center; }
-        .logo { font-weight: 200; letter-spacing: 12px; font-size: 28px; text-transform: uppercase; margin-bottom: 30px; }
-        
-        .nav-filtros { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
-        .btn-filtro { background: none; border: none; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; color: #999; }
-        .btn-filtro.active { color: #000; border-bottom: 1px solid #000; }
+        /* Estrutura para fixar o rodapé no final */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        main.vitrine {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+        /* Estilo para os links em Fendi */
+        .link-fendi {
+            color: #A39684; /* Tom Fendi Clássico */
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
 
-        .vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 0 40px 80px; max-width: 1200px; margin: 0 auto; }
-        .produto-card { text-align: center; cursor: pointer; }
-        .img-container { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #f9f9f9; margin-bottom: 15px; }
-        .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        
-        /* Ajuste: Nome em uma linha só */
-        .produto-card h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .produto-card .preco { font-size: 12px; font-weight: 700; color: #000; }
+        /* Ajuste solicitado: Nome do produto em uma só linha */
+        .grade-produtos .produto-card h3 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
 
-        /* MODAL / POP-UP */
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); display:none; z-index:1000; overflow-y:auto; }
-        .modal-content { max-width: 800px; margin: 40px auto; padding: 20px; display: flex; gap: 30px; flex-wrap: wrap; }
-        .modal-img { flex: 1; min-width: 300px; }
-        .modal-img img { width: 100%; border-radius: 4px; }
-        .modal-info { flex: 1; min-width: 300px; }
-        .modal-info h2 { font-weight: 200; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; }
-        .modal-info .price { font-size: 18px; font-weight: 400; color: #000; display: block; margin-bottom: 15px; }
-        .modal-info .desc { font-size: 12px; line-height: 1.6; color: #666; margin-bottom: 30px; }
-        .btn-wpp { width: 100%; background: #000; color: #fff; border: none; padding: 18px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; }
-
-        .close { position: absolute; top: 20px; right: 30px; font-size: 30px; cursor: pointer; }
-        
-        /* RODAPÉ PRETO ORIGINAL */
-        footer { background: #000; color: #fff; padding: 60px 20px; text-align: center; }
-        .footer-logo { font-weight: 200; letter-spacing: 8px; font-size: 18px; margin-bottom: 20px; text-transform: uppercase; }
-        .footer-links a { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; margin: 0 15px; text-transform: uppercase; }
-        
-        /* BOTÃO WHATSAPP VERDE ORIGINAL */
-        .wpp-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-decoration: none; font-size: 25px; z-index: 100; }
+        /* Ajuste: Aspecto Luxo no Pop-up */
+        #precoModal {
+            letter-spacing: 2px;
+            font-weight: 300 !important; /* Visual mais leve e elegante */
+            margin-bottom: 15px;
+        }
+        .btn-carrinho {
+            background-color: #000 !important;
+            color: #fff !important;
+            letter-spacing: 3px;
+            font-weight: 400;
+            padding: 18px !important;
+            transition: 0.4s;
+            border-radius: 0; /* Aspecto mais luxuoso e retilíneo */
+        }
+        .btn-carrinho:hover {
+            background-color: #A39684 !important;
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div style="position: absolute; top: 10px; left: 20px; font-size: 9px; letter-spacing: 1px; color: #999;">
+            <span id="user-info">CARREGANDO...</span>
+            <button id="btn-logout" style="display:none; background:none; border:none; color:#D1BE9C; cursor:pointer; font-weight:700; margin-left:5px;">[ SAIR ]</button>
+        </div>
 
-<header>
-    <div class="logo">MeGusta</div>
-    <div class="nav-filtros">
-        <button class="btn-filtro active" data-cat="todos">TODOS</button>
-        <button class="btn-filtro" data-cat="brincos">BRINCOS</button>
-        <button class="btn-filtro" data-cat="colares">COLARES</button>
-        <button class="btn-filtro" data-cat="aneis">ANÉIS</button>
-    </div>
-</header>
+        <div class="logo-container">
+            <img src="Logo.png" alt="Megusta" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('brincos')">BRINCOS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('colares')">COLARES</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('pulseiras')">PULSEIRAS</a></li>
+                <li><a href="javascript:void(0)" onclick="window.filtrar('aneis')">ANÉIS</a></li>
+            </ul>
+        </nav>
+        <a href="carrinho.html" class="carrinho-topo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span id="contagem-carrinho">0</span>
+        </a>
+    </header>
 
-<main class="vitrine" id="vitrine"></main>
+    <main class="vitrine">
+        <div id="container-titulo-categoria" class="titulo-categoria-fixed">
+            <div class="brilho-icon">✦</div>
+            <h1 id="nome-categoria-atual">TODOS OS PRODUTOS</h1>
+            <p class="subtitulo-marca">MEGUSTA SEMIJÓIAS</p>
+        </div>
+        <div class="grade-produtos" id="lista-produtos"></div>
+    </main>
 
-<div class="modal" id="modal">
-    <span class="close" id="close">&times;</span>
-    <div class="modal-content" id="m-body"></div>
-</div>
-
-<footer>
-    <div class="footer-logo">MeGusta Semijoias</div>
-    <div class="footer-links">
-        <a href="https://wa.me/5511999999999">Atendimento</a>
-        <a href="#">Instagram</a>
-    </div>
-</footer>
-
-<a href="https://wa.me/5511999999999" class="wpp-btn">➔</a>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    let prods = [];
-    async function carregar() {
-        const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
-        prods = snap.docs.map(d => ({id: d.id, ...d.data()}));
-        render();
-    }
-
-    function render(cat = 'todos') {
-        const v = document.getElementById('vitrine');
-        v.innerHTML = '';
-        const f = cat === 'todos' ? prods : prods.filter(p => p.categoria === cat);
-        f.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'produto-card';
-            div.innerHTML = `<div class="img-container"><img src="${p.imagens[0]}"></div><h3>${p.nome}</h3><p class="preco">${p.preco}</p>`;
-            div.onclick = () => abrir(p);
-            v.appendChild(div);
-        });
-    }
-
-    function abrir(p) {
-        const m = document.getElementById('modal');
-        document.getElementById('m-body').innerHTML = `
-            <div class="modal-img"><img src="${p.imagens[0]}"></div>
-            <div class="modal-info">
-                <h2>${p.nome}</h2>
-                <span class="price">${p.preco}</span>
-                <p class="desc">${p.descricao}</p>
-                <button class="btn-wpp" onclick="window.open('https://wa.me/5511999999999?text=Quero a peça: ${p.nome}')">Adicionar ao Pedido</button>
+    <footer>
+        <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
+            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px;">
+                <a href="#" class="link-fendi">Sobre a Empresa</a>
+                <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
+                <a href="https://www.instagram.com/megustasemijoias/" target="_blank" class="link-fendi">Instagram</a>
             </div>
-        `;
-        m.style.display = 'block';
-    }
+        </div>
 
-    document.getElementById('close').onclick = () => document.getElementById('modal').style.display = 'none';
-    document.querySelectorAll('.btn-filtro').forEach(btn => btn.onclick = (e) => {
-        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        render(e.target.dataset.cat);
-    });
+        <div style="background-color: #000; padding: 15px 10px; text-align: center;">
+            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase; font-weight: 300;">
+                © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR <strong style="font-weight: 700; color: #FFFFFF;">VOLCOF.UNLIMITED</strong>
+            </p>
+        </div>
+    </footer>
 
-    carregar();
-</script>
+    <div id="meuModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="window.fecharModal()">&times;</span>
+            <div class="modal-flex">
+                <div class="img-modal-container"></div>
+                <div class="info-produto-modal">
+                    <h2 id="tituloModal"></h2>
+                    <p id="precoModal" style="color:#D1BE9C; font-size: 20px;"></p>
+                    <p id="descModal" style="color:#666; margin-bottom: 25px; line-height: 1.6;"></p>
+                    <button class="btn-carrinho" id="btnAdicionarAoCarrinho">ADICIONAR AO CARRINHO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
