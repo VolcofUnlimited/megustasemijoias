@@ -6,61 +6,67 @@
     <title>Admin Megusta - Gestão</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 40px 20px; }
-        .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); margin: 0 auto 40px; }
-        h2 { text-align: center; letter-spacing: 6px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 30px; }
-        .field-group { margin-bottom: 20px; }
-        label { display: block; font-size: 9px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 8px; }
-        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; }
-        textarea { resize: none; height: 80px; }
-        .fotos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .foto-preview { width: 100%; height: 80px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; }
-        .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 18px; border-radius: 60px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-cadastrar:hover { background: #A39684; }
-        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); max-width: 600px; margin: 0 auto; }
-        .produto-info { display: flex; align-items: center; gap: 12px; }
-        .produto-info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        .acoes { display: flex; gap: 10px; }
-        .btn-edit { background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
-        .btn-del { background: #ffebeb; color: #ff4d4d; border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
+        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px; }
+        .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin: 0 auto 20px; box-sizing: border-box; }
+        h2 { text-align: center; letter-spacing: 4px; font-weight: 200; text-transform: uppercase; font-size: 14px; margin-bottom: 20px; }
+        .field-group { margin-bottom: 15px; }
+        label { display: block; font-size: 8px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; font-size: 13px; box-sizing: border-box; outline: none; }
+        .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 15px; border-radius: 50px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
+        
+        /* LISTA RESPONSIVA */
+        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin: 10px auto; display: flex; align-items: center; justify-content: space-between; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .produto-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+        .produto-info img { width: 45px; height: 45px; border-radius: 8px; flex-shrink: 0; }
+        .produto-info div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .acoes { display: flex; gap: 5px; }
+        .btn-edit, .btn-del { padding: 6px 10px; border-radius: 6px; font-size: 7px; border: none; cursor: pointer; text-transform: uppercase; }
+        .btn-edit { background: #f0f0f0; }
+        .btn-del { background: #ffebeb; color: #ff4d4d; }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .admin-card { padding: 20px; border-radius: 20px; }
+            .produto-item { padding: 10px; }
+            .acoes { flex-direction: column; gap: 4px; }
+        }
     </style>
 </head>
 <body>
-
-<div class="admin-card">
-    <h2 id="titulo-form">Novo Cadastro</h2>
-    <form id="form-produto">
-        <input type="hidden" id="edit-id">
-        <div class="field-group"><label>Nomenclatura</label><input type="text" id="nome" required></div>
-        <div class="field-group"><label>Descrição</label><textarea id="descricao" required></textarea></div>
-        <div style="display: flex; gap: 15px;">
-            <div class="field-group" style="flex: 2;">
-                <label>Categoria</label>
-                <select id="categoria">
-                    <option value="brincos">BRINCOS</option><option value="colares">COLARES</option>
-                    <option value="pulseiras">PULSEIRAS</option><option value="aneis">ANÉIS</option>
-                    <option value="nova">+ NOVA CATEGORIA</option>
-                </select>
-                <input type="text" id="nova-cat-input" style="display:none; margin-top:10px;" placeholder="Nome da categoria">
-            </div>
-            <div class="field-group" style="flex: 1;"><label>Estoque</label><input type="number" id="estoque" required></div>
-        </div>
-        <div class="field-group"><label>Valor de Venda</label><input type="text" id="preco" required></div>
+    <div class="admin-card">
+        <h2>Categorias</h2>
         <div class="field-group">
-            <label>Links Postimages (Link Direto)</label>
-            <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom:5px">
-            <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom:5px">
-            <input type="text" id="url-img-3" placeholder="Link 3">
-            <div class="fotos-grid">
-                <img id="prev-1" class="foto-preview"><img id="prev-2" class="foto-preview"><img id="prev-3" class="foto-preview">
-            </div>
+            <input type="text" id="nova-categoria-nome" placeholder="NOME DA CATEGORIA">
+            <button onclick="window.criarCategoria()" class="btn-cadastrar">ADICIONAR</button>
         </div>
-        <button type="submit" id="btn-submit" class="btn-cadastrar">CADASTRAR PRODUTO</button>
-        <button type="button" id="btn-cancelar" style="display:none; width:100%; background:none; border:none; font-size:9px; margin-top:10px; cursor:pointer; color:#999; text-transform:uppercase;">Cancelar Edição</button>
-    </form>
-</div>
+        <div id="lista-categorias-tags" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px;"></div>
+    </div>
 
-<div id="lista-estoque"></div>
+    <div class="admin-card">
+        <h2 id="titulo-form">Produto</h2>
+        <form id="form-produto">
+            <input type="hidden" id="edit-id">
+            <div class="field-group"><label>Nome</label><input type="text" id="nome" required></div>
+            <div class="field-group"><label>Descrição</label><textarea id="descricao" required></textarea></div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div class="field-group" style="flex: 1; min-width: 140px;">
+                    <label>Categoria</label><select id="categoria-select" required></select>
+                </div>
+                <div class="field-group" style="flex: 1; min-width: 80px;">
+                    <label>Estoque</label><input type="number" id="estoque" required>
+                </div>
+            </div>
+            <div class="field-group"><label>Preço</label><input type="text" id="preco" required></div>
+            <div class="field-group">
+                <label>Fotos</label>
+                <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom:5px">
+                <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom:5px">
+                <input type="text" id="url-img-3" placeholder="Link 3">
+            </div>
+            <button type="submit" id="btn-submit" class="btn-cadastrar">SALVAR</button>
+        </form>
+    </div>
+    <div id="lista-estoque"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -78,23 +84,37 @@
         e.target.value = v;
     });
 
-    [1,2,3].forEach(n => {
-        document.getElementById(`url-img-${n}`).addEventListener('input', (e) => {
-            const img = document.getElementById(`prev-${n}`);
-            img.src = e.target.value; img.style.display = e.target.value ? 'block' : 'none';
-        });
-    });
+    window.criarCategoria = async () => {
+        const nome = document.getElementById('nova-categoria-nome').value.trim().toLowerCase();
+        if(!nome) return;
+        await addDoc(collection(db, "categorias"), { nome: nome });
+        location.reload();
+    };
 
-    async function carregar() {
-        const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+    window.excluirCategoria = async (id) => {
+        if(confirm("Excluir?")) { await deleteDoc(doc(db, "categorias", id)); location.reload(); }
+    };
+
+    async function carregarTudo() {
+        const catSnap = await getDocs(collection(db, "categorias"));
+        const tags = document.getElementById('lista-categorias-tags');
+        const sel = document.getElementById('categoria-select');
+        tags.innerHTML = ''; sel.innerHTML = '<option value="">SELECIONE</option>';
+        catSnap.forEach(d => {
+            const n = d.data().nome;
+            tags.innerHTML += `<span style="background:#eee; padding:4px 8px; border-radius:10px; font-size:9px;">${n.toUpperCase()} <b onclick="window.excluirCategoria('${d.id}')" style="color:red; cursor:pointer;">&times;</b></span>`;
+            sel.innerHTML += `<option value="${n}">${n.toUpperCase()}</option>`;
+        });
+
+        const prodSnap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
         const list = document.getElementById('lista-estoque');
         list.innerHTML = '';
-        snap.forEach(res => {
+        prodSnap.forEach(res => {
             const p = res.data();
-            list.innerHTML += `<div class="produto-item"><div class="produto-info"><img src="${p.imagens[0]}"><div><b>${p.nome}</b><br><small>${p.preco} | ${p.categoria}</small></div></div><div class="acoes"><button class="btn-edit" data-id="${res.id}">Editar</button><button class="btn-del" data-id="${res.id}">Excluir</button></div></div>`;
+            list.innerHTML += `<div class="produto-item"><div class="produto-info"><img src="${p.imagens[0]}"><div><b>${p.nome}</b><br><small>${p.preco}</small></div></div><div class="acoes"><button class="btn-edit" data-id="${res.id}">Editar</button><button class="btn-del" data-id="${res.id}">Excluir</button></div></div>`;
         });
         document.querySelectorAll('.btn-edit').forEach(b => b.onclick = () => editar(b.dataset.id));
-        document.querySelectorAll('.btn-del').forEach(b => b.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", b.dataset.id)); carregar(); }});
+        document.querySelectorAll('.btn-del').forEach(b => b.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", b.dataset.id)); location.reload(); }});
     }
 
     async function editar(id) {
@@ -103,31 +123,24 @@
         document.getElementById('edit-id').value = id;
         document.getElementById('nome').value = p.nome;
         document.getElementById('descricao').value = p.descricao;
-        document.getElementById('categoria').value = p.categoria;
+        document.getElementById('categoria-select').value = p.categoria;
         document.getElementById('estoque').value = p.estoque;
         document.getElementById('preco').value = p.preco;
-        p.imagens.forEach((url, i) => { 
-            document.getElementById(`url-img-${i+1}`).value = url;
-            document.getElementById(`prev-${i+1}`).src = url;
-            document.getElementById(`prev-${i+1}`).style.display = 'block';
-        });
-        document.getElementById('titulo-form').innerText = "Editar Produto";
-        document.getElementById('btn-submit').innerText = "ATUALIZAR";
-        document.getElementById('btn-cancelar').style.display = 'block';
+        document.getElementById('url-img-1').value = p.imagens[0] || '';
+        document.getElementById('url-img-2').value = p.imagens[1] || '';
+        document.getElementById('url-img-3').value = p.imagens[2] || '';
+        document.getElementById('titulo-form').innerText = "Editar";
         window.scrollTo(0,0);
     }
-
-    document.getElementById('btn-cancelar').onclick = () => location.reload();
 
     document.getElementById('form-produto').addEventListener('submit', async (e) => {
         e.preventDefault();
         const editId = document.getElementById('edit-id').value;
         const imgs = [1,2,3].map(n => document.getElementById(`url-img-${n}`).value).filter(u => u);
-        const cat = document.getElementById('categoria').value;
         const pData = {
             nome: document.getElementById('nome').value.toUpperCase(),
             descricao: document.getElementById('descricao').value,
-            categoria: cat === 'nova' ? document.getElementById('nova-cat-input').value.toLowerCase() : cat.toLowerCase(),
+            categoria: document.getElementById('categoria-select').value,
             preco: inputPreco.value,
             estoque: parseInt(document.getElementById('estoque').value),
             imagens: imgs,
@@ -137,7 +150,8 @@
         else { await addDoc(collection(db, "produtos"), pData); }
         location.reload();
     });
-    carregar();
+
+    carregarTudo();
 </script>
 </body>
 </html>

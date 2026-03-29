@@ -6,84 +6,58 @@
     <title>Megusta Semijóias</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.2">
-    
     <style>
-        /* Estrutura para fixar o rodapé no final */
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
+        html, body { height: 100%; margin: 0; display: flex; flex-direction: column; }
+        main.vitrine { flex: 1 0 auto; }
+        footer { flex-shrink: 0; }
+        .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; font-weight: 400; text-transform: uppercase; }
+
+        /* AJUSTE RESPONSIVO: MENU */
+        nav ul { 
+            display: flex; justify-content: center; gap: 20px; padding: 0; list-style: none; 
+            overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
         }
-        main.vitrine {
-            flex: 1 0 auto;
-        }
-        footer {
-            flex-shrink: 0;
-        }
-        /* Estilo para os links em Fendi */
-        .link-fendi {
-            color: #A39684; /* Tom Fendi Clássico */
-            text-decoration: none;
-            font-size: 10px;
-            letter-spacing: 2px;
-            font-weight: 400;
-            text-transform: uppercase;
+        nav ul::-webkit-scrollbar { display: none; } /* Esconde barra no mobile */
+
+        /* AJUSTE RESPONSIVO: VITRINE */
+        .grade-produtos { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 30px; padding: 20px; max-width: 1200px; margin: 0 auto; 
         }
 
-        /* Ajuste solicitado: Nome do produto em uma só linha */
-        .grade-produtos .produto-card h3 {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-            padding: 0 10px;
-            box-sizing: border-box;
+        .grade-produtos .produto-card .img-container { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background-color: #f9f9f9; }
+        .grade-produtos .produto-card img { width: 100%; height: 100%; object-fit: cover; }
+        .grade-produtos .produto-card h3, #tituloModal { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; padding: 0 10px; box-sizing: border-box; }
+        .preco-vitrine, #precoModal { font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-weight: 300 !important; color: #1a1a1a; }
+        
+        .btn-carrinho { 
+            background-color: rgba(163, 150, 132, 0.85) !important; color: #1a1a1a !important; 
+            font-weight: 700 !important; letter-spacing: 3px; padding: 18px 30px !important; 
+            border-radius: 50px !important; border: none; cursor: pointer; transition: 0.4s; width: 100%; font-size: 11px; text-transform: uppercase; 
         }
 
-        /* Ajuste: Aspecto Luxo no Pop-up */
-        #precoModal {
-            letter-spacing: 2px;
-            font-weight: 300 !important; /* Visual mais leve e elegante */
-            margin-bottom: 15px;
-        }
-        .btn-carrinho {
-            background-color: #000 !important;
-            color: #fff !important;
-            letter-spacing: 3px;
-            font-weight: 400;
-            padding: 18px !important;
-            transition: 0.4s;
-            border-radius: 0; /* Aspecto mais luxuoso e retilíneo */
-        }
-        .btn-carrinho:hover {
-            background-color: #A39684 !important;
+        /* MODAL RESPONSIVO */
+        .modal-conteudo { width: 90%; max-width: 800px; margin: 5% auto; padding: 20px; }
+        .modal-flex { display: flex; gap: 30px; flex-wrap: wrap; }
+        .img-modal-container, .info-produto-modal { flex: 1; min-width: 280px; }
+        .miniaturas-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .miniatura { width: 50px; height: 50px; border-radius: 4px; cursor: pointer; object-fit: cover; border: 1px solid #eee; opacity: 0.5; }
+        .miniatura.active { opacity: 1; border-color: #A39684; }
+
+        /* MEDIA QUERIES MOBILE */
+        @media (max-width: 600px) {
+            .logo { font-size: 20px; letter-spacing: 8px; }
+            .grade-produtos { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 10px; }
+            .grade-produtos .produto-card h3 { font-size: 9px; }
+            .modal-content { margin: 10% auto; padding: 15px; }
+            .modal-flex { flex-direction: column; gap: 20px; }
         }
     </style>
 </head>
 <body>
     <header>
-        <div style="position: absolute; top: 10px; left: 20px; font-size: 9px; letter-spacing: 1px; color: #999;">
-            <span id="user-info">CARREGANDO...</span>
-            <button id="btn-logout" style="display:none; background:none; border:none; color:#D1BE9C; cursor:pointer; font-weight:700; margin-left:5px;">[ SAIR ]</button>
-        </div>
-
-        <div class="logo-container">
-            <img src="Logo.png" alt="Megusta" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('brincos')">BRINCOS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('colares')">COLARES</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('pulseiras')">PULSEIRAS</a></li>
-                <li><a href="javascript:void(0)" onclick="window.filtrar('aneis')">ANÉIS</a></li>
-            </ul>
-        </nav>
-        <a href="carrinho.html" class="carrinho-topo">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            <span id="contagem-carrinho">0</span>
-        </a>
+        <div class="logo-container"><img src="Logo.png" alt="Megusta" class="logo"></div>
+        <nav><ul id="menu-categorias"><li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li></ul></nav>
     </header>
 
     <main class="vitrine">
@@ -97,28 +71,25 @@
 
     <footer>
         <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px;">
+            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <a href="#" class="link-fendi">Sobre a Empresa</a>
                 <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
-                <a href="https://www.instagram.com/megustasemijoias/" target="_blank" class="link-fendi">Instagram</a>
+                <a href="https://www.instagram.com/megusta_semijoias/" target="_blank" class="link-fendi">Instagram</a>
             </div>
         </div>
-
         <div style="background-color: #000; padding: 15px 10px; text-align: center;">
-            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase; font-weight: 300;">
-                © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR <strong style="font-weight: 700; color: #FFFFFF;">VOLCOF.UNLIMITED</strong>
-            </p>
+            <p style="font-size: 7px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase;">© 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED</p>
         </div>
     </footer>
 
     <div id="meuModal" class="modal">
         <div class="modal-conteudo">
             <span class="fechar" onclick="window.fecharModal()">&times;</span>
-            <div class="modal-flex">
-                <div class="img-modal-container"></div>
+            <div class="modal-flex" id="modal-content-area">
+                <div class="img-modal-container" id="modalCarrossel"></div>
                 <div class="info-produto-modal">
                     <h2 id="tituloModal"></h2>
-                    <p id="precoModal" style="color:#D1BE9C; font-size: 20px;"></p>
+                    <p id="precoModal" style="font-weight:700; color:#D1BE9C; font-size: 20px;"></p>
                     <p id="descModal" style="color:#666; margin-bottom: 25px; line-height: 1.6;"></p>
                     <button class="btn-carrinho" id="btnAdicionarAoCarrinho">ADICIONAR AO CARRINHO</button>
                 </div>
@@ -126,6 +97,66 @@
         </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let produtos = [];
+        async function carregarTudo() {
+            const catSnap = await getDocs(collection(db, "categorias"));
+            const prodSnap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+            const menu = document.getElementById('menu-categorias');
+            menu.innerHTML = '<li><a href="javascript:void(0)" onclick="window.filtrar(\'todos\')">TODOS</a></li>';
+            let listaFinal = new Set();
+            catSnap.forEach(d => listaFinal.add(d.data().nome.toLowerCase()));
+            prodSnap.forEach(d => listaFinal.add(d.data().categoria.toLowerCase()));
+            Array.from(listaFinal).sort().forEach(cat => {
+                menu.innerHTML += `<li><a href="javascript:void(0)" onclick="window.filtrar('${cat}')">${cat.toUpperCase()}</a></li>`;
+            });
+            produtos = prodSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderizar();
+        }
+
+        window.renderizar = function(cat = 'todos') {
+            const container = document.getElementById('lista-produtos');
+            document.getElementById('nome-categoria-atual').innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
+            container.innerHTML = '';
+            const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
+            filtrados.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'produto-card';
+                card.innerHTML = `<div class="img-container"><img src="${p.imagens[0]}" loading="lazy"></div><h3>${p.nome}</h3><p class="preco-vitrine">${p.preco}</p>`;
+                card.onclick = () => abrirModal(p);
+                container.appendChild(card);
+            });
+        }
+
+        function abrirModal(p) {
+            document.getElementById('tituloModal').innerText = p.nome;
+            document.getElementById('precoModal').innerText = p.preco;
+            document.getElementById('descModal').innerText = p.descricao;
+            const containerImg = document.getElementById('modalCarrossel');
+            let slidesHtml = p.imagens.map(img => `<img src="${img}" style="width:100%; flex-shrink:0;">`).join('');
+            containerImg.innerHTML = `<div style="overflow:hidden; width:100%;"><div id="slides" style="display:flex; transition:0.5s;">${slidesHtml}</div></div>`;
+            if (p.imagens.length > 1) {
+                let minHtml = '<div class="miniaturas-container">';
+                p.imagens.forEach((img, i) => { minHtml += `<img src="${img}" class="miniatura ${i === 0 ? 'active' : ''}" onclick="window.mudarSlide(${i})">`; });
+                containerImg.innerHTML += minHtml + '</div>';
+            }
+            document.getElementById('meuModal').style.display = 'block';
+            window.mudarSlide = (index) => {
+                document.getElementById('slides').style.transform = `translateX(-${index * 100}%)`;
+                document.querySelectorAll('.miniatura').forEach((m, i) => m.classList.toggle('active', i === index));
+            };
+        }
+
+        window.fecharModal = () => document.getElementById('meuModal').style.display = 'none';
+        window.filtrar = (c) => renderizar(c);
+        carregarTudo();
+    </script>
 </body>
 </html>

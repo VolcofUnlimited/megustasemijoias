@@ -3,119 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Sacola - Megusta Semijóias</title>
+    <title>Meu Carrinho - Megusta Semijóias</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.2">
-    
     <style>
-        /* Estrutura para manter o rodapé no final */
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Montserrat', sans-serif;
-        }
-        main {
-            flex: 1 0 auto;
-            padding: 60px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        footer {
-            flex-shrink: 0;
-        }
+        /* Estrutura Original Preservada */
+        html, body { height: 100%; margin: 0; display: flex; flex-direction: column; background-color: #fff; }
+        main { flex: 1 0 auto; padding: 40px 20px; max-width: 800px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        footer { flex-shrink: 0; }
+        .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* Estilo do Botão Luxo Arredondado */
-        .btn-finalizar-luxo {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            padding: 18px 40px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            border-radius: 50px; /* Bordas arredondadas */
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 350px;
-            margin-top: 30px;
-        }
+        .titulo-pagina { text-align: center; letter-spacing: 8px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 40px; }
 
-        .btn-finalizar-luxo:hover {
-            background-color: #D1BE9C; /* Tom dourado ao passar o mouse */
-            letter-spacing: 5px;
-        }
+        /* LISTA DE ITENS NO CARRINHO */
+        .carrinho-item { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee; }
+        .carrinho-img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; background: #f9f9f9; }
+        
+        .carrinho-info { flex: 1; overflow: hidden; }
+        /* Ajuste solicitado: Nome em uma linha */
+        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .carrinho-info p { font-size: 12px; font-weight: 300; color: #1a1a1a; margin: 0; letter-spacing: 1px; }
 
-        /* Título e Resumo */
-        .titulo-sacola {
-            text-align: center;
-            letter-spacing: 8px;
-            font-weight: 200;
-            margin-bottom: 60px;
-            text-transform: uppercase;
-        }
+        .btn-remover { background: none; border: none; color: #ff4d4d; font-size: 9px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; padding: 0; margin-top: 10px; }
 
-        #total-carrinho {
-            font-weight: 300;
-            letter-spacing: 3px;
-            font-size: 18px;
-            color: #222;
-        }
+        /* RESUMO E BOTÃO LUXO */
+        .resumo-carrinho { margin-top: 40px; padding-top: 20px; border-top: 2px solid #000; text-align: right; }
+        .total-texto { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #999; }
+        .total-valor { font-size: 22px; font-weight: 300; display: block; margin: 10px 0 30px; letter-spacing: 2px; }
 
-        .link-fendi {
-            color: #A39684;
-            text-decoration: none;
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        /* Ajuste Solicitado: Botão Fendi Luxo Arredondado */
+        .btn-finalizar { 
+            width: 100%; 
+            background-color: rgba(163, 150, 132, 0.85) !important; 
+            color: #1a1a1a !important; 
+            font-weight: 700 !important; 
+            letter-spacing: 3px; 
+            padding: 22px !important; 
+            border-radius: 50px !important; 
+            border: none; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+        }
+        .btn-finalizar:hover { background-color: rgba(163, 150, 132, 1) !important; transform: translateY(-2px); }
+
+        .carrinho-vazio { text-align: center; padding: 60px 0; color: #999; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+        @media (max-width: 600px) {
+            .carrinho-item { gap: 15px; }
+            .carrinho-img { width: 60px; height: 60px; }
+            .total-valor { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container" style="text-align: center; padding: 30px 0;">
-            <a href="index.html"><img src="Logo.png" alt="Megusta" class="logo" style="max-width: 150px;"></a>
+    <header style="padding: 40px 20px; text-align: center;">
+        <div class="logo-container">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <img src="Logo.png" alt="Megusta" class="logo" style="max-width: 200px;">
+            </a>
         </div>
-        <nav style="text-align: center; margin-bottom: 20px;">
-            <a href="index.html" style="text-decoration: none; color: #999; font-size: 10px; letter-spacing: 2px; font-weight: 400;">← VOLTAR PARA A LOJA</a>
-        </nav>
     </header>
 
-    <main>
-        <h1 class="titulo-sacola">SUA SACOLA</h1>
+    <main id="conteudo-carrinho">
+        <h1 class="titulo-pagina">Meu Carrinho</h1>
         
-        <div id="itens-carrinho">
+        <div id="lista-itens-carrinho">
             </div>
 
-        <div id="resumo-carrinho" style="text-align: center; margin-top: 50px; border-top: 1px solid #f2f2f2; padding-top: 40px;">
-            <p style="font-size: 10px; color: #999; letter-spacing: 2px; margin-bottom: 10px;">VALOR TOTAL</p>
-            <h3 id="total-carrinho">R$ 0,00</h3>
-            <button id="btn-finalizar" class="btn-finalizar-luxo">FINALIZAR COMPRA</button>
+        <div id="area-resumo" class="resumo-carrinho" style="display: none;">
+            <span class="total-texto">Total do Pedido</span>
+            <span class="total-valor" id="valor-total-carrinho">R$ 0,00</span>
+            <button class="btn-finalizar" onclick="window.enviarWhatsApp()">Finalizar Pedido via WhatsApp</button>
+            <a href="index.html" style="display: block; text-align: center; margin-top: 20px; font-size: 9px; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase;">Continuar Comprando</a>
         </div>
     </main>
 
     <footer>
         <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px;">
+            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
                 <a href="#" class="link-fendi">Sobre a Empresa</a>
                 <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
-                <a href="https://www.instagram.com/megustasemijoias/" target="_blank" class="link-fendi">Instagram</a>
+                <a href="https://www.instagram.com/megusta_semijoias/" target="_blank" class="link-fendi">Instagram</a>
             </div>
         </div>
-
         <div style="background-color: #000; padding: 15px 10px; text-align: center;">
-            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase; font-weight: 300;">
-                © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR <strong style="font-weight: 700; color: #FFFFFF;">VOLCOF.UNLIMITED</strong>
-            </p>
+            <p style="font-size: 7px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase;">© 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED</p>
         </div>
     </footer>
 
-    <script type="module" src="carrinho.js"></script>
+    <script>
+        // LÓGICA DE CARREGAMENTO DO CARRINHO (LOCALSTORAGE)
+        function carregarCarrinho() {
+            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            const container = document.getElementById('lista-itens-carrinho');
+            const resumo = document.getElementById('area-resumo');
+            const totalTexto = document.getElementById('valor-total-carrinho');
+            
+            if (itens.length === 0) {
+                container.innerHTML = '<div class="carrinho-vazio">Seu carrinho está vazio.</div>';
+                resumo.style.display = 'none';
+                return;
+            }
+
+            resumo.style.display = 'block';
+            container.innerHTML = '';
+            let totalDecimal = 0;
+
+            itens.forEach((item, index) => {
+                // Calcula o total (converte "R$ 150,00" para número)
+                const valorLimpo = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
+                totalDecimal += valorLimpo;
+
+                container.innerHTML += `
+                    <div class="carrinho-item">
+                        <img src="${item.foto}" class="carrinho-img">
+                        <div class="carrinho-info">
+                            <h3>${item.nome}</h3>
+                            <p>${item.preco}</p>
+                            <button class="btn-remover" onclick="window.removerItem(${index})">Remover</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            totalTexto.innerText = totalDecimal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+        }
+
+        window.removerItem = (index) => {
+            let itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            itens.splice(index, 1);
+            localStorage.setItem('carrinho_megusta', JSON.stringify(itens));
+            carregarCarrinho();
+        };
+
+        window.enviarWhatsApp = () => {
+            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            let mensagem = "Olá MeGusta! Gostaria de finalizar o pedido desses itens:\n\n";
+            
+            itens.forEach(item => {
+                mensagem += `• ${item.nome} (${item.preco})\n`;
+            });
+
+            const total = document.getElementById('valor-total-carrinho').innerText;
+            mensagem += `\n*Total: ${total}*`;
+
+            const url = `https://wa.me/5511985906325?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        };
+
+        carregarCarrinho();
+    </script>
 </body>
 </html>
