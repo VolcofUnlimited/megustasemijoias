@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Megusta - Gestão de Estoque</title>
+    <title>Admin Megusta - Gestão</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 40px 20px; color: #222; }
+        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 40px 20px; }
         .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); margin: 0 auto 40px; }
         h2 { text-align: center; letter-spacing: 6px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 30px; }
         .field-group { margin-bottom: 20px; }
-        label { display: block; font-size: 9px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; }
-        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s; }
+        label { display: block; font-size: 9px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 8px; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; }
         textarea { resize: none; height: 80px; }
-        input:focus, textarea:focus { border-color: #A39684; }
         .fotos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .foto-preview { width: 100%; height: 80px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; background: #fafafa; }
+        .foto-preview { width: 100%; height: 80px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; }
         .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 18px; border-radius: 60px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
         .btn-cadastrar:hover:not(:disabled) { background: #A39684; }
-        .lista-container { max-width: 600px; margin: 0 auto; }
-        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); max-width: 600px; margin: 0 auto 12px; }
         .produto-info { display: flex; align-items: center; gap: 12px; }
         .produto-info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        .produto-text h4 { margin: 0; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
-        .acoes { display: flex; gap: 8px; }
-        .btn-acao { border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
-        .edit { background: #f0f0f0; color: #333; }
-        .del { background: #ffebeb; color: #ff4d4d; }
+        .acoes { display: flex; gap: 10px; }
+        .btn-edit { background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
+        .btn-del { background: #ffebeb; color: #ff4d4d; border: none; padding: 8px 12px; border-radius: 8px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -51,20 +47,20 @@
         </div>
         <div class="field-group"><label>Valor de Venda</label><input type="text" id="preco" required></div>
         <div class="field-group">
-            <label>Fotos (Link Direto)</label>
-            <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom: 8px;">
-            <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom: 8px;">
+            <label>Links Postimages (Link Direto)</label>
+            <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom:5px">
+            <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom:5px">
             <input type="text" id="url-img-3" placeholder="Link 3">
             <div class="fotos-grid">
                 <img id="prev-1" class="foto-preview"><img id="prev-2" class="foto-preview"><img id="prev-3" class="foto-preview">
             </div>
         </div>
         <button type="submit" id="btn-submit" class="btn-cadastrar">CADASTRAR PRODUTO</button>
-        <button type="button" id="btn-cancelar" style="display:none; width:100%; background:none; border:none; font-size:9px; margin-top:10px; cursor:pointer; color:#999; text-transform:uppercase; letter-spacing:2px;">Cancelar Edição</button>
+        <button type="button" id="btn-cancelar" style="display:none; width:100%; background:none; border:none; font-size:9px; margin-top:10px; cursor:pointer; color:#999; text-transform:uppercase;">Cancelar Edição</button>
     </form>
 </div>
 
-<div class="lista-container" id="lista-estoque"></div>
+<div id="lista-estoque"></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -85,37 +81,23 @@
     [1,2,3].forEach(n => {
         document.getElementById(`url-img-${n}`).addEventListener('input', (e) => {
             const img = document.getElementById(`prev-${n}`);
-            img.src = e.target.value; img.style.display = e.target.value.includes('http') ? 'block' : 'none';
+            img.src = e.target.value; img.style.display = e.target.value ? 'block' : 'none';
         });
     });
 
-    async function carregarEstoque() {
-        const container = document.getElementById('lista-estoque');
-        const q = query(collection(db, "produtos"), orderBy("dataCriacao", "desc"));
-        const snap = await getDocs(q);
-        container.innerHTML = '';
+    async function carregar() {
+        const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+        const list = document.getElementById('lista-estoque');
+        list.innerHTML = '';
         snap.forEach(res => {
             const p = res.data();
-            const div = document.createElement('div');
-            div.className = 'produto-item';
-            div.innerHTML = `
-                <div class="produto-info">
-                    <img src="${p.imagens[0]}">
-                    <div class="produto-text"><h4>${p.nome}</h4><p>${p.preco} | Cat: ${p.categoria}</p></div>
-                </div>
-                <div class="acoes">
-                    <button class="btn-acao edit" data-id="${res.id}">Editar</button>
-                    <button class="btn-acao del" data-id="${res.id}">Excluir</button>
-                </div>
-            `;
-            container.appendChild(div);
+            list.innerHTML += `<div class="produto-item"><div class="produto-info"><img src="${p.imagens[0]}"><div><b>${p.nome}</b><br><small>${p.preco} | ${p.categoria}</small></div></div><div class="acoes"><button class="btn-edit" data-id="${res.id}">Editar</button><button class="btn-del" data-id="${res.id}">Excluir</button></div></div>`;
         });
-
-        document.querySelectorAll('.edit').forEach(btn => btn.onclick = () => prepararEdicao(btn.dataset.id));
-        document.querySelectorAll('.del').forEach(btn => btn.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", btn.dataset.id)); carregarEstoque(); }});
+        document.querySelectorAll('.btn-edit').forEach(b => b.onclick = () => editar(b.dataset.id));
+        document.querySelectorAll('.btn-del').forEach(b => b.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", b.dataset.id)); carregar(); }});
     }
 
-    async function prepararEdicao(id) {
+    async function editar(id) {
         const snap = await getDocs(collection(db, "produtos"));
         const p = snap.docs.find(d => d.id === id).data();
         document.getElementById('edit-id').value = id;
@@ -130,20 +112,17 @@
             document.getElementById(`prev-${i+1}`).style.display = 'block';
         });
         document.getElementById('titulo-form').innerText = "Editar Produto";
-        document.getElementById('btn-submit').innerText = "ATUALIZAR PRODUTO";
+        document.getElementById('btn-submit').innerText = "ATUALIZAR";
         document.getElementById('btn-cancelar').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0,0);
     }
 
     document.getElementById('btn-cancelar').onclick = () => location.reload();
 
     document.getElementById('form-produto').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const btn = document.getElementById('btn-submit');
         const editId = document.getElementById('edit-id').value;
-        btn.disabled = true;
-
-        const fotos = [1,2,3].map(n => document.getElementById(`url-img-${n}`).value).filter(u => u !== "");
+        const imgs = [1,2,3].map(n => document.getElementById(`url-img-${n}`).value).filter(u => u);
         const cat = document.getElementById('categoria').value;
         const pData = {
             nome: document.getElementById('nome').value.toUpperCase(),
@@ -151,16 +130,14 @@
             categoria: cat === 'nova' ? document.getElementById('nova-cat-input').value.toLowerCase() : cat.toLowerCase(),
             preco: inputPreco.value,
             estoque: parseInt(document.getElementById('estoque').value),
-            imagens: fotos,
+            imagens: imgs,
             dataCriacao: serverTimestamp()
         };
-
         if(editId) { await updateDoc(doc(db, "produtos", editId), pData); }
         else { await addDoc(collection(db, "produtos"), pData); }
         location.reload();
     });
-
-    carregarEstoque();
+    carregar();
 </script>
 </body>
 </html>
