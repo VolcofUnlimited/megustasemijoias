@@ -6,63 +6,44 @@
     <title>Admin Megusta - Gestão</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px; }
+        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px; display:none; } /* Escondido até validar login */
         .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin: 0 auto 20px; box-sizing: border-box; }
         h2 { text-align: center; letter-spacing: 4px; font-weight: 200; text-transform: uppercase; font-size: 14px; margin-bottom: 20px; }
         .field-group { margin-bottom: 15px; }
         label { display: block; font-size: 8px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 5px; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; font-size: 13px; box-sizing: border-box; outline: none; }
         .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 15px; border-radius: 50px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
-        
-        /* LISTA RESPONSIVA */
         .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin: 10px auto; display: flex; align-items: center; justify-content: space-between; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .produto-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+        .produto-info { display: flex; align-items: center; gap: 10px; }
         .produto-info img { width: 45px; height: 45px; border-radius: 8px; flex-shrink: 0; }
-        .produto-info div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .acoes { display: flex; gap: 5px; }
-        .btn-edit, .btn-del { padding: 6px 10px; border-radius: 6px; font-size: 7px; border: none; cursor: pointer; text-transform: uppercase; }
-        .btn-edit { background: #f0f0f0; }
-        .btn-del { background: #ffebeb; color: #ff4d4d; }
-
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            .admin-card { padding: 20px; border-radius: 20px; }
-            .produto-item { padding: 10px; }
-            .acoes { flex-direction: column; gap: 4px; }
-        }
+        .btn-edit { background: #f0f0f0; border:none; padding: 6px 10px; border-radius: 6px; font-size: 7px; cursor:pointer; text-transform:uppercase; }
+        .btn-del { background: #ffebeb; color: #ff4d4d; border:none; padding: 6px 10px; border-radius: 6px; font-size: 7px; cursor:pointer; text-transform:uppercase; }
     </style>
 </head>
 <body>
+    <div style="text-align:right; max-width:600px; margin:0 auto 10px;"><button onclick="window.sair()" style="background:none; border:none; color:#999; font-size:10px; cursor:pointer;">[ SAIR DO PAINEL ]</button></div>
+    
     <div class="admin-card">
         <h2>Categorias</h2>
         <div class="field-group">
             <input type="text" id="nova-categoria-nome" placeholder="NOME DA CATEGORIA">
-            <button onclick="window.criarCategoria()" class="btn-cadastrar">ADICIONAR</button>
+            <button onclick="window.criarCategoria()" class="btn-cadastrar">CRIAR</button>
         </div>
-        <div id="lista-categorias-tags" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px;"></div>
+        <div id="lista-categorias-tags" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
     </div>
 
     <div class="admin-card">
-        <h2 id="titulo-form">Produto</h2>
+        <h2 id="titulo-form">Novo Produto</h2>
         <form id="form-produto">
             <input type="hidden" id="edit-id">
             <div class="field-group"><label>Nome</label><input type="text" id="nome" required></div>
             <div class="field-group"><label>Descrição</label><textarea id="descricao" required></textarea></div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <div class="field-group" style="flex: 1; min-width: 140px;">
-                    <label>Categoria</label><select id="categoria-select" required></select>
-                </div>
-                <div class="field-group" style="flex: 1; min-width: 80px;">
-                    <label>Estoque</label><input type="number" id="estoque" required>
-                </div>
+                <div class="field-group" style="flex: 1; min-width: 150px;"><label>Categoria</label><select id="categoria-select" required></select></div>
+                <div class="field-group" style="flex: 1; min-width: 80px;"><label>Estoque</label><input type="number" id="estoque" required></div>
             </div>
             <div class="field-group"><label>Preço</label><input type="text" id="preco" required></div>
-            <div class="field-group">
-                <label>Fotos</label>
-                <input type="text" id="url-img-1" required placeholder="Link 1" style="margin-bottom:5px">
-                <input type="text" id="url-img-2" placeholder="Link 2" style="margin-bottom:5px">
-                <input type="text" id="url-img-3" placeholder="Link 3">
-            </div>
+            <div class="field-group"><label>Fotos</label><input type="text" id="url-img-1" required placeholder="Foto Principal" style="margin-bottom:5px"><input type="text" id="url-img-2" placeholder="Foto 2" style="margin-bottom:5px"><input type="text" id="url-img-3" placeholder="Foto 3"></div>
             <button type="submit" id="btn-submit" class="btn-cadastrar">SALVAR</button>
         </form>
     </div>
@@ -71,10 +52,20 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, updateDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // PROTEÇÃO DE ROTA
+    onAuthStateChanged(auth, (user) => {
+        if (!user) { window.location.href = "login.html"; } 
+        else { document.body.style.display = "block"; carregarTudo(); }
+    });
+
+    window.sair = () => signOut(auth);
 
     const inputPreco = document.getElementById('preco');
     inputPreco.value = "R$ 0,00";
@@ -102,7 +93,7 @@
         tags.innerHTML = ''; sel.innerHTML = '<option value="">SELECIONE</option>';
         catSnap.forEach(d => {
             const n = d.data().nome;
-            tags.innerHTML += `<span style="background:#eee; padding:4px 8px; border-radius:10px; font-size:9px;">${n.toUpperCase()} <b onclick="window.excluirCategoria('${d.id}')" style="color:red; cursor:pointer;">&times;</b></span>`;
+            tags.innerHTML += `<span style="background:#eee; padding:5px 10px; border-radius:15px; font-size:9px;">${n.toUpperCase()} <b onclick="window.excluirCategoria('${d.id}')" style="color:red; cursor:pointer; margin-left:5px;">&times;</b></span>`;
             sel.innerHTML += `<option value="${n}">${n.toUpperCase()}</option>`;
         });
 
@@ -150,8 +141,6 @@
         else { await addDoc(collection(db, "produtos"), pData); }
         location.reload();
     });
-
-    carregarTudo();
 </script>
 </body>
 </html>
