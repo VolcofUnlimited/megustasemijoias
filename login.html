@@ -3,95 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Megusta Semijóias</title>
+    <title>Login - Megusta Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bege: #D1BE9C; --preto: #222; }
-        body { font-family: 'Montserrat', sans-serif; background: #fdfdfd; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-        .logo { max-width: 120px; margin-bottom: 30px; }
-        .auth-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 350px; text-align: center; }
-        .tabs { display: flex; margin-bottom: 25px; border-bottom: 1px solid #eee; }
-        .tab { flex: 1; padding: 10px; cursor: pointer; font-size: 11px; font-weight: 700; color: #ccc; letter-spacing: 1px; }
-        .tab.active { color: var(--bege); border-bottom: 2px solid var(--bege); }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #eee; border-radius: 4px; box-sizing: border-box; font-family: 'Montserrat'; }
-        .btn-auth { background: var(--preto); color: white; border: none; padding: 15px; width: 100%; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; font-size: 11px; letter-spacing: 1px; }
-        .btn-google { background: white; color: #444; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; }
-        .btn-google img { width: 18px; }
-        #form-cadastro { display: none; }
+        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-card { background: #fff; width: 100%; max-width: 350px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); text-align: center; }
+        .logo { width: 150px; margin-bottom: 30px; }
+        .btn-google { 
+            width: 100%; background: #fff; color: #000; border: 1px solid #eee; padding: 15px; 
+            border-radius: 60px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; 
+            font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-google:hover { background: #fafafa; border-color: #ddd; }
     </style>
 </head>
 <body>
-    <img src="Logo.png" class="logo">
-    
-    <div class="auth-card">
-        <div class="tabs">
-            <div class="tab active" id="tab-entrar" onclick="alternar('login')">ENTRAR</div>
-            <div class="tab" id="tab-cadastrar" onclick="alternar('cadastro')">CADASTRAR</div>
-        </div>
-
-        <form id="form-login">
-            <input type="email" id="email-l" placeholder="E-mail" required>
-            <input type="password" id="senha-l" placeholder="Senha" required>
-            <button type="submit" class="btn-auth">Entrar</button>
-        </form>
-
-        <form id="form-cadastro">
-            <input type="text" id="nome-c" placeholder="Nome Completo" required>
-            <input type="email" id="email-c" placeholder="E-mail" required>
-            <input type="password" id="senha-c" placeholder="Senha (mín. 6 caracteres)" required>
-            <button type="submit" class="btn-auth">Criar Conta</button>
-        </form>
-
-        <button class="btn-auth btn-google" id="btn-g">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-            Continuar com Google
+    <div class="login-card">
+        <img src="Logo.png" class="logo">
+        <h2 style="font-size: 12px; letter-spacing: 3px; font-weight: 300; margin-bottom: 30px;">PAINEL ADMINISTRATIVO</h2>
+        
+        <button id="btn-google-login" class="btn-google">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+            Entrar com Google
         </button>
+
+        <p id="msg" style="font-size: 10px; color: red; margin-top: 15px;"></p>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME",
-            authDomain: "megusta-semijoias.firebaseapp.com",
-            projectId: "megusta-semijoias",
-            storageBucket: "megusta-semijoias.firebasestorage.app",
-            messagingSenderId: "998632232244",
-            appId: "1:998632232244:web:45473970818b8374e20161"
-        };
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", 
+        authDomain: "megusta-semijoias.firebaseapp.com", 
+        projectId: "megusta-semijoias", 
+        storageBucket: "megusta-semijoias.appspot.com", 
+        messagingSenderId: "998632232244", 
+        appId: "1:998632232244:web:45473970818b8374e20161" 
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        window.alternar = (tipo) => {
-            document.getElementById('form-login').style.display = tipo === 'login' ? 'block' : 'none';
-            document.getElementById('form-cadastro').style.display = tipo === 'cadastro' ? 'block' : 'none';
-            document.getElementById('tab-entrar').classList.toggle('active', tipo === 'login');
-            document.getElementById('tab-cadastrar').classList.toggle('active', tipo === 'cadastro');
-        };
-
-        document.getElementById('form-login').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('email-l').value, document.getElementById('senha-l').value);
-                window.location.href = "index.html";
-            } catch (err) { alert("Erro: E-mail ou senha incorretos."); }
-        };
-
-        document.getElementById('form-cadastro').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                const res = await createUserWithEmailAndPassword(auth, document.getElementById('email-c').value, document.getElementById('senha-c').value);
-                await updateProfile(res.user, { displayName: document.getElementById('nome-c').value });
-                window.location.href = "index.html";
-            } catch (err) { alert("Erro ao cadastrar: " + err.message); }
-        };
-
-        document.getElementById('btn-g').onclick = async () => {
-            try { await signInWithPopup(auth, provider); window.location.href = "index.html"; } catch (err) { console.error(err); }
-        };
-    </script>
+    document.getElementById('btn-google-login').onclick = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            // Opcional: Validar se o e-mail logado é o SEU e-mail de admin
+            if (result.user.email === "SEU-EMAIL@gmail.com") {
+                window.location.href = "admin.html";
+            } else {
+                // Se quiser restringir apenas para você, descomente as linhas acima e abaixo
+                window.location.href = "admin.html"; 
+            }
+        } catch (err) {
+            console.error(err);
+            document.getElementById('msg').innerText = "ERRO AO AUTENTICAR.";
+        }
+    };
+</script>
 </body>
 </html>
