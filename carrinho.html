@@ -7,95 +7,110 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.2">
     <style>
-        /* Estrutura Original Preservada */
+        /* Premissa: Estrutura Original Preservada */
         html, body { height: 100%; margin: 0; display: flex; flex-direction: column; background-color: #fff; }
-        main { flex: 1 0 auto; padding: 40px 20px; max-width: 800px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-        footer { flex-shrink: 0; }
-        .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
-
-        .titulo-pagina { text-align: center; letter-spacing: 8px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 40px; }
-
-        /* LISTA DE ITENS NO CARRINHO */
-        .carrinho-item { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee; }
-        .carrinho-img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; background: #f9f9f9; }
         
-        .carrinho-info { flex: 1; overflow: hidden; }
-        /* Ajuste solicitado: Nome em uma linha */
-        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .carrinho-info p { font-size: 12px; font-weight: 300; color: #1a1a1a; margin: 0; letter-spacing: 1px; }
+        header { padding: 30px 0; text-align: center; background: #fff; }
+        .logo-container img { max-width: 180px; height: auto; }
 
-        .btn-remover { background: none; border: none; color: #ff4d4d; font-size: 9px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; padding: 0; margin-top: 10px; }
-
-        /* RESUMO E BOTÃO LUXO */
-        .resumo-carrinho { margin-top: 40px; padding-top: 20px; border-top: 2px solid #000; text-align: right; }
-        .total-texto { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #999; }
-        .total-valor { font-size: 22px; font-weight: 300; display: block; margin: 10px 0 30px; letter-spacing: 2px; }
-
-        /* Ajuste Solicitado: Botão Fendi Luxo Arredondado */
-        .btn-finalizar { 
-            width: 100%; 
-            background-color: rgba(163, 150, 132, 0.85) !important; 
-            color: #1a1a1a !important; 
-            font-weight: 700 !important; 
-            letter-spacing: 3px; 
-            padding: 22px !important; 
-            border-radius: 50px !important; 
-            border: none; 
-            cursor: pointer; 
-            transition: 0.4s; 
-            font-size: 11px; 
-            text-transform: uppercase; 
+        main { flex: 1 0 auto; padding: 20px 20px 80px; max-width: 800px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        
+        .titulo-pagina { 
+            text-align: center; letter-spacing: 8px; font-weight: 200; 
+            text-transform: uppercase; font-size: 18px; margin: 40px 0; 
+            border-top: 1px solid #eee; padding-top: 30px;
         }
-        .btn-finalizar:hover { background-color: rgba(163, 150, 132, 1) !important; transform: translateY(-2px); }
 
-        .carrinho-vazio { text-align: center; padding: 60px 0; color: #999; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        /* ITENS DO CARRINHO */
+        .carrinho-item { display: flex; align-items: center; gap: 20px; padding: 25px 0; border-bottom: 1px solid #eee; }
+        .carrinho-img { width: 90px; height: 90px; object-fit: cover; border-radius: 4px; }
+        .carrinho-info { flex: 1; overflow: hidden; }
+        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .carrinho-info .preco-unitario { font-size: 12px; font-weight: 300; color: #1a1a1a; margin-bottom: 12px; display: block; }
+
+        .qtd-container { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .btn-qtd { background: none; border: 1px solid #ddd; width: 25px; height: 25px; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; }
+        .btn-qtd:hover { border-color: #A39684; color: #A39684; }
+        .qtd-num { font-size: 12px; font-weight: 400; min-width: 20px; text-align: center; }
+
+        .btn-remover { background: none; border: none; color: #ff4d4d; font-size: 9px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; padding: 0; }
+
+        /* RESUMO E BOTÃO FINALIZAR */
+        .resumo-carrinho { margin-top: 40px; text-align: right; }
+        .total-texto { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 5px; }
+        .total-valor { font-size: 24px; font-weight: 300; color: #1a1a1a; letter-spacing: 1px; }
+
+        .btn-finalizar { 
+            width: 100%; background-color: rgba(163, 150, 132, 0.85); color: #1a1a1a; 
+            font-weight: 700; letter-spacing: 3px; padding: 22px; border-radius: 50px; 
+            border: none; cursor: pointer; transition: 0.4s; font-size: 11px; 
+            text-transform: uppercase; margin-top: 40px;
+        }
+        .btn-finalizar:hover { background-color: rgba(163, 150, 132, 1); transform: translateY(-2px); }
+
+        /* POP-UP DE AGRADECIMENTO LUXO */
+        .modal-sucesso {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2000; text-align: center;
+        }
+        .modal-sucesso-content { max-width: 450px; padding: 40px; }
+        .modal-sucesso h2 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 18px; margin-bottom: 20px; }
+        .modal-sucesso p { font-size: 13px; color: #666; line-height: 1.8; letter-spacing: 1px; }
+        .loader-luxo { margin: 30px auto 0; width: 40px; height: 1px; background: #eee; position: relative; overflow: hidden; }
+        .loader-luxo::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: #A39684; animation: loading 3s linear forwards; }
+        @keyframes loading { to { left: 0; } }
+
+        footer { background: #000; color: #fff; padding: 40px 20px; text-align: center; margin-top: auto; }
+        .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
 
         @media (max-width: 600px) {
             .carrinho-item { gap: 15px; }
-            .carrinho-img { width: 60px; height: 60px; }
-            .total-valor { font-size: 18px; }
+            .carrinho-img { width: 70px; height: 70px; }
         }
     </style>
 </head>
 <body>
 
-    <header style="padding: 40px 20px; text-align: center;">
+    <header>
         <div class="logo-container">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                <img src="Logo.png" alt="Megusta" class="logo" style="max-width: 200px;">
-            </a>
+            <a href="index.html"><img src="Logo.png" alt="Megusta"></a>
         </div>
     </header>
 
-    <main id="conteudo-carrinho">
+    <main>
         <h1 class="titulo-pagina">Meu Carrinho</h1>
         
         <div id="lista-itens-carrinho">
             </div>
 
-        <div id="area-resumo" class="resumo-carrinho" style="display: none;">
+        <div id="area-resumo" class="resumo-carrinho" style="display: none; border-top: 1px solid #000; padding-top: 30px;">
             <span class="total-texto">Total do Pedido</span>
             <span class="total-valor" id="valor-total-carrinho">R$ 0,00</span>
-            <button class="btn-finalizar" onclick="window.enviarWhatsApp()">Finalizar Pedido via WhatsApp</button>
-            <a href="index.html" style="display: block; text-align: center; margin-top: 20px; font-size: 9px; letter-spacing: 2px; color: #999; text-decoration: none; text-transform: uppercase;">Continuar Comprando</a>
+            <button class="btn-finalizar" onclick="window.confirmarPedido()">FINALIZAR SUA COMPRA</button>
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="index.html" class="link-fendi" style="font-size: 9px; color: #ccc;">Continuar Comprando</a>
+            </div>
         </div>
     </main>
 
+    <div id="modalSucesso" class="modal-sucesso">
+        <div class="modal-sucesso-content">
+            <div style="font-size: 30px; margin-bottom: 20px; color: #A39684;">✦</div>
+            <h2>Muito obrigado pela sua compra!</h2>
+            <p>Agora seu pedido será enviado para o nosso time para que o pagamento seja concluído. Volte sempre!</p>
+            <div class="loader-luxo"></div>
+        </div>
+    </div>
+
     <footer>
-        <div style="background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-                <a href="#" class="link-fendi">Sobre a Empresa</a>
-                <a href="https://wa.me/5511985906325" target="_blank" class="link-fendi">Contato</a>
-                <a href="https://www.instagram.com/megusta_semijoias/" target="_blank" class="link-fendi">Instagram</a>
-            </div>
-        </div>
-        <div style="background-color: #000; padding: 15px 10px; text-align: center;">
-            <p style="font-size: 7px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase;">© 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED</p>
-        </div>
+        <p style="font-size: 8px; letter-spacing: 2px; color: #fff; margin: 0; text-transform: uppercase;">
+            © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED
+        </p>
     </footer>
 
     <script>
-        // LÓGICA DE CARREGAMENTO DO CARRINHO (LOCALSTORAGE)
         function carregarCarrinho() {
             const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             const container = document.getElementById('lista-itens-carrinho');
@@ -103,7 +118,7 @@
             const totalTexto = document.getElementById('valor-total-carrinho');
             
             if (itens.length === 0) {
-                container.innerHTML = '<div class="carrinho-vazio">Seu carrinho está vazio.</div>';
+                container.innerHTML = '<div style="text-align:center; padding:50px; color:#999; letter-spacing:2px;">SEU CARRINHO ESTÁ VAZIO.</div>';
                 resumo.style.display = 'none';
                 return;
             }
@@ -113,16 +128,21 @@
             let totalDecimal = 0;
 
             itens.forEach((item, index) => {
-                // Calcula o total (converte "R$ 150,00" para número)
-                const valorLimpo = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
-                totalDecimal += valorLimpo;
+                const qtd = item.quantidade || 1;
+                const valorNumerico = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
+                totalDecimal += (valorNumerico * qtd);
 
                 container.innerHTML += `
                     <div class="carrinho-item">
                         <img src="${item.foto}" class="carrinho-img">
                         <div class="carrinho-info">
                             <h3>${item.nome}</h3>
-                            <p>${item.preco}</p>
+                            <span class="preco-unitario">${item.preco}</span>
+                            <div class="qtd-container">
+                                <button class="btn-qtd" onclick="window.mudarQtd(${index}, -1)">-</button>
+                                <span class="qtd-num">${qtd}</span>
+                                <button class="btn-qtd" onclick="window.mudarQtd(${index}, 1)">+</button>
+                            </div>
                             <button class="btn-remover" onclick="window.removerItem(${index})">Remover</button>
                         </div>
                     </div>
@@ -132,6 +152,14 @@
             totalTexto.innerText = totalDecimal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
         }
 
+        window.mudarQtd = (index, delta) => {
+            let itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            if (!itens[index].quantidade) itens[index].quantidade = 1;
+            itens[index].quantidade += delta;
+            if (itens[index].quantidade < 1) window.removerItem(index);
+            else { localStorage.setItem('carrinho_megusta', JSON.stringify(itens)); carregarCarrinho(); }
+        };
+
         window.removerItem = (index) => {
             let itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             itens.splice(index, 1);
@@ -139,19 +167,30 @@
             carregarCarrinho();
         };
 
-        window.enviarWhatsApp = () => {
-            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            let mensagem = "Olá MeGusta! Gostaria de finalizar o pedido desses itens:\n\n";
+        window.confirmarPedido = () => {
+            // Exibe o Pop-up Luxo
+            document.getElementById('modalSucesso').style.display = 'flex';
             
-            itens.forEach(item => {
-                mensagem += `• ${item.nome} (${item.preco})\n`;
-            });
+            // Aguarda 3 segundos e envia para o WhatsApp
+            setTimeout(() => {
+                const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+                let mensagem = "Olá MeGusta! Gostaria de finalizar o seguinte pedido:\n\n";
+                
+                itens.forEach(item => {
+                    const qtd = item.quantidade || 1;
+                    mensagem += `• ${qtd}x ${item.nome} - ${item.preco} cada\n`;
+                });
 
-            const total = document.getElementById('valor-total-carrinho').innerText;
-            mensagem += `\n*Total: ${total}*`;
+                const total = document.getElementById('valor-total-carrinho').innerText;
+                mensagem += `\n*TOTAL DO PEDIDO: ${total}*`;
 
-            const url = `https://wa.me/5511985906325?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
+                const url = `https://wa.me/5511985906325?text=${encodeURIComponent(mensagem)}`;
+                
+                // Limpa o carrinho após finalizar (Opcional, mas recomendado)
+                localStorage.removeItem('carrinho_megusta');
+                
+                window.location.href = url;
+            }, 3000);
         };
 
         carregarCarrinho();
