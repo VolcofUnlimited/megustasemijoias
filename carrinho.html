@@ -7,193 +7,110 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.2">
     <style>
-        /* Premissa: Estrutura Original Preservada */
         html, body { height: 100%; margin: 0; display: flex; flex-direction: column; background-color: #fff; }
-        
-        header { padding: 30px 0; text-align: center; background: #fff; }
-        .logo-container img { max-width: 180px; height: auto; }
-
+        header { padding: 30px 0; text-align: center; }
+        .logo-container img { max-width: 180px; }
         main { flex: 1 0 auto; padding: 20px 20px 80px; max-width: 800px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-        
-        .titulo-pagina { 
-            text-align: center; letter-spacing: 8px; font-weight: 200; 
-            text-transform: uppercase; font-size: 18px; margin: 40px 0; 
-            border-top: 1px solid #eee; padding-top: 30px;
-        }
-
-        /* ITENS DO CARRINHO */
+        .titulo-pagina { text-align: center; letter-spacing: 8px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin: 40px 0; border-top: 1px solid #eee; padding-top: 30px; }
         .carrinho-item { display: flex; align-items: center; gap: 20px; padding: 25px 0; border-bottom: 1px solid #eee; }
         .carrinho-img { width: 90px; height: 90px; object-fit: cover; border-radius: 4px; }
-        .carrinho-info { flex: 1; overflow: hidden; }
-        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .carrinho-info .preco-unitario { font-size: 12px; font-weight: 300; color: #1a1a1a; margin-bottom: 12px; display: block; }
-
+        .carrinho-info { flex: 1; }
+        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; }
         .qtd-container { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .btn-qtd { background: none; border: 1px solid #ddd; width: 25px; height: 25px; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.3s; }
-        .btn-qtd:hover { border-color: #A39684; color: #A39684; }
-        .qtd-num { font-size: 12px; font-weight: 400; min-width: 20px; text-align: center; }
-
-        .btn-remover { background: none; border: none; color: #ff4d4d; font-size: 9px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; padding: 0; }
-
-        /* RESUMO E BOTÃO FINALIZAR */
-        .resumo-carrinho { margin-top: 40px; text-align: right; }
-        .total-texto { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #bbb; display: block; margin-bottom: 5px; }
-        .total-valor { font-size: 24px; font-weight: 300; color: #1a1a1a; letter-spacing: 1px; }
-
-        .btn-finalizar { 
-            width: 100%; background-color: rgba(163, 150, 132, 0.85); color: #1a1a1a; 
-            font-weight: 700; letter-spacing: 3px; padding: 22px; border-radius: 50px; 
-            border: none; cursor: pointer; transition: 0.4s; font-size: 11px; 
-            text-transform: uppercase; margin-top: 40px;
-        }
-        .btn-finalizar:hover { background-color: rgba(163, 150, 132, 1); transform: translateY(-2px); }
-
-        /* POP-UP DE AGRADECIMENTO LUXO */
-        .modal-sucesso {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            display: none; align-items: center; justify-content: center;
-            z-index: 2000; text-align: center;
-        }
-        .modal-sucesso-content { max-width: 450px; padding: 40px; }
-        .modal-sucesso h2 { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 18px; margin-bottom: 20px; }
-        .modal-sucesso p { font-size: 13px; color: #666; line-height: 1.8; letter-spacing: 1px; }
-        .loader-luxo { margin: 30px auto 0; width: 40px; height: 1px; background: #eee; position: relative; overflow: hidden; }
-        .loader-luxo::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: #A39684; animation: loading 3s linear forwards; }
-        @keyframes loading { to { left: 0; } }
-
-        footer { background: #000; color: #fff; padding: 40px 20px; text-align: center; margin-top: auto; }
-        .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
-
-        @media (max-width: 600px) {
-            .carrinho-item { gap: 15px; }
-            .carrinho-img { width: 70px; height: 70px; }
-        }
+        .btn-qtd { background: none; border: 1px solid #ddd; width: 25px; height: 25px; cursor: pointer; border-radius: 50%; }
+        .resumo-carrinho { margin-top: 40px; text-align: right; border-top: 1px solid #000; padding-top: 30px; }
+        .total-valor { font-size: 24px; font-weight: 300; letter-spacing: 1px; }
+        .btn-finalizar { width: 100%; background-color: rgba(163, 150, 132, 0.85); color: #1a1a1a; font-weight: 700; letter-spacing: 3px; padding: 22px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; margin-top: 40px; font-size: 11px; }
+        .modal-sucesso { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: none; align-items: center; justify-content: center; z-index: 2000; text-align: center; }
+        footer { background: #000; color: #fff; padding: 20px; text-align: center; margin-top: auto; }
     </style>
 </head>
 <body>
-
-    <header>
-        <div class="logo-container">
-            <a href="index.html"><img src="Logo.png" alt="Megusta"></a>
-        </div>
-    </header>
-
+    <header><div class="logo-container"><a href="index.html"><img src="Logo.png"></a></div></header>
     <main>
         <h1 class="titulo-pagina">Meu Carrinho</h1>
-        
-        <div id="lista-itens-carrinho">
-            </div>
-
-        <div id="area-resumo" class="resumo-carrinho" style="display: none; border-top: 1px solid #000; padding-top: 30px;">
-            <span class="total-texto">Total do Pedido</span>
-            <span class="total-valor" id="valor-total-carrinho">R$ 0,00</span>
-            <button class="btn-finalizar" onclick="window.confirmarPedido()">FINALIZAR SUA COMPRA</button>
-            <div style="text-align: center; margin-top: 25px;">
-                <a href="index.html" class="link-fendi" style="font-size: 9px; color: #ccc;">Continuar Comprando</a>
-            </div>
+        <div id="lista-itens-carrinho"></div>
+        <div id="area-resumo" class="resumo-carrinho" style="display: none;">
+            <span style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#bbb;">Total do Pedido</span>
+            <div class="total-valor" id="valor-total-carrinho">R$ 0,00</div>
+            <button class="btn-finalizar" id="btn-comprar" onclick="window.confirmarPedido()">FINALIZAR SUA COMPRA</button>
         </div>
     </main>
 
     <div id="modalSucesso" class="modal-sucesso">
-        <div class="modal-sucesso-content">
+        <div style="max-width: 450px; padding: 40px;">
             <div style="font-size: 30px; margin-bottom: 20px; color: #A39684;">✦</div>
-            <h2>Muito obrigado pela sua compra!</h2>
-            <p>Agora seu pedido será enviado para o nosso time para que o pagamento seja concluído. Volte sempre!</p>
-            <div class="loader-luxo"></div>
+            <h2 style="font-weight:200; letter-spacing:5px; text-transform:uppercase; font-size:18px;">Muito obrigado pela sua compra!</h2>
+            <p style="font-size:13px; color:#666; line-height:1.8;">Agora seu pedido será enviado para o nosso time para que o pagamento seja concluído. Volte sempre!</p>
+            <div style="margin: 30px auto 0; width: 40px; height: 1px; background: #eee; position: relative; overflow: hidden;"><div style="content:''; position:absolute; left:-100%; width:100%; height:100%; background:#A39684; animation:load 3s linear forwards;"></div></div>
         </div>
     </div>
+    <style>@keyframes load { to { left: 0; } }</style>
 
-    <footer>
-        <p style="font-size: 8px; letter-spacing: 2px; color: #fff; margin: 0; text-transform: uppercase;">
-            © 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED
-        </p>
-    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <script>
-        function carregarCarrinho() {
+        const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.carregarCarrinho = () => {
             const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             const container = document.getElementById('lista-itens-carrinho');
-            const resumo = document.getElementById('area-resumo');
             const totalTexto = document.getElementById('valor-total-carrinho');
-            
-            if (itens.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:50px; color:#999; letter-spacing:2px;">SEU CARRINHO ESTÁ VAZIO.</div>';
-                resumo.style.display = 'none';
-                return;
-            }
-
-            resumo.style.display = 'block';
-            container.innerHTML = '';
-            let totalDecimal = 0;
-
+            if (itens.length === 0) { container.innerHTML = '<div style="text-align:center; padding:50px; color:#999; letter-spacing:2px;">CARRINHO VAZIO.</div>'; return; }
+            document.getElementById('area-resumo').style.display = 'block';
+            let totalDecimal = 0; container.innerHTML = '';
             itens.forEach((item, index) => {
                 const qtd = item.quantidade || 1;
-                const valorNumerico = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
-                totalDecimal += (valorNumerico * qtd);
-
-                container.innerHTML += `
-                    <div class="carrinho-item">
-                        <img src="${item.foto}" class="carrinho-img">
-                        <div class="carrinho-info">
-                            <h3>${item.nome}</h3>
-                            <span class="preco-unitario">${item.preco}</span>
-                            <div class="qtd-container">
-                                <button class="btn-qtd" onclick="window.mudarQtd(${index}, -1)">-</button>
-                                <span class="qtd-num">${qtd}</span>
-                                <button class="btn-qtd" onclick="window.mudarQtd(${index}, 1)">+</button>
-                            </div>
-                            <button class="btn-remover" onclick="window.removerItem(${index})">Remover</button>
-                        </div>
-                    </div>
-                `;
+                totalDecimal += (parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.')) * qtd);
+                container.innerHTML += `<div class="carrinho-item"><img src="${item.foto}" class="carrinho-img"><div class="carrinho-info"><h3>${item.nome}</h3><span>${item.preco}</span><div class="qtd-container"><button class="btn-qtd" onclick="window.mudarQtd(${index}, -1)">-</button><span style="font-size:12px;">${qtd}</span><button class="btn-qtd" onclick="window.mudarQtd(${index}, 1)">+</button></div></div></div>`;
             });
-
             totalTexto.innerText = totalDecimal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-        }
-
-        window.mudarQtd = (index, delta) => {
-            let itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            if (!itens[index].quantidade) itens[index].quantidade = 1;
-            itens[index].quantidade += delta;
-            if (itens[index].quantidade < 1) window.removerItem(index);
-            else { localStorage.setItem('carrinho_megusta', JSON.stringify(itens)); carregarCarrinho(); }
         };
 
-        window.removerItem = (index) => {
-            let itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            itens.splice(index, 1);
-            localStorage.setItem('carrinho_megusta', JSON.stringify(itens));
-            carregarCarrinho();
-        };
-
-        window.confirmarPedido = () => {
-            // Exibe o Pop-up Luxo
-            document.getElementById('modalSucesso').style.display = 'flex';
+        window.confirmarPedido = async () => {
+            const btn = document.getElementById('btn-comprar');
+            btn.disabled = true; btn.innerText = "PROCESSANDO...";
+            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             
-            // Aguarda 3 segundos e envia para o WhatsApp
-            setTimeout(() => {
-                const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-                let mensagem = "Olá MeGusta! Gostaria de finalizar o seguinte pedido:\n\n";
-                
-                itens.forEach(item => {
-                    const qtd = item.quantidade || 1;
-                    mensagem += `• ${qtd}x ${item.nome} - ${item.preco} cada\n`;
-                });
+            try {
+                // 1. DAR BAIXA NO ESTOQUE NO BANCO
+                for (const item of itens) {
+                    const qtdVendida = item.quantidade || 1;
+                    const produtoRef = doc(db, "produtos", item.id);
+                    await updateDoc(produtoRef, { estoque: increment(-qtdVendida) });
+                }
 
-                const total = document.getElementById('valor-total-carrinho').innerText;
-                mensagem += `\n*TOTAL DO PEDIDO: ${total}*`;
+                // 2. EXIBIR MODAL DE SUCESSO
+                document.getElementById('modalSucesso').style.display = 'flex';
 
-                const url = `https://wa.me/5511985906325?text=${encodeURIComponent(mensagem)}`;
-                
-                // Limpa o carrinho após finalizar (Opcional, mas recomendado)
-                localStorage.removeItem('carrinho_megusta');
-                
-                window.location.href = url;
-            }, 3000);
+                // 3. PREPARAR MENSAGEM WHATSAPP
+                let msg = "Olá MeGusta! Novo pedido:\n\n";
+                itens.forEach(i => msg += `• ${i.quantidade || 1}x ${i.nome} (${i.preco})\n`);
+                msg += `\n*TOTAL: ${document.getElementById('valor-total-carrinho').innerText}*`;
+                const url = `https://wa.me/5511985906325?text=${encodeURIComponent(msg)}`;
+
+                // 4. TIMER E AÇÕES FINAIS
+                setTimeout(() => {
+                    localStorage.removeItem('carrinho_megusta');
+                    window.open(url, '_blank'); // Abre WhatsApp em nova guia
+                    window.location.href = "index.html"; // Volta para a Home
+                }, 3000);
+
+            } catch (err) { alert("Erro ao processar estoque. Tente novamente."); btn.disabled = false; }
         };
 
-        carregarCarrinho();
+        window.mudarQtd = (i, d) => {
+            let itens = JSON.parse(localStorage.getItem('carrinho_megusta'));
+            itens[i].quantidade = (itens[i].quantidade || 1) + d;
+            if(itens[i].quantidade < 1) itens.splice(i, 1);
+            localStorage.setItem('carrinho_megusta', JSON.stringify(itens));
+            window.carregarCarrinho();
+        };
+
+        window.carregarCarrinho();
     </script>
 </body>
 </html>

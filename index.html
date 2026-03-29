@@ -11,15 +11,22 @@
         main.vitrine { flex: 1 0 auto; }
         footer { flex-shrink: 0; }
         .link-fendi { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; font-weight: 400; text-transform: uppercase; }
-        .grade-produtos .produto-card .img-container { width: 100%; max-width: 280px; aspect-ratio: 1 / 1; margin: 0 auto 15px; overflow: hidden; background-color: #f9f9f9; }
-        .grade-produtos .produto-card img { width: 100%; height: 100%; object-fit: cover; }
+        .grade-produtos .produto-card .img-container { width: 100%; max-width: 280px; aspect-ratio: 1 / 1; margin: 0 auto 15px; overflow: hidden; background-color: #f9f9f9; position: relative; }
+        .grade-produtos .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        
+        /* ESTILO ESGOTADO */
+        .produto-card.esgotado { cursor: default; opacity: 0.7; }
+        .produto-card.esgotado img { filter: grayscale(1); }
+        .tag-esgotado { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.9); color: #000; font-size: 9px; 
+            letter-spacing: 3px; padding: 10px 20px; text-transform: uppercase; font-weight: 700;
+        }
+
         .grade-produtos .produto-card h3, #tituloModal { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; padding: 0 10px; box-sizing: border-box; }
         .preco-vitrine, #precoModal { font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-weight: 300 !important; color: #1a1a1a; }
         .btn-carrinho { background-color: rgba(163, 150, 132, 0.85) !important; color: #1a1a1a !important; font-weight: 700 !important; letter-spacing: 3px; padding: 18px 30px !important; border-radius: 50px !important; border: none; cursor: pointer; transition: 0.4s; width: 100%; font-size: 11px; text-transform: uppercase; }
         .btn-carrinho:hover { background-color: rgba(163, 150, 132, 1) !important; }
-        .carrossel-container { position: relative; width: 100%; overflow: hidden; }
-        .carrossel-slides { display: flex; transition: transform 0.5s ease-in-out; }
-        .carrossel-slides img { width: 100%; flex-shrink: 0; object-fit: cover; aspect-ratio: 1/1; }
         .miniaturas-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
         .miniatura { width: 50px; height: 50px; border-radius: 4px; cursor: pointer; object-fit: cover; border: 1px solid #eee; opacity: 0.5; }
         .miniatura.active { opacity: 1; border-color: #A39684; }
@@ -28,10 +35,7 @@
 </head>
 <body>
     <header>
-        <div style="position: absolute; top: 10px; left: 20px; font-size: 9px; letter-spacing: 1px; color: #999;">
-            <span id="user-info">OLÁ, VISITANTE</span>
-            <button id="btn-logout" style="display:none; background:none; border:none; color:#A39684; cursor:pointer; font-weight:700; margin-left:5px; text-transform:uppercase;">[ Sair ]</button>
-        </div>
+        <div style="position: absolute; top: 10px; left: 20px; font-size: 9px; letter-spacing: 1px; color: #999;"><span id="user-info">OLÁ, VISITANTE</span></div>
         <div class="logo-container"><img src="Logo.png" alt="Megusta" class="logo"></div>
         <nav><ul id="menu-categorias"><li><a href="javascript:void(0)" onclick="window.filtrar('todos')">TODOS</a></li></ul></nav>
         <a href="carrinho.html" class="carrinho-topo">
@@ -58,7 +62,7 @@
             </div>
         </div>
         <div style="background-color: #000; padding: 15px 10px; text-align: center;">
-            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase;">© 2026 MEGUSTA SEMIJÓIAS - DESENVOLVIDO POR VOLCOF.UNLIMITED</p>
+            <p style="font-size: 8px; letter-spacing: 2px; color: #FFFFFF; margin: 0; text-transform: uppercase;">© 2026 MEGUSTA SEMIJÓIAS - VOLCOF.UNLIMITED</p>
         </div>
     </footer>
 
@@ -80,57 +84,39 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        // LOGIN REAL: Monitoramento de Estado
-        onAuthStateChanged(auth, (user) => {
-            const info = document.getElementById('user-info');
-            const btnLogout = document.getElementById('btn-logout');
-            if (user) {
-                info.innerText = `OLÁ, ${user.email.split('@')[0].toUpperCase()}`;
-                btnLogout.style.display = 'inline-block';
-            } else {
-                info.innerText = "OLÁ, VISITANTE";
-                btnLogout.style.display = 'none';
-            }
-        });
-
-        document.getElementById('btn-logout').onclick = () => signOut(auth).then(() => location.reload());
 
         let produtos = [];
         async function carregarTudo() {
-            const catSnap = await getDocs(collection(db, "categorias"));
             const prodSnap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
-            const menu = document.getElementById('menu-categorias');
-            menu.innerHTML = '<li><a href="javascript:void(0)" onclick="window.filtrar(\'todos\')">TODOS</a></li>';
-            let listaFinal = new Set();
-            catSnap.forEach(d => listaFinal.add(d.data().nome.toLowerCase()));
-            prodSnap.forEach(d => listaFinal.add(d.data().categoria.toLowerCase()));
-            Array.from(listaFinal).sort().forEach(cat => {
-                menu.innerHTML += `<li><a href="javascript:void(0)" onclick="window.filtrar('${cat}')">${cat.toUpperCase()}</a></li>`;
-            });
             produtos = prodSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            atualizarContagem();
             renderizar();
         }
 
         window.renderizar = function(cat = 'todos') {
             const container = document.getElementById('lista-produtos');
-            document.getElementById('nome-categoria-atual').innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
             container.innerHTML = '';
             const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
             filtrados.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'produto-card';
-                card.innerHTML = `<div class="img-container"><img src="${p.imagens[0]}" loading="lazy"></div><h3>${p.nome}</h3><p class="preco-vitrine">${p.preco}</p>`;
-                card.onclick = () => abrirModal(p);
+                const esgotado = p.estoque <= 0;
+                card.className = `produto-card ${esgotado ? 'esgotado' : ''}`;
+                card.innerHTML = `
+                    <div class="img-container">
+                        <img src="${p.imagens[0]}" loading="lazy">
+                        ${esgotado ? '<div class="tag-esgotado">ESGOTADO</div>' : ''}
+                    </div>
+                    <h3>${p.nome}</h3>
+                    <p class="preco-vitrine">${p.preco}</p>
+                `;
+                if (!esgotado) card.onclick = () => abrirModal(p);
                 container.appendChild(card);
             });
+            const carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            document.getElementById('contagem-carrinho').innerText = carrinho.length;
         }
 
         function abrirModal(p) {
@@ -147,21 +133,17 @@
             }
             document.getElementById('btnAdicionarAoCarrinho').onclick = () => {
                 let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-                carrinho.push({ nome: p.nome, preco: p.preco, foto: p.imagens[0] });
+                // Salvamos o ID para dar baixa depois
+                carrinho.push({ id: p.id, nome: p.nome, preco: p.preco, foto: p.imagens[0] });
                 localStorage.setItem('carrinho_megusta', JSON.stringify(carrinho));
-                atualizarContagem();
-                fecharModal();
+                window.renderizar();
+                window.fecharModal();
             };
             document.getElementById('meuModal').style.display = 'block';
             window.mudarSlide = (index) => {
                 document.getElementById('slides').style.transform = `translateX(-${index * 100}%)`;
                 document.querySelectorAll('.miniatura').forEach((m, i) => m.classList.toggle('active', i === index));
             };
-        }
-
-        function atualizarContagem() {
-            const carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            document.getElementById('contagem-carrinho').innerText = carrinho.length;
         }
 
         window.fecharModal = () => document.getElementById('meuModal').style.display = 'none';
