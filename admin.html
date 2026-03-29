@@ -3,22 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Megusta - Gestão de Joias</title>
+    <title>Gestão Megusta - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS DE LUXO UNIFICADO */
-        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .admin-card { background: #fff; width: 100%; max-width: 500px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); }
-        h2 { text-align: center; letter-spacing: 6px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 30px; color: #222; }
+        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 40px 20px; color: #222; }
+        .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); margin: 0 auto 40px; }
+        h2 { text-align: center; letter-spacing: 6px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin-bottom: 30px; }
         .field-group { margin-bottom: 20px; }
         label { display: block; font-size: 9px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; }
-        input, select { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s; }
-        input:focus { border-color: #A39684; }
-        #preview-container { width: 100%; height: 150px; border: 1px dashed #ddd; border-radius: 15px; margin-top: 10px; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #fafafa; }
-        #img-preview { max-height: 100%; display: none; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s; }
+        textarea { resize: none; height: 80px; }
+        input:focus, textarea:focus { border-color: #A39684; }
+        
+        /* Grid de Fotos */
+        .fotos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+        .foto-preview { width: 100%; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid #eee; display: none; }
+
         .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 18px; border-radius: 60px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-cadastrar:hover:not(:disabled) { background: #A39684; transform: translateY(-2px); }
-        .btn-cadastrar:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-cadastrar:hover:not(:disabled) { background: #A39684; }
+
+        /* Lista de Produtos (Governança) */
+        .lista-container { max-width: 600px; margin: 0 auto; }
+        .produto-item { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .produto-info { display: flex; align-items: center; gap: 15px; }
+        .produto-info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        .produto-text h4 { margin: 0; font-size: 12px; letter-spacing: 1px; }
+        .produto-text p { margin: 5px 0 0; font-size: 10px; color: #A39684; }
+        .btn-deletar { background: #ff4d4d; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-size: 9px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -31,6 +42,11 @@
             <input type="text" id="nome" required placeholder="EX: ANEL SOLITÁRIO">
         </div>
 
+        <div class="field-group">
+            <label>Descrição Detalhada</label>
+            <textarea id="descricao" required placeholder="Fale sobre o banho, as pedras e o brilho..."></textarea>
+        </div>
+
         <div style="display: flex; gap: 15px;">
             <div class="field-group" style="flex: 2;">
                 <label>Categoria</label>
@@ -39,7 +55,7 @@
                     <option value="colares">COLARES</option>
                     <option value="pulseiras">PULSEIRAS</option>
                     <option value="aneis">ANÉIS</option>
-                    <option value="nova">+ CADASTRAR NOVA...</option>
+                    <option value="nova">+ NOVA CATEGORIA</option>
                 </select>
                 <input type="text" id="nova-cat-input" style="display:none; margin-top:10px;" placeholder="Qual a nova categoria?">
             </div>
@@ -55,22 +71,31 @@
         </div>
 
         <div class="field-group">
-            <label>Link Direto da Imagem (Postimages)</label>
-            <input type="text" id="url-img" required placeholder="https://i.postimg.cc/...">
-            <div id="preview-container">
-                <img id="img-preview" src="">
-                <span id="placeholder-text" style="color: #ccc; font-size: 10px; text-transform: uppercase;">Aguardando Link...</span>
+            <label>Links das Fotos (Postimages - Link Direto)</label>
+            <input type="text" id="url-img-1" required placeholder="Link da foto 1" style="margin-bottom: 8px;">
+            <input type="text" id="url-img-2" placeholder="Link da foto 2 (Opcional)" style="margin-bottom: 8px;">
+            <input type="text" id="url-img-3" placeholder="Link da foto 3 (Opcional)">
+            
+            <div class="fotos-grid">
+                <img id="prev-1" class="foto-preview">
+                <img id="prev-2" class="foto-preview">
+                <img id="prev-3" class="foto-preview">
             </div>
         </div>
 
         <button type="submit" id="btn-submit" class="btn-cadastrar">CADASTRAR PRODUTO</button>
     </form>
-    <a href="index.html" style="display:block; text-align:center; margin-top:25px; font-size:10px; color:#bbb; text-decoration:none; letter-spacing:1px;">← RETORNAR AO SITE</a>
+</div>
+
+<div class="lista-container">
+    <h3 style="text-align: center; letter-spacing: 4px; font-weight: 300; font-size: 14px; margin-bottom: 20px;">ESTOQUE ATUAL</h3>
+    <div id="lista-estoque">
+        </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME",
@@ -84,66 +109,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 1. MÁSCARA DE MOEDA
+    // 1. MÁSCARA MOEDA
     const inputPreco = document.getElementById('preco');
     inputPreco.addEventListener('input', (e) => {
         let v = e.target.value.replace(/\D/g, '');
-        v = (v / 100).toFixed(2).replace(".", ",");
-        v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-        e.target.value = "R$ " + v;
-    });
-
-    // 2. NOVA CATEGORIA
-    const selectCat = document.getElementById('categoria');
-    const inputNovaCat = document.getElementById('nova-cat-input');
-    selectCat.addEventListener('change', () => {
-        inputNovaCat.style.display = (selectCat.value === 'nova') ? 'block' : 'none';
-    });
-
-    // 3. PREVIEW DA IMAGEM
-    const inputUrl = document.getElementById('url-img');
-    const previewImg = document.getElementById('img-preview');
-    const placeholder = document.getElementById('placeholder-text');
-    inputUrl.addEventListener('input', (e) => {
-        const url = e.target.value;
-        if (url.includes('http')) {
-            previewImg.src = url;
-            previewImg.style.display = 'block';
-            placeholder.style.display = 'none';
-        } else {
-            previewImg.style.display = 'none';
-            placeholder.style.display = 'block';
-        }
-    });
-
-    // 4. SALVAMENTO REAL
-    document.getElementById('form-produto').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btn-submit');
-        btn.disabled = true;
-        btn.innerText = "SALVANDO...";
-
-        const categoriaFinal = (selectCat.value === 'nova') ? inputNovaCat.value.toLowerCase() : selectCat.value;
-
-        try {
-            await addDoc(collection(db, "produtos"), {
-                nome: document.getElementById('nome').value,
-                categoria: categoriaFinal,
-                preco: inputPreco.value,
-                estoque: parseInt(document.getElementById('estoque').value),
-                imagens: [inputUrl.value],
-                dataCriacao: serverTimestamp()
-            });
-            alert("SUCESSO! JOIA CADASTRADA.");
-            location.reload();
-        } catch (err) {
-            alert("ERRO AO SALVAR.");
-            console.error(err);
-            btn.disabled = false;
-            btn.innerText = "CADASTRAR PRODUTO";
-        }
-    });
-</script>
-
-</body>
-</html>
