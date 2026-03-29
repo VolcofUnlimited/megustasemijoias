@@ -3,37 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeGusta Semijoias - Coleção Luxo</title>
+    <title>MeGusta Semijoias</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* ESTILO GLOBAL */
         body { font-family: 'Montserrat', sans-serif; margin: 0; background-color: #fff; color: #333; }
-        header { padding: 40px 20px; text-align: center; background: #fff; }
-        .logo { font-weight: 200; letter-spacing: 12px; font-size: 28px; text-transform: uppercase; margin-bottom: 10px; }
+        header { padding: 40px 20px; text-align: center; }
+        .logo { font-weight: 200; letter-spacing: 12px; font-size: 28px; text-transform: uppercase; margin-bottom: 30px; }
         
-        /* FILTROS */
-        .nav-filtros { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-        .btn-filtro { background: none; border: none; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; color: #999; transition: 0.3s; padding-bottom: 5px; border-bottom: 1px solid transparent; }
+        .nav-filtros { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+        .btn-filtro { background: none; border: none; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; color: #999; }
         .btn-filtro.active { color: #000; border-bottom: 1px solid #000; }
 
-        /* VITRINE */
         .vitrine { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 0 40px 80px; max-width: 1200px; margin: 0 auto; }
-        .produto-card { text-align: center; transition: 0.4s; cursor: pointer; opacity: 0; transform: translateY(20px); animation: fadeIn 0.6s forwards; }
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-        
-        .img-container { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #f9f9f9; margin-bottom: 15px; border-radius: 4px; }
+        .produto-card { text-align: center; cursor: pointer; }
+        .img-container { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #f9f9f9; margin-bottom: 15px; }
         .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .produto-card:hover img { transform: scale(1.05); }
         
-        .produto-card h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 5px; }
-        .produto-card .preco { font-size: 12px; font-weight: 700; color: #000; margin-bottom: 15px; }
+        /* Ajuste: Nome em uma linha só */
+        .produto-card h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .produto-card .preco { font-size: 12px; font-weight: 700; color: #000; }
 
-        /* RODAPÉ LUXO */
+        /* MODAL / POP-UP */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); display:none; z-index:1000; overflow-y:auto; }
+        .modal-content { max-width: 800px; margin: 40px auto; padding: 20px; display: flex; gap: 30px; flex-wrap: wrap; }
+        .modal-img { flex: 1; min-width: 300px; }
+        .modal-img img { width: 100%; border-radius: 4px; }
+        .modal-info { flex: 1; min-width: 300px; }
+        .modal-info h2 { font-weight: 200; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; }
+        .modal-info .price { font-size: 18px; font-weight: 400; color: #000; display: block; margin-bottom: 15px; }
+        .modal-info .desc { font-size: 12px; line-height: 1.6; color: #666; margin-bottom: 30px; }
+        .btn-wpp { width: 100%; background: #000; color: #fff; border: none; padding: 18px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; }
+
+        .close { position: absolute; top: 20px; right: 30px; font-size: 30px; cursor: pointer; }
+        
+        /* RODAPÉ PRETO ORIGINAL */
         footer { background: #000; color: #fff; padding: 60px 20px; text-align: center; }
-        .footer-logo { font-weight: 200; letter-spacing: 8px; font-size: 18px; margin-bottom: 20px; }
+        .footer-logo { font-weight: 200; letter-spacing: 8px; font-size: 18px; margin-bottom: 20px; text-transform: uppercase; }
         .footer-links a { color: #A39684; text-decoration: none; font-size: 10px; letter-spacing: 2px; margin: 0 15px; text-transform: uppercase; }
         
-        /* WHATSAPP FLOAT */
+        /* BOTÃO WHATSAPP VERDE ORIGINAL */
         .wpp-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-decoration: none; font-size: 25px; z-index: 100; }
     </style>
 </head>
@@ -41,26 +49,27 @@
 
 <header>
     <div class="logo">MeGusta</div>
-    <div class="nav-filtros" id="filtros">
+    <div class="nav-filtros">
         <button class="btn-filtro active" data-cat="todos">TODOS</button>
         <button class="btn-filtro" data-cat="brincos">BRINCOS</button>
         <button class="btn-filtro" data-cat="colares">COLARES</button>
-        <button class="btn-filtro" data-cat="pulseiras">PULSEIRAS</button>
         <button class="btn-filtro" data-cat="aneis">ANÉIS</button>
     </div>
 </header>
 
-<main class="vitrine" id="vitrine-produtos">
-    </main>
+<main class="vitrine" id="vitrine"></main>
+
+<div class="modal" id="modal">
+    <span class="close" id="close">&times;</span>
+    <div class="modal-content" id="m-body"></div>
+</div>
 
 <footer>
     <div class="footer-logo">MeGusta Semijoias</div>
     <div class="footer-links">
         <a href="https://wa.me/5511999999999">Atendimento</a>
         <a href="#">Instagram</a>
-        <a href="admin.html">Painel</a>
     </div>
-    <p style="font-size: 8px; margin-top: 40px; color: #444; letter-spacing: 1px;">© 2026 MEGUSTA SEMIJOIAS - TODOS OS DIREITOS RESERVADOS.</p>
 </footer>
 
 <a href="https://wa.me/5511999999999" class="wpp-btn">➔</a>
@@ -69,76 +78,52 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME",
-        authDomain: "megusta-semijoias.firebaseapp.com",
-        projectId: "megusta-semijoias",
-        storageBucket: "megusta-semijoias.appspot.com",
-        messagingSenderId: "998632232244",
-        appId: "1:998632232244:web:45473970818b8374e20161"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let produtosData = [];
+    let prods = [];
+    async function carregar() {
+        const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+        prods = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        render();
+    }
 
-    // FUNÇÃO PARA RENDERIZAR OS CARDS
-    function renderizar(categoria = 'todos') {
-        const vitrine = document.getElementById('vitrine-produtos');
-        vitrine.innerHTML = '';
-
-        const filtrados = categoria === 'todos' 
-            ? produtosData 
-            : produtosData.filter(p => p.categoria === categoria);
-
-        if (filtrados.length === 0) {
-            vitrine.innerHTML = '<p style="grid-column: 1/-1; text-align:center; font-size:12px; color:#999; letter-spacing:2px; margin-top:50px;">NENHUMA PEÇA ENCONTRADA NESTA CATEGORIA.</p>';
-            return;
-        }
-
-        filtrados.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'produto-card';
-            card.innerHTML = `
-                <div class="img-container">
-                    <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
-                </div>
-                <h3>${p.nome}</h3>
-                <p class="preco">${p.preco}</p>
-            `;
-            // Redireciona para o WhatsApp com o nome do produto ao clicar
-            card.onclick = () => {
-                const msg = encodeURIComponent(`Olá! Gostaria de saber mais sobre a peça: ${p.nome}`);
-                window.open(`https://wa.me/5511999999999?text=${msg}`, '_blank');
-            };
-            vitrine.appendChild(card);
+    function render(cat = 'todos') {
+        const v = document.getElementById('vitrine');
+        v.innerHTML = '';
+        const f = cat === 'todos' ? prods : prods.filter(p => p.categoria === cat);
+        f.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'produto-card';
+            div.innerHTML = `<div class="img-container"><img src="${p.imagens[0]}"></div><h3>${p.nome}</h3><p class="preco">${p.preco}</p>`;
+            div.onclick = () => abrir(p);
+            v.appendChild(div);
         });
     }
 
-    // BUSCAR DADOS DO BANCO
-    async function buscarProdutos() {
-        try {
-            const q = query(collection(db, "produtos"), orderBy("dataCriacao", "desc"));
-            const snapshot = await getDocs(q);
-            produtosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            renderizar('todos');
-        } catch (e) {
-            console.error("Erro ao buscar produtos:", e);
-        }
+    function abrir(p) {
+        const m = document.getElementById('modal');
+        document.getElementById('m-body').innerHTML = `
+            <div class="modal-img"><img src="${p.imagens[0]}"></div>
+            <div class="modal-info">
+                <h2>${p.nome}</h2>
+                <span class="price">${p.preco}</span>
+                <p class="desc">${p.descricao}</p>
+                <button class="btn-wpp" onclick="window.open('https://wa.me/5511999999999?text=Quero a peça: ${p.nome}')">Adicionar ao Pedido</button>
+            </div>
+        `;
+        m.style.display = 'block';
     }
 
-    // LÓGICA DOS BOTÕES DE FILTRO
-    document.querySelectorAll('.btn-filtro').forEach(btn => {
-        btn.onclick = (e) => {
-            document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            renderizar(e.target.getAttribute('data-cat'));
-        };
+    document.getElementById('close').onclick = () => document.getElementById('modal').style.display = 'none';
+    document.querySelectorAll('.btn-filtro').forEach(btn => btn.onclick = (e) => {
+        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render(e.target.dataset.cat);
     });
 
-    buscarProdutos();
+    carregar();
 </script>
-
 </body>
 </html>
