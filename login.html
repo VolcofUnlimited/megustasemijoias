@@ -3,63 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Megusta Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Login - Megusta Semijóias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         .login-card { background: #fff; width: 100%; max-width: 350px; padding: 40px; border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.04); text-align: center; }
-        .logo { width: 150px; margin-bottom: 30px; }
-        .btn-google { 
-            width: 100%; background: #fff; color: #000; border: 1px solid #eee; padding: 15px; 
-            border-radius: 60px; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; 
-            font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-google:hover { background: #fafafa; border-color: #ddd; }
+        .logo { width: 120px; margin-bottom: 30px; }
+        h2 { font-size: 12px; letter-spacing: 3px; font-weight: 300; margin-bottom: 30px; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 60px; outline: none; text-align: center; box-sizing: border-box; font-family: 'Montserrat'; }
+        
+        .btn-entrar { width: 100%; background: #000; color: #fff; border: none; padding: 15px; border-radius: 60px; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-top: 10px; }
+        .btn-google { width: 100%; background: #fff; color: #000; border: 1px solid #eee; padding: 14px; border-radius: 60px; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; margin-top: 20px; }
+        
+        .voltar { display: block; margin-top: 25px; font-size: 9px; color: #bbb; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
     <div class="login-card">
         <img src="Logo.png" class="logo">
-        <h2 style="font-size: 12px; letter-spacing: 3px; font-weight: 300; margin-bottom: 30px;">PAINEL ADMINISTRATIVO</h2>
+        <h2>Identificação</h2>
         
-        <button id="btn-google-login" class="btn-google">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+        <input type="email" id="email" placeholder="E-MAIL">
+        <input type="password" id="pass" placeholder="SENHA">
+        
+        <button class="btn-entrar" onclick="window.authEmail()">Entrar / Cadastrar</button>
+        
+        <div style="margin: 20px 0; font-size: 9px; color: #eee; letter-spacing: 2px;">OU</div>
+        
+        <button class="btn-google" onclick="window.authGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16">
             Entrar com Google
         </button>
 
-        <p id="msg" style="font-size: 10px; color: red; margin-top: 15px;"></p>
+        <p id="msg" style="font-size: 9px; color: red; margin-top: 15px;"></p>
+        <a href="index.html" class="voltar">Voltar para a loja</a>
     </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    const firebaseConfig = { 
-        apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", 
-        authDomain: "megusta-semijoias.firebaseapp.com", 
-        projectId: "megusta-semijoias", 
-        storageBucket: "megusta-semijoias.appspot.com", 
-        messagingSenderId: "998632232244", 
-        appId: "1:998632232244:web:45473970818b8374e20161" 
-    };
-    
+    const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    document.getElementById('btn-google-login').onclick = async () => {
+    window.authGoogle = async () => {
         try {
-            const result = await signInWithPopup(auth, provider);
-            // Opcional: Validar se o e-mail logado é o SEU e-mail de admin
-            if (result.user.email === "SEU-EMAIL@gmail.com") {
-                window.location.href = "admin.html";
-            } else {
-                // Se quiser restringir apenas para você, descomente as linhas acima e abaixo
-                window.location.href = "admin.html"; 
-            }
-        } catch (err) {
-            console.error(err);
-            document.getElementById('msg').innerText = "ERRO AO AUTENTICAR.";
+            await signInWithPopup(auth, provider);
+            window.location.href = "index.html";
+        } catch (e) { document.getElementById('msg').innerText = "ERRO NO LOGIN GOOGLE."; }
+    };
+
+    window.authEmail = async () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('pass').value;
+        if(!email || !pass) return;
+
+        try {
+            await signInWithEmailAndPassword(auth, email, pass);
+            window.location.href = "index.html";
+        } catch (e) {
+            if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+                try {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    window.location.href = "index.html";
+                } catch (err) { document.getElementById('msg').innerText = "ERRO AO CRIAR CONTA."; }
+            } else { document.getElementById('msg').innerText = "ERRO NA AUTENTICAÇÃO."; }
         }
     };
 </script>
