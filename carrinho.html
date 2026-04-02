@@ -131,14 +131,10 @@
             let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             if (carrinho.length === 0) return;
             document.getElementById('modalSucesso').style.display = 'flex';
-
-            // BAIXA NO ESTOQUE
             for (const item of carrinho) {
-                try { await updateDoc(doc(db, "produtos", item.id), { estoque: increment(-item.quantidade) }); } catch (e) { console.error(e); }
+                try { await updateDoc(doc(db, "produtos", item.id), { estoque: increment(-item.quantidade) }); } catch (e) {}
             }
-
-            // MENSAGEM WHATSAPP
-            let texto = "*Novo Pedido - MeGusta Semijóias*\n\n";
+            let texto = "*Novo Pedido - MeGusta*\n\n";
             let total = 0;
             carrinho.forEach(item => {
                 const qtd = item.quantidade || 1;
@@ -147,13 +143,8 @@
                 total += (preco * qtd);
             });
             texto += `\n*Total: R$ ${total.toLocaleString('pt-br', {minimumFractionDigits: 2})}*`;
-            
-            // NÚMERO ATUALIZADO: 5511916773300
-            const fone = "5511916773300";
-            const url = `https://api.whatsapp.com/send?phone=${fone}&text=${encodeURIComponent(texto)}`;
-
             setTimeout(() => {
-                window.open(url, '_blank');
+                window.open(`https://api.whatsapp.com/send?phone=5511916773300&text=${encodeURIComponent(texto)}`, '_blank');
                 localStorage.removeItem('carrinho_megusta');
                 window.location.href = "index.html";
             }, 4000);

@@ -6,28 +6,49 @@
     <title>MeGusta Semijóias | Exclusividade</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS RESPONSIVOS --- */
+        /* --- FUNDAMENTOS RESPONSIVOS --- */
         html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #fff; font-family: 'Montserrat', sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
         main.vitrine { flex: 1 0 auto; }
         footer { flex-shrink: 0; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-        header { padding: 10px 15px; text-align: center; position: relative; border-bottom: 1px solid #f8f8f8; background: #fff; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        /* --- HEADER ADAPTÁVEL --- */
+        header { 
+            padding: 10px 15px; 
+            text-align: center; 
+            position: relative; 
+            border-bottom: 1px solid #f8f8f8; 
+            background: #fff; 
+            z-index: 1000; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .logo { max-width: 130px; height: auto; transition: 0.3s; } 
 
         .header-right { display: flex; align-items: center; gap: 15px; flex: 1; justify-content: flex-end; }
         .icon-user, .icon-cart { width: 20px; height: 20px; color: #333; cursor: pointer; }
         .user-name-text { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #1a1a1a; font-weight: 400; display: none; } 
 
+        /* --- MENU DINÂMICO (Deslizante no Mobile) --- */
         .nav-categorias { width: 100%; border-bottom: 1px solid #f8f8f8; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         .nav-categorias::-webkit-scrollbar { display: none; }
         nav ul { display: flex; justify-content: center; gap: 20px; list-style: none; padding: 12px 15px; margin: 0; }
         nav ul li a { text-decoration: none; color: #333; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; cursor: pointer; }
 
+        /* --- VITRINE 2 COLUNAS (MOBILE) --- */
         #container-titulo-categoria { text-align: center; padding: 25px 0 5px; }
         #nome-categoria-atual { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 13px; color: #1a1a1a; margin: 0; }
         
-        .grade-produtos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
+        .grade-produtos { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            padding: 15px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        
         .produto-card { text-align: center; cursor: pointer; position: relative; padding-bottom: 10px; }
         .img-container { width: 100%; aspect-ratio: 1 / 1; margin-bottom: 8px; overflow: hidden; background-color: #f9f9f9; }
         .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
@@ -36,18 +57,29 @@
         .tag-esgotado { display: none; font-size: 8px; font-weight: 700; color: #ff4d4d; letter-spacing: 1px; }
         .produto-card.esgotado .tag-esgotado { display: block; }
 
+        /* --- MODAL (POP-UP) CENTRALIZADO --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; align-items: flex-start; justify-content: center; }
         .modal-conteudo { width: 100%; max-width: 850px; padding: 20px; position: relative; }
         .fechar-modal { position: fixed; top: 15px; right: 20px; font-size: 30px; cursor: pointer; z-index: 2100; color: #ccc; }
+        
+        .modal-flex { display: flex; flex-direction: column; gap: 20px; }
+        .img-modal-container { width: 100%; }
+        .info-produto-modal { text-align: center; }
+        
+        .miniaturas-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .miniatura { width: 45px; height: 45px; cursor: pointer; object-fit: cover; opacity: 0.4; }
+        .miniatura.active { opacity: 1; border-color: #A39684; }
+
         .btn-add-cart { background-color: rgba(163, 150, 132, 1); color: #fff; border: none; padding: 18px; border-radius: 50px; cursor: pointer; width: 100%; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
 
-        /* RODAPÉ AJUSTADO */
+        /* --- RODAPÉ --- */
         .footer-links-row { background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 15px; }
         .link-fendi { color: #A39684 !important; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
         .footer-black-row { background: #000; padding: 20px; text-align: center; }
         .footer-black-row p { font-size: 7px; letter-spacing: 1px; color: #fff; margin: 0; text-transform: uppercase; }
         .footer-black-row strong { font-weight: 700; }
 
+        /* --- AJUSTES PARA DESKTOP (TELAS > 768px) --- */
         @media (min-width: 768px) {
             header { padding: 15px 40px; }
             .logo { max-width: 160px; }
@@ -55,8 +87,12 @@
             .grade-produtos { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 0 60px 80px; }
             .nav-categorias { overflow: hidden; }
             nav ul { padding: 15px 0; gap: 30px; }
+            nav ul li a { font-size: 10px; }
             .modal { background: rgba(255,255,255,0.98); align-items: center; }
-            .modal-conteudo { width: 90%; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); }
+            .modal-conteudo { width: 90%; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); border-radius: 4px; }
+            .modal-flex { flex-direction: row; gap: 50px; }
+            .info-produto-modal { text-align: left; flex: 1; }
+            .miniaturas-container { justify-content: flex-start; }
             .footer-links-row { flex-direction: row; justify-content: center; gap: 40px; }
         }
     </style>
@@ -91,15 +127,15 @@
     <div id="modalProduto" class="modal">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="window.fecharModal()">&times;</span>
-            <div style="display:flex; flex-direction:column; gap:20px;" id="modalFlex">
-                <div style="width:100%;">
-                    <div id="modalPrincipal" style="aspect-ratio:1/1; overflow:hidden; background:#f9f9f9;"></div>
-                    <div id="modalMiniaturas" style="display:flex; justify-content:center; gap:8px; margin-top:15px;"></div>
+            <div class="modal-flex">
+                <div class="img-modal-container">
+                    <div id="modalPrincipal" style="width:100%; aspect-ratio:1/1; overflow:hidden; background:#f9f9f9;"></div>
+                    <div id="modalMiniaturas" class="miniaturas-container"></div>
                 </div>
-                <div style="text-align:center;" id="infoModal">
-                    <h2 id="tituloModal" style="font-weight:200; letter-spacing:4px; text-transform:uppercase; font-size:18px;"></h2>
-                    <p id="precoModal" style="color:#D1BE9C; font-weight:700;"></p>
-                    <p id="descModal" style="font-size:11px; color:#666; line-height:1.8; margin-bottom:25px;"></p>
+                <div class="info-produto-modal">
+                    <h2 id="tituloModal"></h2>
+                    <p id="precoModal"></p>
+                    <p id="descModal"></p>
                     <button id="btnAddAoCarrinho" class="btn-add-cart">Adicionar à Sacola</button>
                 </div>
             </div>
@@ -122,4 +158,92 @@
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.
+        const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        async function carregarMenu() {
+            const snap = await getDocs(collection(db, "categorias"));
+            const menu = document.getElementById('menu-dinamico');
+            menu.innerHTML = `<li><a onclick="window.filtrar('todos')">Início</a></li>`;
+            snap.forEach(d => {
+                const cat = d.data().nome;
+                menu.innerHTML += `<li><a onclick="window.filtrar('${cat}')">${cat.toUpperCase()}</a></li>`;
+            });
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            const display = document.getElementById('user-display');
+            const logout = document.getElementById('btn-logout-header');
+            if (user) { display.innerText = (user.displayName || user.email.split('@')[0]).toUpperCase(); logout.style.display = 'inline-block'; }
+            else { display.innerText = "BEM-VINDO"; logout.style.display = 'none'; }
+        });
+
+        window.fazerLogout = () => signOut(auth).then(() => location.reload());
+
+        let produtos = [];
+        async function carregar() {
+            const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+            produtos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderizar();
+        }
+
+        window.renderizar = function(cat = 'todos') {
+            const container = document.getElementById('lista-produtos');
+            container.innerHTML = '';
+            const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
+            filtrados.forEach(p => {
+                const esgotado = (p.estoque || 0) <= 0;
+                const card = document.createElement('div');
+                card.className = `produto-card ${esgotado ? 'esgotado' : ''}`;
+                card.onclick = () => !esgotado && abrirModal(p);
+                card.innerHTML = `
+                    <div class="img-container"><img src="${p.imagens[0]}" loading="lazy"></div>
+                    <h3>${p.nome}</h3>
+                    <p style="font-weight:700; font-size:11px; margin:0;">${p.preco}</p>
+                    <div class="tag-esgotado">ESGOTADO</div>
+                `;
+                container.appendChild(card);
+            });
+            document.getElementById('contagem-carrinho').innerText = (JSON.parse(localStorage.getItem('carrinho_megusta')) || []).length;
+        }
+
+        function abrirModal(p) {
+            document.getElementById('tituloModal').innerText = p.nome;
+            document.getElementById('precoModal').innerText = p.preco;
+            document.getElementById('descModal').innerText = p.descricao;
+            document.getElementById('modalPrincipal').innerHTML = `<img src="${p.imagens[0]}" id="imgPrincipalModal" style="width:100%; height:100%; object-fit:cover;">`;
+            
+            const miniaturas = document.getElementById('modalMiniaturas');
+            miniaturas.innerHTML = '';
+            if(p.imagens.length > 1) {
+                p.imagens.forEach((img, i) => {
+                    const m = document.createElement('img');
+                    m.src = img; m.className = `miniatura ${i === 0 ? 'active' : ''}`;
+                    m.onclick = () => { document.getElementById('imgPrincipalModal').src = img; document.querySelectorAll('.miniatura').forEach(el => el.classList.remove('active')); m.classList.add('active'); };
+                    miniaturas.appendChild(m);
+                });
+            }
+
+            document.getElementById('btnAddAoCarrinho').onclick = () => {
+                let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+                const itemExistente = carrinho.find(item => item.id === p.id);
+                if (itemExistente && itemExistente.quantidade >= p.estoque) { alert(`Temos apenas ${p.estoque} em estoque.`); return; }
+                if (itemExistente) { itemExistente.quantidade += 1; } 
+                else { carrinho.push({ id: p.id, nome: p.nome, preco: p.preco, foto: p.imagens[0], quantidade: 1, estoqueMax: p.estoque }); }
+                localStorage.setItem('carrinho_megusta', JSON.stringify(carrinho));
+                document.getElementById('contagem-carrinho').innerText = carrinho.length;
+                fecharModal();
+            };
+            document.getElementById('modalProduto').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.fecharModal = () => { document.getElementById('modalProduto').style.display = 'none'; document.body.style.overflow = 'auto'; };
+        window.filtrar = (c) => renderizar(c);
+        carregarMenu();
+        carregar();
+    </script>
+</body>
+</html>
