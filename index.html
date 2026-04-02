@@ -6,49 +6,28 @@
     <title>MeGusta Semijóias | Exclusividade</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- FUNDAMENTOS RESPONSIVOS --- */
+        /* --- ESTILOS GERAIS E RESPONSIVOS --- */
         html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #fff; font-family: 'Montserrat', sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
         main.vitrine { flex: 1 0 auto; }
         footer { flex-shrink: 0; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-        /* --- HEADER ADAPTÁVEL --- */
-        header { 
-            padding: 10px 15px; 
-            text-align: center; 
-            position: relative; 
-            border-bottom: 1px solid #f8f8f8; 
-            background: #fff; 
-            z-index: 1000; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        header { padding: 10px 15px; text-align: center; position: relative; border-bottom: 1px solid #f8f8f8; background: #fff; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
         .logo { max-width: 130px; height: auto; transition: 0.3s; } 
 
         .header-right { display: flex; align-items: center; gap: 15px; flex: 1; justify-content: flex-end; }
         .icon-user, .icon-cart { width: 20px; height: 20px; color: #333; cursor: pointer; }
         .user-name-text { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #1a1a1a; font-weight: 400; display: none; } 
 
-        /* --- MENU DINÂMICO (Deslizante no Mobile) --- */
         .nav-categorias { width: 100%; border-bottom: 1px solid #f8f8f8; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         .nav-categorias::-webkit-scrollbar { display: none; }
         nav ul { display: flex; justify-content: center; gap: 20px; list-style: none; padding: 12px 15px; margin: 0; }
         nav ul li a { text-decoration: none; color: #333; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; cursor: pointer; }
 
-        /* --- VITRINE 2 COLUNAS (MOBILE) --- */
         #container-titulo-categoria { text-align: center; padding: 25px 0 5px; }
         #nome-categoria-atual { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 13px; color: #1a1a1a; margin: 0; }
         
-        .grade-produtos { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            padding: 15px; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-        }
-        
+        .grade-produtos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
         .produto-card { text-align: center; cursor: pointer; position: relative; padding-bottom: 10px; }
         .img-container { width: 100%; aspect-ratio: 1 / 1; margin-bottom: 8px; overflow: hidden; background-color: #f9f9f9; }
         .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
@@ -57,29 +36,17 @@
         .tag-esgotado { display: none; font-size: 8px; font-weight: 700; color: #ff4d4d; letter-spacing: 1px; }
         .produto-card.esgotado .tag-esgotado { display: block; }
 
-        /* --- MODAL (POP-UP) CENTRALIZADO --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; align-items: flex-start; justify-content: center; }
         .modal-conteudo { width: 100%; max-width: 850px; padding: 20px; position: relative; }
         .fechar-modal { position: fixed; top: 15px; right: 20px; font-size: 30px; cursor: pointer; z-index: 2100; color: #ccc; }
-        
-        .modal-flex { display: flex; flex-direction: column; gap: 20px; }
-        .img-modal-container { width: 100%; }
-        .info-produto-modal { text-align: center; }
-        
-        .miniaturas-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
-        .miniatura { width: 45px; height: 45px; cursor: pointer; object-fit: cover; opacity: 0.4; }
-        .miniatura.active { opacity: 1; border-color: #A39684; }
-
         .btn-add-cart { background-color: rgba(163, 150, 132, 1); color: #fff; border: none; padding: 18px; border-radius: 50px; cursor: pointer; width: 100%; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
 
-        /* --- RODAPÉ --- */
         .footer-links-row { background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 15px; }
         .link-fendi { color: #A39684 !important; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
         .footer-black-row { background: #000; padding: 20px; text-align: center; }
         .footer-black-row p { font-size: 7px; letter-spacing: 1px; color: #fff; margin: 0; text-transform: uppercase; }
         .footer-black-row strong { font-weight: 700; }
 
-        /* --- AJUSTES PARA DESKTOP (TELAS > 768px) --- */
         @media (min-width: 768px) {
             header { padding: 15px 40px; }
             .logo { max-width: 160px; }
@@ -87,12 +54,8 @@
             .grade-produtos { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 0 60px 80px; }
             .nav-categorias { overflow: hidden; }
             nav ul { padding: 15px 0; gap: 30px; }
-            nav ul li a { font-size: 10px; }
             .modal { background: rgba(255,255,255,0.98); align-items: center; }
-            .modal-conteudo { width: 90%; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); border-radius: 4px; }
-            .modal-flex { flex-direction: row; gap: 50px; }
-            .info-produto-modal { text-align: left; flex: 1; }
-            .miniaturas-container { justify-content: flex-start; }
+            .modal-conteudo { width: 90%; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); }
             .footer-links-row { flex-direction: row; justify-content: center; gap: 40px; }
         }
     </style>
@@ -120,22 +83,24 @@
     </div>
 
     <main class="vitrine">
-        <div id="container-titulo-categoria"><h1 id="nome-categoria-atual">TODOS OS PRODUTOS</h1></div>
+        <div id="container-titulo-categoria">
+            <h1 id="nome-categoria-atual">TODOS OS PRODUTOS</h1>
+        </div>
         <div class="grade-produtos" id="lista-produtos"></div>
     </main>
 
     <div id="modalProduto" class="modal">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="window.fecharModal()">&times;</span>
-            <div class="modal-flex">
-                <div class="img-modal-container">
-                    <div id="modalPrincipal" style="width:100%; aspect-ratio:1/1; overflow:hidden; background:#f9f9f9;"></div>
-                    <div id="modalMiniaturas" class="miniaturas-container"></div>
+            <div style="display:flex; flex-direction:column; gap:20px;" id="modalFlex">
+                <div style="width:100%;">
+                    <div id="modalPrincipal" style="aspect-ratio:1/1; overflow:hidden; background:#f9f9f9;"></div>
+                    <div id="modalMiniaturas" style="display:flex; justify-content:center; gap:8px; margin-top:15px;"></div>
                 </div>
-                <div class="info-produto-modal">
-                    <h2 id="tituloModal"></h2>
-                    <p id="precoModal"></p>
-                    <p id="descModal"></p>
+                <div style="text-align:center;" id="infoModal">
+                    <h2 id="tituloModal" style="font-weight:200; letter-spacing:4px; text-transform:uppercase; font-size:18px;"></h2>
+                    <p id="precoModal" style="color:#D1BE9C; font-weight:700;"></p>
+                    <p id="descModal" style="font-size:11px; color:#666; line-height:1.8; margin-bottom:25px;"></p>
                     <button id="btnAddAoCarrinho" class="btn-add-cart">Adicionar à Sacola</button>
                 </div>
             </div>
@@ -163,6 +128,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
+        // MENU DINÂMICO
         async function carregarMenu() {
             const snap = await getDocs(collection(db, "categorias"));
             const menu = document.getElementById('menu-dinamico');
@@ -189,10 +155,17 @@
             renderizar();
         }
 
+        // FUNÇÃO DE RENDERIZAÇÃO COM ATUALIZAÇÃO DE TÍTULO
         window.renderizar = function(cat = 'todos') {
             const container = document.getElementById('lista-produtos');
+            const tituloVisual = document.getElementById('nome-categoria-atual');
+            
+            // ATUALIZA O TÍTULO CONFORME O FILTRO
+            tituloVisual.innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
+            
             container.innerHTML = '';
             const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
+            
             filtrados.forEach(p => {
                 const esgotado = (p.estoque || 0) <= 0;
                 const card = document.createElement('div');
@@ -201,7 +174,7 @@
                 card.innerHTML = `
                     <div class="img-container"><img src="${p.imagens[0]}" loading="lazy"></div>
                     <h3>${p.nome}</h3>
-                    <p style="font-weight:700; font-size:11px; margin:0;">${p.preco}</p>
+                    <p style="font-weight:700; font-size:11px;">${p.preco}</p>
                     <div class="tag-esgotado">ESGOTADO</div>
                 `;
                 container.appendChild(card);
@@ -214,7 +187,6 @@
             document.getElementById('precoModal').innerText = p.preco;
             document.getElementById('descModal').innerText = p.descricao;
             document.getElementById('modalPrincipal').innerHTML = `<img src="${p.imagens[0]}" id="imgPrincipalModal" style="width:100%; height:100%; object-fit:cover;">`;
-            
             const miniaturas = document.getElementById('modalMiniaturas');
             miniaturas.innerHTML = '';
             if(p.imagens.length > 1) {
@@ -225,7 +197,6 @@
                     miniaturas.appendChild(m);
                 });
             }
-
             document.getElementById('btnAddAoCarrinho').onclick = () => {
                 let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
                 const itemExistente = carrinho.find(item => item.id === p.id);
