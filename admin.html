@@ -2,56 +2,89 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Megusta - Gestão</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Painel Administrativo | MeGusta</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F9F9F9; font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px; display:none; } /* Escondido até validar login */
-        .admin-card { background: #fff; width: 100%; max-width: 600px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin: 0 auto 20px; box-sizing: border-box; }
-        h2 { text-align: center; letter-spacing: 4px; font-weight: 200; text-transform: uppercase; font-size: 14px; margin-bottom: 20px; }
-        .field-group { margin-bottom: 15px; }
-        label { display: block; font-size: 8px; letter-spacing: 2px; color: #A39684; text-transform: uppercase; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; font-size: 13px; box-sizing: border-box; outline: none; }
-        .btn-cadastrar { width: 100%; background: #000; color: #fff; border: none; padding: 15px; border-radius: 50px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
-        .produto-item { background: #fff; padding: 15px; border-radius: 20px; margin: 10px auto; display: flex; align-items: center; justify-content: space-between; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .produto-info { display: flex; align-items: center; gap: 10px; }
-        .produto-info img { width: 45px; height: 45px; border-radius: 8px; flex-shrink: 0; }
-        .btn-edit { background: #f0f0f0; border:none; padding: 6px 10px; border-radius: 6px; font-size: 7px; cursor:pointer; text-transform:uppercase; }
-        .btn-del { background: #ffebeb; color: #ff4d4d; border:none; padding: 6px 10px; border-radius: 6px; font-size: 7px; cursor:pointer; text-transform:uppercase; }
+        /* O conteúdo inicia escondido para evitar "flash" de conteúdo antes da verificação do login */
+        body { font-family: 'Montserrat', sans-serif; background: #f4f4f4; margin: 0; padding: 0; display: none; flex-direction: column; min-height: 100vh; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; background: #fff; padding: 20px; box-sizing: border-box; flex: 1; }
+        header { text-align: center; padding: 20px 0; border-bottom: 1px solid #eee; position: relative; }
+        .logo-admin { max-width: 120px; }
+        .btn-logout-admin { position: absolute; right: 20px; top: 30px; background: none; border: 1px solid #ddd; padding: 5px 10px; cursor: pointer; font-size: 10px; text-transform: uppercase; border-radius: 4px; }
+        
+        h1 { font-weight: 300; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; margin: 20px 0; }
+        .section-admin { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
+        .form-group { display: flex; flex-direction: column; gap: 12px; }
+        input, select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat'; font-size: 14px; width: 100%; box-sizing: border-box; }
+        .btn-black { background: #1a1a1a; color: #fff; border: none; padding: 15px; cursor: pointer; text-transform: uppercase; font-weight: 700; width: 100%; border-radius: 6px; font-size: 12px; letter-spacing: 1px; }
+        
+        .table-wrapper { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; background: #eee; padding: 10px; font-size: 10px; text-transform: uppercase; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; }
+        
+        .footer-black-row { background: #000; padding: 15px; text-align: center; }
+        .footer-black-row p { font-size: 7px; letter-spacing: 1px; color: #fff; margin: 0; text-transform: uppercase; }
+
+        @media (min-width: 768px) {
+            body { padding: 0; }
+            .container { margin: 40px auto; padding: 40px; border-radius: 8px; }
+            .form-group { grid-template-columns: 1fr 1fr; display: grid; }
+            .full-row { grid-column: span 2; }
+            h1 { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
-    <div style="text-align:right; max-width:600px; margin:0 auto 10px;"><button onclick="window.sair()" style="background:none; border:none; color:#999; font-size:10px; cursor:pointer;">[ SAIR DO PAINEL ]</button></div>
-    
-    <div class="admin-card">
-        <h2>Categorias</h2>
-        <div class="field-group">
-            <input type="text" id="nova-categoria-nome" placeholder="NOME DA CATEGORIA">
-            <button onclick="window.criarCategoria()" class="btn-cadastrar">CRIAR</button>
+
+<div class="container">
+    <header>
+        <img src="Logo.png" class="logo-admin" alt="MeGusta">
+        <button class="btn-logout-admin" onclick="window.fazerLogout()">Sair</button>
+    </header>
+
+    <div class="section-admin">
+        <h1>1. Categorias</h1>
+        <div class="form-group">
+            <input type="text" id="nova-cat-nome" placeholder="Nome da Categoria">
+            <button class="btn-black" onclick="window.salvarCategoria()">Adicionar</button>
         </div>
-        <div id="lista-categorias-tags" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+        <div id="lista-categorias-admin" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:15px;"></div>
     </div>
 
-    <div class="admin-card">
-        <h2 id="titulo-form">Novo Produto</h2>
-        <form id="form-produto">
-            <input type="hidden" id="edit-id">
-            <div class="field-group"><label>Nome</label><input type="text" id="nome" required></div>
-            <div class="field-group"><label>Descrição</label><textarea id="descricao" required></textarea></div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <div class="field-group" style="flex: 1; min-width: 150px;"><label>Categoria</label><select id="categoria-select" required></select></div>
-                <div class="field-group" style="flex: 1; min-width: 80px;"><label>Estoque</label><input type="number" id="estoque" required></div>
-            </div>
-            <div class="field-group"><label>Preço</label><input type="text" id="preco" required></div>
-            <div class="field-group"><label>Fotos</label><input type="text" id="url-img-1" required placeholder="Foto Principal" style="margin-bottom:5px"><input type="text" id="url-img-2" placeholder="Foto 2" style="margin-bottom:5px"><input type="text" id="url-img-3" placeholder="Foto 3"></div>
-            <button type="submit" id="btn-submit" class="btn-cadastrar">SALVAR</button>
-        </form>
+    <div class="section-admin">
+        <h1 id="titulo-form">2. Produtos</h1>
+        <input type="hidden" id="edit-id">
+        <div class="form-group">
+            <input type="text" id="nome" placeholder="Nome do Produto">
+            <input type="text" id="preco" placeholder="R$ 0,00" oninput="window.mascaraMoeda(this)">
+            <select id="select-categoria"></select>
+            <input type="number" id="estoque" placeholder="Quantidade">
+            <textarea id="descricao" class="full-row" placeholder="Descrição"></textarea>
+            <input type="text" id="img1" class="full-row" placeholder="Imagem 1 (Principal)">
+            <input type="text" id="img2" class="full-row" placeholder="Imagem 2 (Opcional)">
+            <input type="text" id="img3" class="full-row" placeholder="Imagem 3 (Opcional)">
+            <button id="btn-acao" class="btn-black full-row" onclick="window.salvarProduto()">Salvar Produto</button>
+        </div>
     </div>
-    <div id="lista-estoque"></div>
+
+    <h1>Inventário Ativo</h1>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Foto</th><th>Nome</th><th>Cat</th><th>Qtd</th><th>Ações</th></tr></thead>
+            <tbody id="tabela-produtos"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="footer-black-row">
+    <p>© 2026 MeGusta Semijóias – Fine Jewelry. By <strong>VOLCOF.UNLIMITED</strong></p>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, updateDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDuV0zO-5M4IkpTqzwaWqvL15HCitqaXME", authDomain: "megusta-semijoias.firebaseapp.com", projectId: "megusta-semijoias", storageBucket: "megusta-semijoias.appspot.com", messagingSenderId: "998632232244", appId: "1:998632232244:web:45473970818b8374e20161" };
@@ -59,88 +92,112 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // PROTEÇÃO DE ROTA
+    // --- SEGURANÇA: ACESSO EXCLUSIVO ---
+    const EMAIL_AUTORIZADO = "semijoiasmegusta@gmail.com";
+
     onAuthStateChanged(auth, (user) => {
-        if (!user) { window.location.href = "login.html"; } 
-        else { document.body.style.display = "block"; carregarTudo(); }
+        if (user && user.email === EMAIL_AUTORIZADO) {
+            document.body.style.display = "flex"; // Libera visualização
+            carregarTudo();
+        } else {
+            alert("ACESSO RESTRITO. Faça login com a conta administrativa.");
+            window.location.href = "login.html"; // Redireciona para o login
+        }
     });
 
-    window.sair = () => signOut(auth);
+    window.fazerLogout = () => signOut(auth).then(() => window.location.href = "index.html");
 
-    const inputPreco = document.getElementById('preco');
-    inputPreco.value = "R$ 0,00";
-    inputPreco.addEventListener('input', (e) => {
-        let v = e.target.value.replace(/\D/g, '');
-        v = (parseInt(v || 0) / 100).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-        e.target.value = v;
-    });
-
-    window.criarCategoria = async () => {
-        const nome = document.getElementById('nova-categoria-nome').value.trim().toLowerCase();
-        if(!nome) return;
-        await addDoc(collection(db, "categorias"), { nome: nome });
-        location.reload();
+    // MÁSCARA MOEDA
+    window.mascaraMoeda = (i) => {
+        let v = i.value.replace(/\D/g, "");
+        v = (v / 100).toFixed(2).replace(".", ",");
+        v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+        i.value = "R$ " + v;
     };
 
-    window.excluirCategoria = async (id) => {
-        if(confirm("Excluir?")) { await deleteDoc(doc(db, "categorias", id)); location.reload(); }
+    // CATEGORIAS
+    window.salvarCategoria = async () => {
+        const n = document.getElementById('nova-cat-nome').value.toLowerCase().trim();
+        if(n) await addDoc(collection(db, "categorias"), { nome: n });
+        carregarTudo();
     };
 
+    // CARREGAR DADOS
     async function carregarTudo() {
-        const catSnap = await getDocs(collection(db, "categorias"));
-        const tags = document.getElementById('lista-categorias-tags');
-        const sel = document.getElementById('categoria-select');
-        tags.innerHTML = ''; sel.innerHTML = '<option value="">SELECIONE</option>';
-        catSnap.forEach(d => {
+        const cats = await getDocs(collection(db, "categorias"));
+        const listaCat = document.getElementById('lista-categorias-admin');
+        const selCat = document.getElementById('select-categoria');
+        listaCat.innerHTML = "";
+        selCat.innerHTML = '<option value="">Categoria</option>';
+        cats.forEach(d => {
             const n = d.data().nome;
-            tags.innerHTML += `<span style="background:#eee; padding:5px 10px; border-radius:15px; font-size:9px;">${n.toUpperCase()} <b onclick="window.excluirCategoria('${d.id}')" style="color:red; cursor:pointer; margin-left:5px;">&times;</b></span>`;
-            sel.innerHTML += `<option value="${n}">${n.toUpperCase()}</option>`;
+            listaCat.innerHTML += `<span style="background:#eee; padding:5px 10px; border-radius:20px; font-size:9px;">${n.toUpperCase()} <b style="color:red; cursor:pointer;" onclick="window.removerCat('${d.id}')">X</b></span>`;
+            selCat.innerHTML += `<option value="${n}">${n.toUpperCase()}</option>`;
         });
 
-        const prodSnap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
-        const list = document.getElementById('lista-estoque');
-        list.innerHTML = '';
-        prodSnap.forEach(res => {
-            const p = res.data();
-            list.innerHTML += `<div class="produto-item"><div class="produto-info"><img src="${p.imagens[0]}"><div><b>${p.nome}</b><br><small>${p.preco}</small></div></div><div class="acoes"><button class="btn-edit" data-id="${res.id}">Editar</button><button class="btn-del" data-id="${res.id}">Excluir</button></div></div>`;
+        const prods = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+        const tabela = document.getElementById('tabela-produtos');
+        tabela.innerHTML = "";
+        prods.forEach(d => {
+            const p = d.data();
+            const pStr = JSON.stringify(p).replace(/"/g, '&quot;');
+            tabela.innerHTML += `<tr>
+                <td><img src="${p.imagens[0]}" style="width:30px;"></td>
+                <td>${p.nome}</td>
+                <td>${p.categoria}</td>
+                <td style="color:${p.estoque <= 0 ? 'red' : 'inherit'}">${p.estoque}</td>
+                <td><button onclick='window.editar("${d.id}", ${pStr})' style="color:blue; border:none; background:none; font-size:10px; cursor:pointer;">EDITAR</button> <button onclick="window.removerProd('${d.id}')" style="color:red; border:none; background:none; font-size:10px; cursor:pointer;">DEL</button></td>
+            </tr>`;
         });
-        document.querySelectorAll('.btn-edit').forEach(b => b.onclick = () => editar(b.dataset.id));
-        document.querySelectorAll('.btn-del').forEach(b => b.onclick = async () => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", b.dataset.id)); location.reload(); }});
     }
 
-    async function editar(id) {
-        const snap = await getDocs(collection(db, "produtos"));
-        const p = snap.docs.find(d => d.id === id).data();
+    window.removerCat = async (id) => { if(confirm("Remover?")) { await deleteDoc(doc(db, "categorias", id)); carregarTudo(); } };
+
+    window.salvarProduto = async () => {
+        const id = document.getElementById('edit-id').value;
+        const imgs = [document.getElementById('img1').value, document.getElementById('img2').value, document.getElementById('img3').value].filter(u => u.trim() !== "");
+        const dados = {
+            nome: document.getElementById('nome').value,
+            preco: document.getElementById('preco').value,
+            categoria: document.getElementById('select-categoria').value,
+            estoque: parseInt(document.getElementById('estoque').value || 0),
+            descricao: document.getElementById('descricao').value,
+            imagens: imgs
+        };
+        if(id) { await updateDoc(doc(db, "produtos", id), dados); alert("Atualizado!"); }
+        else { dados.dataCriacao = serverTimestamp(); await addDoc(collection(db, "produtos"), dados); alert("Cadastrado!"); }
+        window.limparForm();
+        carregarTudo();
+    };
+
+    window.editar = (id, p) => {
         document.getElementById('edit-id').value = id;
         document.getElementById('nome').value = p.nome;
-        document.getElementById('descricao').value = p.descricao;
-        document.getElementById('categoria-select').value = p.categoria;
-        document.getElementById('estoque').value = p.estoque;
         document.getElementById('preco').value = p.preco;
-        document.getElementById('url-img-1').value = p.imagens[0] || '';
-        document.getElementById('url-img-2').value = p.imagens[1] || '';
-        document.getElementById('url-img-3').value = p.imagens[2] || '';
-        document.getElementById('titulo-form').innerText = "Editar";
+        document.getElementById('select-categoria').value = p.categoria;
+        document.getElementById('estoque').value = p.estoque;
+        document.getElementById('descricao').value = p.descricao;
+        document.getElementById('img1').value = p.imagens[0] || "";
+        document.getElementById('img2').value = p.imagens[1] || "";
+        document.getElementById('img3').value = p.imagens[2] || "";
+        document.getElementById('btn-acao').innerText = "ATUALIZAR PRODUTO";
         window.scrollTo(0,0);
-    }
+    };
 
-    document.getElementById('form-produto').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const editId = document.getElementById('edit-id').value;
-        const imgs = [1,2,3].map(n => document.getElementById(`url-img-${n}`).value).filter(u => u);
-        const pData = {
-            nome: document.getElementById('nome').value.toUpperCase(),
-            descricao: document.getElementById('descricao').value,
-            categoria: document.getElementById('categoria-select').value,
-            preco: inputPreco.value,
-            estoque: parseInt(document.getElementById('estoque').value),
-            imagens: imgs,
-            dataCriacao: serverTimestamp()
-        };
-        if(editId) { await updateDoc(doc(db, "produtos", editId), pData); }
-        else { await addDoc(collection(db, "produtos"), pData); }
-        location.reload();
-    });
+    window.limparForm = () => {
+        document.getElementById('edit-id').value = "";
+        document.getElementById('nome').value = "";
+        document.getElementById('preco').value = "";
+        document.getElementById('estoque').value = "";
+        document.getElementById('descricao').value = "";
+        document.getElementById('img1').value = "";
+        document.getElementById('img2').value = "";
+        document.getElementById('img3').value = "";
+        document.getElementById('btn-acao').innerText = "SALVAR PRODUTO";
+    };
+
+    window.removerProd = async (id) => { if(confirm("Excluir?")) { await deleteDoc(doc(db, "produtos", id)); carregarTudo(); } };
+
 </script>
 </body>
 </html>

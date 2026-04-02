@@ -2,50 +2,67 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Carrinho - Megusta Semijóias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Meu Carrinho - MeGusta Semijóias</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.2">
     <style>
-        html, body { height: 100%; margin: 0; display: flex; flex-direction: column; background-color: #fff; }
-        header { padding: 30px 0; text-align: center; }
-        .logo-container img { max-width: 180px; }
-        main { flex: 1 0 auto; padding: 20px 20px 80px; max-width: 800px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-        .titulo-pagina { text-align: center; letter-spacing: 8px; font-weight: 200; text-transform: uppercase; font-size: 18px; margin: 40px 0; border-top: 1px solid #eee; padding-top: 30px; }
-        .carrinho-item { display: flex; align-items: center; gap: 20px; padding: 25px 0; border-bottom: 1px solid #eee; }
-        .carrinho-img { width: 90px; height: 90px; object-fit: cover; border-radius: 4px; }
-        .carrinho-info { flex: 1; }
-        .carrinho-info h3 { font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 8px; }
-        .qtd-container { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .btn-qtd { background: none; border: 1px solid #ddd; width: 25px; height: 25px; cursor: pointer; border-radius: 50%; }
-        .resumo-carrinho { margin-top: 40px; text-align: right; border-top: 1px solid #000; padding-top: 30px; }
-        .total-valor { font-size: 24px; font-weight: 300; letter-spacing: 1px; }
-        .btn-finalizar { width: 100%; background-color: rgba(163, 150, 132, 0.85); color: #1a1a1a; font-weight: 700; letter-spacing: 3px; padding: 22px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; margin-top: 40px; font-size: 11px; }
-        .modal-sucesso { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: none; align-items: center; justify-content: center; z-index: 2000; text-align: center; }
-        footer { background: #000; color: #fff; padding: 20px; text-align: center; margin-top: auto; }
+        body { font-family: 'Montserrat', sans-serif; background: #fff; margin: 0; padding: 0; text-align: center; color: #1a1a1a; }
+        header { padding: 20px; border-bottom: 1px solid #f2f2f2; }
+        .logo { max-width: 130px; }
+        
+        .container { max-width: 800px; margin: 20px auto; padding: 15px; box-sizing: border-box; }
+        h1 { font-weight: 200; letter-spacing: 4px; text-transform: uppercase; font-size: 14px; color: #999; margin-bottom: 30px; }
+        
+        .item-carrinho { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; gap: 15px; }
+        .item-info { display: flex; align-items: center; gap: 15px; text-align: left; flex: 1; }
+        .item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 2px; }
+        .item-detalhes h3 { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin: 0; font-weight: 400; }
+        
+        .controles-qtd { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .btn-qtd { background: #f4f4f4; border: none; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 16px; }
+        .qtd-numero { font-size: 11px; font-weight: 700; min-width: 15px; text-align: center; }
+
+        .btn-remover { background: none; border: none; color: #A39684; font-size: 8px; text-transform: uppercase; cursor: pointer; padding: 0; margin-top: 8px; font-weight: 700; }
+        
+        .resumo { margin-top: 30px; text-align: right; border-top: 2px solid #1a1a1a; padding-top: 20px; }
+        .total-label { font-size: 8px; color: #ccc; letter-spacing: 2px; text-transform: uppercase; }
+        .total-valor { font-size: 20px; font-weight: 300; color: #1a1a1a; display: block; margin-top: 5px; }
+        
+        .btn-finalizar { width: 100%; background-color: rgba(163, 150, 132, 1); color: #fff; border: none; padding: 18px; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-top: 25px; }
+
+        .modal-sucesso { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; align-items: center; justify-content: center; }
+        .modal-sucesso-content { padding: 30px; text-align: center; }
+
+        @media (min-width: 768px) {
+            header { padding: 30px; }
+            .logo { max-width: 160px; }
+            h1 { font-size: 18px; }
+            .item-img { width: 80px; height: 80px; }
+            .item-detalhes h3 { font-size: 11px; }
+            .total-valor { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
-    <header><div class="logo-container"><a href="index.html"><img src="Logo.png"></a></div></header>
-    <main>
-        <h1 class="titulo-pagina">Meu Carrinho</h1>
-        <div id="lista-itens-carrinho"></div>
-        <div id="area-resumo" class="resumo-carrinho" style="display: none;">
-            <span style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#bbb;">Total do Pedido</span>
-            <div class="total-valor" id="valor-total-carrinho">R$ 0,00</div>
-            <button class="btn-finalizar" id="btn-comprar" onclick="window.confirmarPedido()">FINALIZAR SUA COMPRA</button>
+    <header><img src="Logo.png" class="logo" alt="MeGusta"></header>
+
+    <div class="container">
+        <h1>Meu Carrinho</h1>
+        <div id="lista-carrinho"></div>
+        <div class="resumo">
+            <span class="total-label">Total do Pedido</span>
+            <span class="total-valor" id="valor-total">R$ 0,00</span>
         </div>
-    </main>
+        <button class="btn-finalizar" onclick="window.confirmarPedido()">Finalizar sua compra</button>
+        <a href="index.html" style="display:block; margin-top:25px; font-size:9px; color:#bbb; text-decoration:none; text-transform:uppercase; letter-spacing:2px;">Continuar Comprando</a>
+    </div>
 
     <div id="modalSucesso" class="modal-sucesso">
-        <div style="max-width: 450px; padding: 40px;">
-            <div style="font-size: 30px; margin-bottom: 20px; color: #A39684;">✦</div>
-            <h2 style="font-weight:200; letter-spacing:5px; text-transform:uppercase; font-size:18px;">Muito obrigado pela sua compra!</h2>
-            <p style="font-size:13px; color:#666; line-height:1.8;">Agora seu pedido será enviado para o nosso time para que o pagamento seja concluído. Volte sempre!</p>
-            <div style="margin: 30px auto 0; width: 40px; height: 1px; background: #eee; position: relative; overflow: hidden;"><div style="content:''; position:absolute; left:-100%; width:100%; height:100%; background:#A39684; animation:load 3s linear forwards;"></div></div>
+        <div class="modal-sucesso-content">
+            <img src="Logo.png" style="width: 100px; margin-bottom: 20px;">
+            <p style="font-size:13px; line-height:1.6; color:#666;">Obrigado pela sua compra! Agora alguém do nosso time entrará em contato com você. Volte sempre.</p>
         </div>
     </div>
-    <style>@keyframes load { to { left: 0; } }</style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -55,62 +72,84 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.carregarCarrinho = () => {
-            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            const container = document.getElementById('lista-itens-carrinho');
-            const totalTexto = document.getElementById('valor-total-carrinho');
-            if (itens.length === 0) { container.innerHTML = '<div style="text-align:center; padding:50px; color:#999; letter-spacing:2px;">CARRINHO VAZIO.</div>'; return; }
-            document.getElementById('area-resumo').style.display = 'block';
-            let totalDecimal = 0; container.innerHTML = '';
-            itens.forEach((item, index) => {
+        window.renderizarCarrinho = function() {
+            const container = document.getElementById('lista-carrinho');
+            const totalElement = document.getElementById('valor-total');
+            let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            container.innerHTML = '';
+            let somaTotal = 0;
+
+            if (carrinho.length === 0) {
+                container.innerHTML = '<p style="font-size:11px; color:#ccc; letter-spacing:2px;">Carrinho vazio.</p>';
+                totalElement.innerText = 'R$ 0,00';
+                return;
+            }
+
+            carrinho.forEach((item, index) => {
                 const qtd = item.quantidade || 1;
-                totalDecimal += (parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.')) * qtd);
-                container.innerHTML += `<div class="carrinho-item"><img src="${item.foto}" class="carrinho-img"><div class="carrinho-info"><h3>${item.nome}</h3><span>${item.preco}</span><div class="qtd-container"><button class="btn-qtd" onclick="window.mudarQtd(${index}, -1)">-</button><span style="font-size:12px;">${qtd}</span><button class="btn-qtd" onclick="window.mudarQtd(${index}, 1)">+</button></div></div></div>`;
+                const precoUnitario = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
+                somaTotal += (precoUnitario * qtd);
+                container.innerHTML += `
+                    <div class="item-carrinho">
+                        <div class="item-info">
+                            <img src="${item.foto}" class="item-img">
+                            <div class="item-detalhes">
+                                <h3>${item.nome}</h3>
+                                <div class="controles-qtd">
+                                    <button class="btn-qtd" onclick="alterarQtd(${index}, -1)">-</button>
+                                    <span class="qtd-numero">${qtd}</span>
+                                    <button class="btn-qtd" onclick="alterarQtd(${index}, 1)">+</button>
+                                </div>
+                                <button class="btn-remover" onclick="removerItem(${index})">Remover</button>
+                            </div>
+                        </div>
+                        <div style="font-weight:700; font-size:12px;">${item.preco}</div>
+                    </div>`;
             });
-            totalTexto.innerText = totalDecimal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+            totalElement.innerText = 'R$ ' + somaTotal.toLocaleString('pt-br', {minimumFractionDigits: 2});
+        }
+
+        window.alterarQtd = function(index, delta) {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            const item = carrinho[index];
+            const novaQtd = (item.quantidade || 1) + delta;
+            if (delta > 0 && novaQtd > item.estoqueMax) return alert(`Temos apenas ${item.estoqueMax} em estoque.`);
+            if (novaQtd < 1) return removerItem(index);
+            item.quantidade = novaQtd;
+            localStorage.setItem('carrinho_megusta', JSON.stringify(carrinho));
+            renderizarCarrinho();
         };
 
-        window.confirmarPedido = async () => {
-            const btn = document.getElementById('btn-comprar');
-            btn.disabled = true; btn.innerText = "PROCESSANDO...";
-            const itens = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
-            
-            try {
-                // 1. DAR BAIXA NO ESTOQUE NO BANCO
-                for (const item of itens) {
-                    const qtdVendida = item.quantidade || 1;
-                    const produtoRef = doc(db, "produtos", item.id);
-                    await updateDoc(produtoRef, { estoque: increment(-qtdVendida) });
-                }
-
-                // 2. EXIBIR MODAL DE SUCESSO
-                document.getElementById('modalSucesso').style.display = 'flex';
-
-                // 3. PREPARAR MENSAGEM WHATSAPP
-                let msg = "Olá MeGusta! Novo pedido:\n\n";
-                itens.forEach(i => msg += `• ${i.quantidade || 1}x ${i.nome} (${i.preco})\n`);
-                msg += `\n*TOTAL: ${document.getElementById('valor-total-carrinho').innerText}*`;
-                const url = `https://wa.me/5511985906325?text=${encodeURIComponent(msg)}`;
-
-                // 4. TIMER E AÇÕES FINAIS
-                setTimeout(() => {
-                    localStorage.removeItem('carrinho_megusta');
-                    window.open(url, '_blank'); // Abre WhatsApp em nova guia
-                    window.location.href = "index.html"; // Volta para a Home
-                }, 3000);
-
-            } catch (err) { alert("Erro ao processar estoque. Tente novamente."); btn.disabled = false; }
+        window.removerItem = function(index) {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            carrinho.splice(index, 1);
+            localStorage.setItem('carrinho_megusta', JSON.stringify(carrinho));
+            renderizarCarrinho();
         };
 
-        window.mudarQtd = (i, d) => {
-            let itens = JSON.parse(localStorage.getItem('carrinho_megusta'));
-            itens[i].quantidade = (itens[i].quantidade || 1) + d;
-            if(itens[i].quantidade < 1) itens.splice(i, 1);
-            localStorage.setItem('carrinho_megusta', JSON.stringify(itens));
-            window.carregarCarrinho();
+        window.confirmarPedido = async function() {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
+            if (carrinho.length === 0) return;
+            document.getElementById('modalSucesso').style.display = 'flex';
+            for (const item of carrinho) {
+                try { await updateDoc(doc(db, "produtos", item.id), { estoque: increment(-item.quantidade) }); } catch (e) {}
+            }
+            let texto = "*Novo Pedido - MeGusta*\n\n";
+            let total = 0;
+            carrinho.forEach(item => {
+                const qtd = item.quantidade || 1;
+                const preco = parseFloat(item.preco.replace('R$', '').replace('.', '').replace(',', '.'));
+                texto += `• ${qtd}x ${item.nome} (${item.preco})\n`;
+                total += (preco * qtd);
+            });
+            texto += `\n*Total: R$ ${total.toLocaleString('pt-br', {minimumFractionDigits: 2})}*`;
+            setTimeout(() => {
+                window.open(`https://api.whatsapp.com/send?phone=5511985906325&text=${encodeURIComponent(texto)}`, '_blank');
+                localStorage.removeItem('carrinho_megusta');
+                window.location.href = "index.html";
+            }, 4000);
         };
-
-        window.carregarCarrinho();
+        renderizarCarrinho();
     </script>
 </body>
 </html>
