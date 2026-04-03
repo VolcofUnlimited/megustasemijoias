@@ -6,56 +6,64 @@
     <title>MeGusta Semijóias | Exclusividade</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS GERAIS E RESPONSIVOS --- */
         html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #fff; font-family: 'Montserrat', sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
         main.vitrine { flex: 1 0 auto; }
         footer { flex-shrink: 0; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
 
         header { padding: 10px 15px; text-align: center; position: relative; border-bottom: 1px solid #f8f8f8; background: #fff; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-        .logo { max-width: 130px; height: auto; transition: 0.3s; } 
+        .logo { max-width: 130px; height: auto; } 
 
         .header-right { display: flex; align-items: center; gap: 15px; flex: 1; justify-content: flex-end; }
         .icon-user, .icon-cart { width: 20px; height: 20px; color: #333; cursor: pointer; }
         .user-name-text { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #1a1a1a; font-weight: 400; display: none; } 
 
-        .nav-categorias { width: 100%; border-bottom: 1px solid #f8f8f8; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .nav-categorias { width: 100%; border-bottom: 1px solid #f8f8f8; overflow-x: auto; white-space: nowrap; }
         .nav-categorias::-webkit-scrollbar { display: none; }
-        nav ul { display: flex; justify-content: center; gap: 20px; list-style: none; padding: 12px 15px; margin: 0; }
-        nav ul li a { text-decoration: none; color: #333; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; cursor: pointer; }
+        nav ul { display: flex; justify-content: center; gap: 25px; list-style: none; padding: 15px 15px; margin: 0; }
+        nav ul li a { text-decoration: none; color: #333; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 400; cursor: pointer; }
 
-        #container-titulo-categoria { text-align: center; padding: 25px 0 5px; }
-        #nome-categoria-atual { font-weight: 200; letter-spacing: 5px; text-transform: uppercase; font-size: 13px; color: #1a1a1a; margin: 0; }
+        /* AJUSTE FIEL À FOTO DE REFERÊNCIA */
+        #container-titulo-categoria { text-align: center; padding: 45px 0 30px; }
+        #nome-categoria-atual { 
+            font-weight: 300; 
+            letter-spacing: 10px; /* Espaçamento largo conforme a foto */
+            text-transform: uppercase; 
+            font-size: 15px; 
+            color: #999; /* Cinza suave conforme a foto */
+            margin: 0; 
+        }
         
         .grade-produtos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
         .produto-card { text-align: center; cursor: pointer; position: relative; padding-bottom: 10px; }
         .img-container { width: 100%; aspect-ratio: 1 / 1; margin-bottom: 8px; overflow: hidden; background-color: #f9f9f9; }
-        .produto-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .produto-card img { width: 100%; height: 100%; object-fit: cover; }
         .produto-card h3 { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin: 5px 0; font-weight: 300; }
         .produto-card.esgotado { filter: grayscale(1); opacity: 0.6; pointer-events: none; }
         .tag-esgotado { display: none; font-size: 8px; font-weight: 700; color: #ff4d4d; letter-spacing: 1px; }
         .produto-card.esgotado .tag-esgotado { display: block; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; align-items: flex-start; justify-content: center; }
-        .modal-conteudo { width: 100%; max-width: 850px; padding: 20px; position: relative; }
-        .fechar-modal { position: fixed; top: 15px; right: 20px; font-size: 30px; cursor: pointer; z-index: 2100; color: #ccc; }
+        /* MODAL MÉDIO E CENTRALIZADO */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+        .modal-conteudo { width: 90%; max-width: 700px; background: #fff; padding: 30px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 8px; max-height: 90vh; overflow-y: auto; }
+        
+        .fechar-modal { position: absolute; top: 15px; right: 15px; font-size: 20px; cursor: pointer; font-weight: 700; color: #fff; background: #000; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; z-index: 2100; }
+        
+        .modal-flex { display: flex; flex-direction: column; gap: 20px; }
         .btn-add-cart { background-color: rgba(163, 150, 132, 1); color: #fff; border: none; padding: 18px; border-radius: 50px; cursor: pointer; width: 100%; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
 
         .footer-links-row { background-color: #F9F9F9; padding: 25px 10px; text-align: center; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 15px; }
         .link-fendi { color: #A39684 !important; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
         .footer-black-row { background: #000; padding: 20px; text-align: center; }
-        .footer-black-row p { font-size: 7px; letter-spacing: 1px; color: #fff; margin: 0; text-transform: uppercase; }
-        .footer-black-row strong { font-weight: 700; }
+        .footer-black-row p { font-size: 7px; color: #fff; margin: 0; text-transform: uppercase; }
 
         @media (min-width: 768px) {
             header { padding: 15px 40px; }
             .logo { max-width: 160px; }
             .user-name-text { display: inline-block; }
             .grade-produtos { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 0 60px 80px; }
-            .nav-categorias { overflow: hidden; }
-            nav ul { padding: 15px 0; gap: 30px; }
-            .modal { background: rgba(255,255,255,0.98); align-items: center; }
-            .modal-conteudo { width: 90%; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); }
+            .modal-flex { flex-direction: row; gap: 30px; }
+            .info-produto-modal { text-align: left; flex: 1; display: flex; flex-direction: column; justify-content: center; }
             .footer-links-row { flex-direction: row; justify-content: center; gap: 40px; }
         }
     </style>
@@ -67,12 +75,12 @@
         <div class="logo-container"><a href="index.html"><img src="Logo.png" alt="Megusta" class="logo"></a></div>
         <div class="header-right">
             <div class="auth-container" onclick="window.location.href='login.html'">
-                <svg class="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <svg class="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span id="user-display" class="user-name-text">BEM-VINDO</span>
                 <button id="btn-logout-header" onclick="event.stopPropagation(); window.fazerLogout()" style="display:none; font-size:7px; color:#A39684; border:none; background:none; cursor:pointer;">Sair</button>
             </div>
             <div class="cart-container" onclick="window.location.href='carrinho.html'">
-                <svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 <span id="contagem-carrinho" class="cart-count-ref">0</span>
             </div>
         </div>
@@ -92,15 +100,15 @@
     <div id="modalProduto" class="modal">
         <div class="modal-conteudo">
             <span class="fechar-modal" onclick="window.fecharModal()">&times;</span>
-            <div style="display:flex; flex-direction:column; gap:20px;" id="modalFlex">
-                <div style="width:100%;">
-                    <div id="modalPrincipal" style="aspect-ratio:1/1; overflow:hidden; background:#f9f9f9;"></div>
-                    <div id="modalMiniaturas" style="display:flex; justify-content:center; gap:8px; margin-top:15px;"></div>
+            <div class="modal-flex">
+                <div style="flex:1.2;">
+                    <div id="modalPrincipal" style="width:100%; aspect-ratio:1/1; overflow:hidden; background:#f9f9f9; border-radius:4px;"></div>
+                    <div id="modalMiniaturas" style="display:flex; justify-content:center; gap:8px; margin-top:10px;"></div>
                 </div>
-                <div style="text-align:center;" id="infoModal">
-                    <h2 id="tituloModal" style="font-weight:200; letter-spacing:4px; text-transform:uppercase; font-size:18px;"></h2>
-                    <p id="precoModal" style="color:#D1BE9C; font-weight:700;"></p>
-                    <p id="descModal" style="font-size:11px; color:#666; line-height:1.8; margin-bottom:25px;"></p>
+                <div class="info-produto-modal">
+                    <h2 id="tituloModal" style="font-weight:200; letter-spacing:4px; text-transform:uppercase; font-size:16px; margin:0 0 10px;"></h2>
+                    <p id="precoModal" style="color:#D1BE9C; font-weight:700; font-size:18px; margin:0 0 15px;"></p>
+                    <p id="descModal" style="font-size:11px; color:#666; line-height:1.6; margin:0 0 20px; font-weight:300;"></p>
                     <button id="btnAddAoCarrinho" class="btn-add-cart">Adicionar à Sacola</button>
                 </div>
             </div>
@@ -128,7 +136,6 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // MENU DINÂMICO
         async function carregarMenu() {
             const snap = await getDocs(collection(db, "categorias"));
             const menu = document.getElementById('menu-dinamico');
@@ -155,17 +162,11 @@
             renderizar();
         }
 
-        // FUNÇÃO DE RENDERIZAÇÃO COM ATUALIZAÇÃO DE TÍTULO
         window.renderizar = function(cat = 'todos') {
             const container = document.getElementById('lista-produtos');
-            const tituloVisual = document.getElementById('nome-categoria-atual');
-            
-            // ATUALIZA O TÍTULO CONFORME O FILTRO
-            tituloVisual.innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
-            
+            document.getElementById('nome-categoria-atual').innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
             container.innerHTML = '';
             const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
-            
             filtrados.forEach(p => {
                 const esgotado = (p.estoque || 0) <= 0;
                 const card = document.createElement('div');
@@ -174,7 +175,7 @@
                 card.innerHTML = `
                     <div class="img-container"><img src="${p.imagens[0]}" loading="lazy"></div>
                     <h3>${p.nome}</h3>
-                    <p style="font-weight:700; font-size:11px;">${p.preco}</p>
+                    <p style="font-weight:700; font-size:11px; margin:0;">${p.preco}</p>
                     <div class="tag-esgotado">ESGOTADO</div>
                 `;
                 container.appendChild(card);
@@ -192,8 +193,8 @@
             if(p.imagens.length > 1) {
                 p.imagens.forEach((img, i) => {
                     const m = document.createElement('img');
-                    m.src = img; m.className = `miniatura ${i === 0 ? 'active' : ''}`;
-                    m.onclick = () => { document.getElementById('imgPrincipalModal').src = img; document.querySelectorAll('.miniatura').forEach(el => el.classList.remove('active')); m.classList.add('active'); };
+                    m.src = img; m.style = "width:40px; height:40px; object-fit:cover; cursor:pointer; opacity:0.5;";
+                    m.onclick = () => { document.getElementById('imgPrincipalModal').src = img; };
                     miniaturas.appendChild(m);
                 });
             }

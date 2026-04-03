@@ -29,16 +29,22 @@
         .total-valor { font-size: 20px; font-weight: 300; color: #1a1a1a; display: block; margin-top: 5px; }
         
         .btn-finalizar { width: 100%; background-color: rgba(163, 150, 132, 1); color: #fff; border: none; padding: 18px; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; font-weight: 700; margin-top: 25px; }
+        
+        /* AJUSTE DE VISIBILIDADE: CONTINUAR COMPRANDO */
+        .btn-continuar { display: block; margin-top: 25px; font-size: 11px; color: #000; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; border-bottom: 1px solid #000; width: fit-content; margin-left: auto; margin-right: auto; padding-bottom: 2px; }
 
-        .modal-sucesso { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; align-items: center; justify-content: center; }
-        .modal-sucesso-content { padding: 30px; text-align: center; }
+        /* MODAL DE REDIRECIONAMENTO */
+        .modal-sucesso { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 5000; align-items: center; justify-content: center; }
+        .modal-sucesso-content { padding: 30px; text-align: center; max-width: 500px; width: 90%; }
+        .modal-sucesso-content p { font-size: 18px; line-height: 1.6; color: #1a1a1a; font-weight: 400; margin-bottom: 25px; }
+        .contador-regressivo { font-size: 50px; font-weight: 700; color: #A39684; margin: 25px 0; }
+        .btn-ir-agora { background: #000; color: #fff; border: none; padding: 18px 50px; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; font-weight: 700; }
 
         @media (min-width: 768px) {
             header { padding: 30px; }
             .logo { max-width: 160px; }
             h1 { font-size: 18px; }
             .item-img { width: 80px; height: 80px; }
-            .item-detalhes h3 { font-size: 11px; }
             .total-valor { font-size: 24px; }
         }
     </style>
@@ -49,18 +55,23 @@
     <div class="container">
         <h1>Meu Carrinho</h1>
         <div id="lista-carrinho"></div>
-        <div class="resumo">
+        <div id="msg-vazio" style="display:none; padding: 40px 0; color: #ccc; font-size: 12px; letter-spacing: 2px;">CARRINHO VAZIO</div>
+        
+        <div id="area-resumo" class="resumo">
             <span class="total-label">Total do Pedido</span>
             <span class="total-valor" id="valor-total">R$ 0,00</span>
         </div>
-        <button class="btn-finalizar" onclick="window.confirmarPedido()">Finalizar sua compra</button>
-        <a href="index.html" style="display:block; margin-top:25px; font-size:9px; color:#bbb; text-decoration:none; text-transform:uppercase; letter-spacing:2px;">Continuar Comprando</a>
+        
+        <button id="btn-finalizar-main" class="btn-finalizar" onclick="window.confirmarPedido()">Finalizar sua compra</button>
+        <a href="index.html" class="btn-continuar">Continuar Comprando</a>
     </div>
 
     <div id="modalSucesso" class="modal-sucesso">
         <div class="modal-sucesso-content">
-            <img src="Logo.png" style="width: 100px; margin-bottom: 20px;">
-            <p style="font-size:13px; line-height:1.6; color:#666;">Obrigado pela sua compra! Agora alguém do nosso time entrará em contato com você. Volte sempre.</p>
+            <img src="Logo.png" style="width: 140px; margin-bottom: 30px;">
+            <p>Obrigado pela sua compra! Agora vamos para o Whatsapp e alguém do nosso time entrará em contato com você. Volte sempre.</p>
+            <div class="contador-regressivo" id="num-contador">15</div>
+            <button class="btn-ir-agora" id="btn-ir-agora">Ir Agora</button>
         </div>
     </div>
 
@@ -75,15 +86,24 @@
         window.renderizarCarrinho = function() {
             const container = document.getElementById('lista-carrinho');
             const totalElement = document.getElementById('valor-total');
+            const areaResumo = document.getElementById('area-resumo');
+            const btnFinalizar = document.getElementById('btn-finalizar-main');
+            const msgVazio = document.getElementById('msg-vazio');
+
             let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             container.innerHTML = '';
             let somaTotal = 0;
 
             if (carrinho.length === 0) {
-                container.innerHTML = '<p style="font-size:11px; color:#ccc; letter-spacing:2px;">Carrinho vazio.</p>';
-                totalElement.innerText = 'R$ 0,00';
+                msgVazio.style.display = 'block';
+                areaResumo.style.display = 'none';
+                btnFinalizar.style.display = 'none';
                 return;
             }
+
+            msgVazio.style.display = 'none';
+            areaResumo.style.display = 'block';
+            btnFinalizar.style.display = 'block';
 
             carrinho.forEach((item, index) => {
                 const qtd = item.quantidade || 1;
@@ -130,11 +150,14 @@
         window.confirmarPedido = async function() {
             let carrinho = JSON.parse(localStorage.getItem('carrinho_megusta')) || [];
             if (carrinho.length === 0) return;
-            document.getElementById('modalSucesso').style.display = 'flex';
+
+            // 1. BAIXA NO ESTOQUE
             for (const item of carrinho) {
-                try { await updateDoc(doc(db, "produtos", item.id), { estoque: increment(-item.quantidade) }); } catch (e) {}
+                try { await updateDoc(doc(db, "produtos", item.id), { estoque: increment(-item.quantidade) }); } catch (e) { console.error(e); }
             }
-            let texto = "*Novo Pedido - MeGusta*\n\n";
+
+            // 2. MONTAGEM DA MENSAGEM
+            let texto = "*Novo Pedido - MeGusta Semijóias*\n\n";
             let total = 0;
             carrinho.forEach(item => {
                 const qtd = item.quantidade || 1;
@@ -143,12 +166,33 @@
                 total += (preco * qtd);
             });
             texto += `\n*Total: R$ ${total.toLocaleString('pt-br', {minimumFractionDigits: 2})}*`;
-            setTimeout(() => {
-                window.open(`https://api.whatsapp.com/send?phone=5511916773300&text=${encodeURIComponent(texto)}`, '_blank');
+            const linkWhats = `https://api.whatsapp.com/send?phone=5511916773300&text=${encodeURIComponent(texto)}`;
+
+            // 3. TELA DE TRANSIÇÃO (15 SEGUNDOS)
+            const modal = document.getElementById('modalSucesso');
+            const numContador = document.getElementById('num-contador');
+            const btnIrAgora = document.getElementById('btn-ir-agora');
+            
+            modal.style.display = 'flex';
+            let segundos = 15;
+
+            const intervalo = setInterval(() => {
+                segundos--;
+                numContador.innerText = segundos;
+                if (segundos <= 0) {
+                    fecharEIr();
+                }
+            }, 1000);
+
+            function fecharEIr() {
+                clearInterval(intervalo);
                 localStorage.removeItem('carrinho_megusta');
-                window.location.href = "index.html";
-            }, 4000);
+                window.location.href = linkWhats;
+            }
+
+            btnIrAgora.onclick = fecharEIr;
         };
+
         renderizarCarrinho();
     </script>
 </body>
