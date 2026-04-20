@@ -132,9 +132,10 @@
             const snapProd = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
             produtos = snapProd.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-            // Extrai categorias únicas para garantir que o menu reflita o banco
-            const categoriasSet = new Set(produtos.map(p => p.categoria.trim()));
+            // Extrai categorias únicas diretamente dos produtos carregados
+            const categoriasSet = new Set(produtos.map(p => (p.categoria || "").trim()));
             const menu = document.getElementById('menu-dinamico');
+            
             menu.innerHTML = `<li><a onclick="window.filtrar('todos')">Início</a></li>`;
             categoriasSet.forEach(cat => {
                 if(cat) menu.innerHTML += `<li><a onclick="window.filtrar('${cat}')">${cat.toUpperCase()}</a></li>`;
@@ -148,9 +149,10 @@
             container.innerHTML = '';
             
             // Filtro Blindado: normaliza ambos para minúsculo antes de comparar
+            const catBusca = cat.trim().toLowerCase();
             const filtrados = (cat === 'todos') 
                 ? produtos 
-                : produtos.filter(p => p.categoria.trim().toLowerCase() === cat.trim().toLowerCase());
+                : produtos.filter(p => (p.categoria || "").trim().toLowerCase() === catBusca);
 
             filtrados.forEach(p => {
                 const esgotado = (p.estoque || 0) <= 0;
