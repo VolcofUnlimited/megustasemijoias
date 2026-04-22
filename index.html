@@ -23,16 +23,8 @@
         nav ul { display: flex; justify-content: center; gap: 25px; list-style: none; padding: 15px 15px; margin: 0; }
         nav ul li a { text-decoration: none; color: #333; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 400; cursor: pointer; }
 
-        /* AJUSTE FIEL À FOTO DE REFERÊNCIA */
         #container-titulo-categoria { text-align: center; padding: 45px 0 30px; }
-        #nome-categoria-atual { 
-            font-weight: 300; 
-            letter-spacing: 10px; /* Espaçamento largo conforme a foto */
-            text-transform: uppercase; 
-            font-size: 15px; 
-            color: #999; /* Cinza suave conforme a foto */
-            margin: 0; 
-        }
+        #nome-categoria-atual { font-weight: 300; letter-spacing: 10px; text-transform: uppercase; font-size: 15px; color: #999; margin: 0; }
         
         .grade-produtos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
         .produto-card { text-align: center; cursor: pointer; position: relative; padding-bottom: 10px; }
@@ -43,10 +35,8 @@
         .tag-esgotado { display: none; font-size: 8px; font-weight: 700; color: #ff4d4d; letter-spacing: 1px; }
         .produto-card.esgotado .tag-esgotado { display: block; }
 
-        /* MODAL MÉDIO E CENTRALIZADO */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
         .modal-conteudo { width: 90%; max-width: 700px; background: #fff; padding: 30px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-radius: 8px; max-height: 90vh; overflow-y: auto; }
-        
         .fechar-modal { position: absolute; top: 15px; right: 15px; font-size: 20px; cursor: pointer; font-weight: 700; color: #fff; background: #000; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; z-index: 2100; }
         
         .modal-flex { display: flex; flex-direction: column; gap: 20px; }
@@ -136,37 +126,35 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        async function carregarMenu() {
-            const snap = await getDocs(collection(db, "categorias"));
+        let produtos = [];
+
+        async function carregarTudo() {
+            const snapProd = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
+            produtos = snapProd.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Extração dinâmica do menu
+            const categoriasSet = new Set();
+            produtos.forEach(p => { if(p.categoria) categoriasSet.add(p.categoria.trim().toLowerCase()); });
+            
             const menu = document.getElementById('menu-dinamico');
             menu.innerHTML = `<li><a onclick="window.filtrar('todos')">Início</a></li>`;
-            snap.forEach(d => {
-                const cat = d.data().nome;
+            categoriasSet.forEach(cat => {
                 menu.innerHTML += `<li><a onclick="window.filtrar('${cat}')">${cat.toUpperCase()}</a></li>`;
             });
+            renderizarVitrine('todos');
         }
 
-        onAuthStateChanged(auth, (user) => {
-            const display = document.getElementById('user-display');
-            const logout = document.getElementById('btn-logout-header');
-            if (user) { display.innerText = (user.displayName || user.email.split('@')[0]).toUpperCase(); logout.style.display = 'inline-block'; }
-            else { display.innerText = "BEM-VINDO"; logout.style.display = 'none'; }
-        });
-
-        window.fazerLogout = () => signOut(auth).then(() => location.reload());
-
-        let produtos = [];
-        async function carregar() {
-            const snap = await getDocs(query(collection(db, "produtos"), orderBy("dataCriacao", "desc")));
-            produtos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            renderizar();
-        }
-
-        window.renderizar = function(cat = 'todos') {
+        window.renderizarVitrine = function(cat) {
             const container = document.getElementById('lista-produtos');
             document.getElementById('nome-categoria-atual').innerText = cat === 'todos' ? 'TODOS OS PRODUTOS' : cat.toUpperCase();
             container.innerHTML = '';
-            const filtrados = cat === 'todos' ? produtos : produtos.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
+            
+            // Filtro Blindado: normaliza ambos para comparar
+            const catBusca = cat.trim().toLowerCase();
+            const filtrados = (cat === 'todos') 
+                ? produtos 
+                : produtos.filter(p => (p.categoria || "").trim().toLowerCase() === catBusca);
+
             filtrados.forEach(p => {
                 const esgotado = (p.estoque || 0) <= 0;
                 const card = document.createElement('div');
@@ -183,17 +171,20 @@
             document.getElementById('contagem-carrinho').innerText = (JSON.parse(localStorage.getItem('carrinho_megusta')) || []).length;
         }
 
-        function abrirModal(p) {
+        window.filtrar = (c) => renderizarVitrine(c);
+
+        window.abrirModal = (p) => {
             document.getElementById('tituloModal').innerText = p.nome;
             document.getElementById('precoModal').innerText = p.preco;
             document.getElementById('descModal').innerText = p.descricao;
             document.getElementById('modalPrincipal').innerHTML = `<img src="${p.imagens[0]}" id="imgPrincipalModal" style="width:100%; height:100%; object-fit:cover;">`;
             const miniaturas = document.getElementById('modalMiniaturas');
             miniaturas.innerHTML = '';
-            if(p.imagens.length > 1) {
-                p.imagens.forEach((img, i) => {
+            if(p.imagens && p.imagens.length > 1) {
+                p.imagens.forEach((img) => {
                     const m = document.createElement('img');
-                    m.src = img; m.style = "width:40px; height:40px; object-fit:cover; cursor:pointer; opacity:0.5;";
+                    m.src = img; 
+                    m.style = "width:40px; height:40px; object-fit:cover; cursor:pointer; opacity:0.5;";
                     m.onclick = () => { document.getElementById('imgPrincipalModal').src = img; };
                     miniaturas.appendChild(m);
                 });
@@ -210,12 +201,19 @@
             };
             document.getElementById('modalProduto').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-        }
+        };
 
         window.fecharModal = () => { document.getElementById('modalProduto').style.display = 'none'; document.body.style.overflow = 'auto'; };
-        window.filtrar = (c) => renderizar(c);
-        carregarMenu();
-        carregar();
+        
+        onAuthStateChanged(auth, (user) => {
+            const display = document.getElementById('user-display');
+            const logout = document.getElementById('btn-logout-header');
+            if (user) { display.innerText = (user.displayName || user.email.split('@')[0]).toUpperCase(); logout.style.display = 'inline-block'; }
+        });
+
+        window.fazerLogout = () => signOut(auth).then(() => location.reload());
+
+        carregarTudo();
     </script>
 </body>
 </html>
